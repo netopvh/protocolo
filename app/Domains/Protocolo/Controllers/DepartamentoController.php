@@ -1,0 +1,144 @@
+<?php
+
+namespace App\Domains\Protocolo\Controllers;
+
+use App\Domains\Protocolo\Repositories\Contracts\DepartamentoRepository;
+use App\Core\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Prettus\Validator\Exceptions\ValidatorException;
+use Yajra\DataTables\DataTables;
+
+class DepartamentoController extends Controller
+{
+    /** @var  DepartamentoRepository */
+    private $departamentoRepository;
+
+    public function __construct(DepartamentoRepository $departamentoRepository)
+    {
+        $this->middleware('auth');
+        $this->departamentoRepository = $departamentoRepository;
+    }
+
+    /**
+     * Display a listing of the Servidor.
+     *
+     * @param Request $request
+     * @return
+     */
+    public function index()
+    {
+        return view('departamento.index');
+    }
+    /**
+     * Process dataTable ajax response.
+     *
+     * @param \Yajra\Datatables\Datatables $datatables
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function data(DataTables $dataTables)
+    {
+        $query = $this->departamentoRepository->query();
+
+        return $dataTables->eloquent($query)
+            ->addColumn('action',function($departamento){
+                return view('departamento.buttons')->with('departamento',$departamento);
+            })
+            ->make(true);
+    }
+
+    /**
+     * Show the form for creating a new Servidor.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        return view('departamento.create');
+    }
+
+    /**
+     * Store a newly created Servidor in storage.
+     *
+     * @param Request $request
+     *
+     * @return mixed
+     */
+    public function store(Request $request)
+    {
+        try{
+            $this->departamentoRepository->create($request->all());
+            return redirect()->route('admin.departamento')->with('success','Registro inserido com sucesso!');
+        }catch (ValidatorException $e){
+            return redirect()->route('admin.departamento')->with('errors',$e->getMessageBag());
+        }
+    }
+
+    /**
+     * Display the specified Servidor.
+     *
+     * @param  int $id
+     *
+     * @return mixed
+     */
+    public function show($id)
+    {
+        
+    }
+
+    /**
+     * Show the form for editing the specified Servidor.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function edit($id)
+    {
+         try {
+            return view('departamento.edit')->with('departamento', $this->departamentoRepository->find($id));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('errors','Nenhum registro localizado no banco de dados');
+        }
+    }
+
+    /**
+     * Update the specified Servidor in storage.
+     *
+     * @param  int              $id
+     * @param UpdateServidorRequest $request
+     *
+     * @return Response
+     */
+    public function update($id, Request $request)
+    {
+       try {
+            $this->departamentoRepository->find($id);
+
+            $this->departamentoRepository->update($request->all(), $id);
+
+            return redirect()->route('admin.departamento')->with('success','Registro atualizado com sucesso');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.departamento')->with('errors','Nenhum registro localizado no banco de dados');
+        }
+    }
+
+    /**
+     * Remove the specified Servidor from storage.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        try {
+            $this->departamentoRepository->find($id);
+
+            $this->departamentoRepository->delete($id);
+
+            return redirect()->back()->with('success','Registro removido com sucesso');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.departamento')->with('errors','Nenhum registro localizado no banco de dados');
+        }
+    }
+}

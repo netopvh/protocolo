@@ -1,0 +1,12 @@
+{
+    "/backend/js/theme.js": "/backend/js/theme.js?id=d4cd8b87c3e8e6c2ac8b",
+    "/backend/js/bundle.js": "/backend/js/bundle.js?id=e43c633aa7e65ca375d5",
+    "/backend/js/plugins/select2.min.js": "/backend/js/plugins/select2.min.js?id=d9b86c1654d3ec74a4b2",
+    "/backend/js/plugins/select2.pt-BR.js": "/backend/js/plugins/select2.pt-BR.js?id=fdb73e9e911c887a729e",
+    "/backend/js/plugins/jquery.validate.min.js": "/backend/js/plugins/jquery.validate.min.js?id=4828a9436d1607a6e35c",
+    "/backend/js/plugins/additional-methods.min.js": "/backend/js/plugins/additional-methods.min.js?id=d9baa92188300e030cf0",
+    "/backend/js/plugins/messages_pt_BR.min.js": "/backend/js/plugins/messages_pt_BR.min.js?id=8196353d1841960a7341",
+    "/backend/js/plugins/nicescroll.min.js": "/backend/js/plugins/nicescroll.min.js?id=3bc03cde7f6fd5d56cdc",
+    "/backend/js/plugins/datatables.min.js": "/backend/js/plugins/datatables.min.js?id=ac2b45e80d3de246a6f8",
+    "/backend/js/plugins/buttons.min.js": "/backend/js/plugins/buttons.min.js?id=74402429e91738db3cf6"
+}
