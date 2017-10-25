@@ -29,7 +29,7 @@ mix.js([
     'resources/assets/js/plugins/forms/styling/uniform.min.js',
     'resources/assets/js/plugins/ui/moment/moment.js',
     'resources/assets/js/plugins/forms/mask/inputmask/dist/jquery.inputmask.bundle.js',
-    'resources/assets/js/plugins/visualization/jquery.media.js',
+    'resources/assets/js/plugins/visualization/viewerjs/pdf.js'
 ], 'backend/js/theme.js')
     .version();
 

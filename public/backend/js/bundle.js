@@ -729,8 +729,6 @@ $(function () {
         moveOnSelect: false
     });
 
-    $('a.media').media({ width: 800, height: 600 });
-
     // Setup validation
     // ------------------------------
 
@@ -974,6 +972,14 @@ $(function () {
             $("input[name=nomenclatura_id]").prop('required', false);
         }
     }
+
+    var linkFile = $('button.file');
+    var docs = $('iframe.docs-show');
+
+    linkFile.click(function () {
+        docs.attr("href", "");
+        docs.attr("src", $(this).data("url"));
+    });
 });
 
 /***/ }),

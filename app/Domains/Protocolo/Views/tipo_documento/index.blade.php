@@ -31,7 +31,7 @@
                 <table id="tbl_tp_documento" class="table table-framed table-bordered table-striped text-size-base" data-form="deleteForm">
                     <thead>
                     <tr>
-                        <th width="70">#</th>
+                        <th>#</th>
                         <th>Descrição</th>
                         <th class="text-center">Ações</th>
                     </tr>

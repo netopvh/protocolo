@@ -18,8 +18,26 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <h4>Bem vindo ao Sistema de Protocolo</h4>
-                    <p>{{ $data }}</p>
+                    <p class="pull-right">{{ ucfirst($data) }}</p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <fieldset>
+                                <legend>Documentos Pendentes de Recebimento</legend>
+                                <table class="table table-bordered table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th width="100">Número</th>
+                                            <th>Assunto</th>
+                                            <th>Tipo</th>
+                                            <th>Encaminhado por</th>
+                                            <th>Data</th>
+                                            <th width="110" class="text-center">Ações</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </fieldset>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

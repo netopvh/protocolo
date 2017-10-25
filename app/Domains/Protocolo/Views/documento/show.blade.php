@@ -27,7 +27,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-2">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered table-condensed">
                                 <thead>
                                     <tr>
                                         <th>Arquivos</th>
@@ -37,15 +37,17 @@
                                     @foreach($documento->documentos as $doc)
                                         <tr>
                                             <td>
-                                                <a id="link-{{ $loop->iteration }}" href="#" data-url="{{ asset('storage/'.$doc->filename) }}"><i class="icon-books"></i></a>
+                                                <button id="link{{ $doc->id }}" class="btn-link file" data-id="{{ $doc->id }}" data-url="{{ asset('storage/'.$doc->filename) }}">
+                                                    <i class="icon-books"></i> Doc. {{ $loop->iteration }}
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-md-9 col-md-offset-1">
-                            <a href="{{ asset('storage/'.$documento->documentos[0]->filename) }}" class="media"></a>
+                        <div class="col-md-10 embed-responsive embed-responsive-16by9">
+                            <iframe class="docs-show" src="" frameborder="0" width="100%" height="40%" allowfullscreen></iframe>
                         </div>
                     </div>
                 </div>

@@ -1,1 +1,1 @@
-Copyright &copy; 2017. SIS-PROTOCOLO - Desenvolvido por ODP-CGM
+Copyright &copy; 2017. e-Protocolo - Desenvolvido por ODP-CGM
