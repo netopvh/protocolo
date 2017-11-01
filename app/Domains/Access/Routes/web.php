@@ -13,6 +13,8 @@ $this->post('logout', 'LoginController@logout')->name('logout');
 
 $this->group(['prefix' => 'dashboard','middleware' => ['permission:ver-administracao']],function (){
     $this->group(['prefix' => 'users'], function (){
+        $this->get('/departamento','UserController@getDepartamento')->name('admin.users.departamento');
+        $this->patch('/secretaria/{id}','UserController@postDepartamento')->name('admin.users.departamento.update');
         $this->get('/','UserController@index')->middleware('permission:ver-administracao')->name('admin.users');
         $this->get('/create','UserController@create')->middleware('permission:criar-usuario')->name('admin.users.create');
         $this->post('/','UserController@store')->middleware('permission:criar-usuario')->name('admin.users.store');

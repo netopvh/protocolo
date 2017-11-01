@@ -81,3 +81,25 @@ Breadcrumbs::register('admin.secretarias.show', function ($breadcrumbs) {
     $breadcrumbs->parent('admin.secretarias');
     $breadcrumbs->push('Exibir', '');
 });
+
+
+
+/**
+ * Tramitação
+ */
+Breadcrumbs::register('admin.tramitacao', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin.home');
+    $breadcrumbs->push('Tramitação', route('admin.documento'));
+});
+Breadcrumbs::register('admin.tramitacao.create', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin.tramitacao');
+    $breadcrumbs->push('Novo', route('admin.documento.create'));
+});
+Breadcrumbs::register('admin.tramitacao.edit', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin.tramitacao');
+    $breadcrumbs->push('Editar', '');
+});
+Breadcrumbs::register('admin.tramitacao.show', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin.tramitacao');
+    $breadcrumbs->push('Exibir', '');
+});

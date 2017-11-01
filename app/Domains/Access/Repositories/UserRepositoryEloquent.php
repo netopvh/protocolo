@@ -100,8 +100,10 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $model = $this->model->findOrFail($id);
         $model->fill($attributes);
         if ($model->save()) {
-            $model->roles()->detach();
-            $model->roles()->attach($attributes['role_id']);
+            if(isset($attributes['role_id'])){
+                $model->roles()->detach();
+                $model->roles()->attach($attributes['role_id']);
+            }
         }
 
         $this->skipPresenter($temporarySkipPresenter);

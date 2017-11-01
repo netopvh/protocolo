@@ -942,14 +942,14 @@ $(function() {
     var documento = $('#tbl_documento');
     if(documento.length){
         var oTable = documento.DataTable({
-            dom: "<'row'<'col-xs-12'<'col-xs-12'l>>r>"+
+            dom: "<'row'<'col-xs-12'<'col-xs-12'>>r>"+
             "<'row'<'col-xs-12't>>"+
             "<'row'<'col-xs-12'<'col-xs-6'i><'col-xs-6'p>>>",
             serverSide: true,
             processing: true,
             language: dt_trans,
             ajax: {
-                url: '/dashboard/documento/data',
+                url: '/dashboard/tramitacao/data',
                 data: function (d) {
                     d.numero = $('#numero').val();
                     d.ano = $('#ano').val();
@@ -968,6 +968,39 @@ $(function() {
 
         $('#search-form').on('submit', function(e) {
             oTable.draw();
+            e.preventDefault();
+        });
+    }
+
+    //Documentos Pendentes
+    var documentoPend = $('#tbl_doc_pendentes');
+    if(documentoPend.length){
+        var oTableP = documentoPend.DataTable({
+            dom: "<'row'<'col-xs-12'<'col-xs-12'>>r>"+
+            "<'row'<'col-xs-12't>>"+
+            "<'row'<'col-xs-12'<'col-xs-6'i><'col-xs-6'p>>>",
+            serverSide: true,
+            processing: true,
+            language: dt_trans,
+            ajax: {
+                url: '/dashboard/tramitacao/pendente',
+                data: function (d) {
+                    d.numero = $('#numero').val();
+                    d.ano = $('#ano').val();
+                }
+            },
+            columns: [
+                {data: 'numero', name:'documentos.numero', width:'80px'},
+                {data: 'ano', name:'documentos.ano', width:'100px'},
+                {data: 'assunto', name:'documentos.assunto'},
+                {data: 'tipo', name:'tipo_documentos.descricao'},
+                {data: 'data_doc', name:'documentos.data_doc', width:'180px'},
+                {data: 'action', orderable: false, searchable: false, width: '130px'}
+            ]
+        });
+
+        $('#search-form-pend').on('submit', function(e) {
+            oTableP.draw();
             e.preventDefault();
         });
     }
@@ -999,6 +1032,15 @@ $(function() {
             $('#nomenclaturacargo').collapse('hide');
             $("input[name=nomenclatura_id]").prop('required',false);
         }
+
+        var btnTram = $('#btn_tramitacao');
+        var formTram = $('#form_documento');
+
+        formTram.submit(function () {
+            if (validator.numberOfInvalids() < 1){
+                btnTram.prop('disabled', true);
+            }
+        });
     }
 
     var linkFile = $('button.file');

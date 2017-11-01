@@ -3,13 +3,13 @@
 @section('page-header')
     @component('layout.backend.components.header')
         @slot('title')
-            Documentos
+            Protocolar Documentos
         @endslot
     @endcomponent
 @stop
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('admin.documento.create') }}
+    {{ Breadcrumbs::render('admin.tramitacao.create') }}
 @stop
 
 @section('content')
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <form action="{{ route('admin.documento.store') }}" id="form_documento" class="form-validate-jquery" method="POST" autocomplete="off" enctype="multipart/form-data">
+                    <form action="{{ route('admin.tramitacao.store') }}" id="form_documento" class="form-validate-jquery" method="POST" autocomplete="off" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <fieldset>
                             <legend class="text-semibold">Entre com as informações</legend>
@@ -40,7 +40,7 @@
                                     <div class="form-group">
                                         <label class="text-bold">Ano:</label>
                                         <select class="select" name="ano">
-                                            @foreach($years as $year)
+                                            @foreach($dados['years'] as $year)
                                                 <option value="{{ $year }}"{{ selected(date('Y'),$year) }}>{{ $year }}</option>
                                             @endforeach
                                         </select>
@@ -73,8 +73,8 @@
                                         <label class="text-bold">Órgão/Secretaria:</label>
                                         <select class="select-search" name="id_secretaria">
                                             <option></option>
-                                            @foreach($secretarias as $secretaria)
-                                                <option value="{{ $secretaria->id }}">{{ $secretaria->descricao }}</option>
+                                            @foreach($dados['secretarias'] as $secretaria)
+                                                <option value="{{ $secretaria['id'] }}">{{ $secretaria['descricao'] }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -84,8 +84,8 @@
                                         <label class="text-bold">Setor/Departamento:</label>
                                         <select class="select-search" name="id_departamento">
                                             <option></option>
-                                            @foreach($departamentos as $departamento)
-                                                <option value="{{ $departamento->id }}">{{ $departamento->descricao }}</option>
+                                            @foreach($dados['departamentos'] as $departamento)
+                                                <option value="{{ $departamento['id'] }}">{{ $departamento['descricao'] }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -103,8 +103,8 @@
                                         <label class="text-bold">Tipo de Documento:</label>
                                         <select name="id_tipo_doc" class="select-search" required>
                                             <option></option>
-                                            @foreach($tipo_documentos as $tipo_documento)
-                                                <option value="{{ $tipo_documento->id }}">{{ $tipo_documento->descricao }}</option>
+                                            @foreach($dados['tipo_docs'] as $tipo_documento)
+                                                <option value="{{ $tipo_documento['id'] }}">{{ $tipo_documento['descricao'] }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -130,7 +130,7 @@
 
                         <div class="text-right">
                             <a href="{{ route('admin.documento') }}" class="btn btn-info legitRipple"><i class="icon-database-arrow"></i> Retornar</a>
-                            <button type="submit" class="btn btn-primary legitRipple">Salvar Registro <i
+                            <button type="submit" id="btn_tramitacao" class="btn btn-primary legitRipple">Salvar Registro <i
                                         class="icon-database-insert position-right"></i></button>
                         </div>
                     </form>

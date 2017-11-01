@@ -20,7 +20,7 @@
                     <li>
                         <a href="#">
                             <i class="icon-stack"></i> 
-                            <span>Cadastros</span>
+                            <span class="text-bold">Cadastros</span>
                         </a>
                         <ul>
                             <li class="{{ active(['admin.departamento','admin.departamento.*']) }}">
@@ -44,9 +44,9 @@
                         </ul>
                     </li>
                     <li class="{{ active(['admin.documento','admin.documento.*']) }}">
-                        <a href="{{ route('admin.documento') }}">
+                        <a href="{{ route('admin.tramitacao') }}">
                             <i class="icon-magazine"></i> 
-                            <span class="text-bold">Documentos</span>
+                            <span class="text-bold">Tramitação de Documentos</span>
                         </a>
                     </li>
                     <!-- /gerenciamento -->

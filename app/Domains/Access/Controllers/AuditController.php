@@ -22,7 +22,7 @@ class AuditController extends Controller
     {
         $this->auditRepository->pushCriteria(new RequestCriteria($request));
 
-        return view('access.auditor.index')->with('auditors',$this->auditRepository->paginate(10));
+        return view('access.auditor.index')->with('auditors',$this->auditRepository->all());
     }
 
     public function create()

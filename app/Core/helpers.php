@@ -56,25 +56,7 @@ if(! function_exists('get_sec')){
 
 if(! function_exists('in_admin_group')){
     function in_admin_group(){
-        return in_array(auth()->user()->roles->toArray()[0]['id'],['1','2']);
-    }
-}
-
-if(! function_exists('convert_dn')){
-    function convert_dn($dn)
-    {    
-        $array = explode(',', $dn, 3);
-
-        $dn = array_pop($array);
-
-        $arDn = explode(',',$dn);
-
-        $dnF = array_first($arDn);
-
-        $bOrg = explode('=',$dnF);
-
-        return array_pop($bOrg);
-        
+        return in_array(auth()->user()->roles->first()->id,[config('protocolo.role_admin')]);
     }
 }
 

@@ -29,7 +29,11 @@ class HomeController extends Controller
     {
         Date::setLocale(config('app.locale'));
 
-         return view('home')
+        if(is_null(auth()->user()->id_departamento)){
+            return redirect()->route('admin.users.departamento');
+        }else{
+            return view('home')
                 ->with('data',Date::now()->format('l j F Y H:i:s'));
+        }
     }
 }

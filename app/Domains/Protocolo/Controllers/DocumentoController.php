@@ -91,7 +91,7 @@ class DocumentoController extends Controller
     /**
      * Show the form for creating a new Servidor.
      *
-     * @return Response
+     * @return mixed
      */
     public function create()
     {

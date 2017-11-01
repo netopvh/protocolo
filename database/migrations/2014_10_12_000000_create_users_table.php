@@ -19,7 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('username');
             $table->string('email')->nullable()->unique();
             $table->string('password');
-            $table->boolean('is_validador')->default(false);
+            $table->boolean('is_protocolo')->default(false);
+            $table->integer('id_departamento')->unsigned()->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

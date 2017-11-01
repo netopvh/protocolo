@@ -1,6 +1,8 @@
 <?php
 namespace App\Domains\Protocolo\Providers;
 
+use App\Domains\Protocolo\Repositories\Contracts\TramitacaoRepository;
+use App\Domains\Protocolo\Repositories\TramitacaoRepositoryEloquent;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use App\Domains\Protocolo\Repositories\Contracts\DepartamentoRepository;
@@ -47,6 +49,7 @@ class ProtocoloServiceProvider extends ServiceProvider
         $this->app->bind(DocumentoRepository::class,DocumentoRepositoryEloquent::class);
         $this->app->bind(SecretariasRepository::class,SecretariasRepositoryEloquent::class);
         $this->app->bind(DocumentoAnexoRepository::class,DocumentoAnexoRepositoryEloquent::class);
+        $this->app->bind(TramitacaoRepository::class,TramitacaoRepositoryEloquent::class);
     }
 
     /**

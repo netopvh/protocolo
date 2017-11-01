@@ -21,7 +21,6 @@ $this->group(['prefix' => 'dashboard'],function (){
     });
     $this->group(['prefix' => 'documento'], function (){
         $this->get('/','DocumentoController@index')->name('admin.documento');
-        $this->get('/data','DocumentoController@data');
         $this->get('/create','DocumentoController@create')->name('admin.documento.create');
         $this->post('/create','DocumentoController@store')->name('admin.documento.store');
         $this->get('/{id}/show','DocumentoController@show')->name('admin.documento.show');
@@ -38,5 +37,13 @@ $this->group(['prefix' => 'dashboard'],function (){
         $this->get('/{id}','SecretariasController@edit')->name('admin.secretarias.edit');
         $this->patch('/{id}','SecretariasController@update')->name('admin.secretarias.update');
         $this->delete('/{id}','SecretariasController@destroy')->name('admin.secretarias.destroy');
+    });
+
+    $this->group(['prefix' => 'tramitacao'], function (){
+        $this->get('/','TramitacaoController@index')->name('admin.tramitacao');
+        $this->get('/data','TramitacaoController@data');
+        $this->get('/pendente','TramitacaoController@dataPendentes');
+        $this->get('/create','TramitacaoController@create')->name('admin.tramitacao.create');
+        $this->post('/create','TramitacaoController@store')->name('admin.tramitacao.store');
     });
 });
