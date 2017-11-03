@@ -62,6 +62,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     public function create(array $attributes)
     {
         unset($attributes['repeat_password']);
+        $attributes['password'] = bcrypt($attributes['password']);
 
         if (!is_null($this->validator)) {
             $attributes = $this->model->newInstance()->forceFill($attributes)->toArray();

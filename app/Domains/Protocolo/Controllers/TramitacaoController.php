@@ -30,7 +30,9 @@ class TramitacaoController extends Controller
     public function index()
     {
         //dd($this->tramitacaoService->builder());
-        return view('tramitacao.index')->with('tipo_documentos', $this->tramitacaoService->getAllDocumentsType());
+        return view('tramitacao.index')
+            ->with('tipo_documentos', $this->tramitacaoService->getAllDocumentsType())
+            ->with('counters', $this->tramitacaoService->getDocumentsCounter());
     }
 
     /**
@@ -66,7 +68,27 @@ class TramitacaoController extends Controller
 
     public function dataPendentes(DataTables $dataTables, Request $request)
     {
+        $query = $this->tramitacaoService->builderPendents();
 
+        return $dataTables->eloquent($query)
+            ->addColumn('tipo', function ($documento) {
+                return $documento->tipo_documento->descricao;
+            })
+            ->addColumn('action', function ($documento) {
+                return view('documento.buttons')->with('documento', $documento);
+            })
+            ->filter(function ($documento) use ($request) {
+                if ($request->has('numero')) {
+                    $documento->where('numero', 'like', "%{$request->get('numero')}%");
+                }
+                if ($request->has('ano')) {
+                    $documento->where('ano', $request->get('ano'));
+                }
+                if ($request->has('id_tipo_doc') && !empty($request->get('id_tipo_doc'))) {
+                    $documento->where('id_tipo_doc', $request->get('id_tipo_doc'));
+                }
+            })
+            ->make(true);
     }
 
     /**
@@ -104,11 +126,7 @@ class TramitacaoController extends Controller
      */
     public function show($id)
     {
-        try {
-            return view('documento.show')->with('documento', $this->documentoRepository->find($id));
-        } catch (\Exception $e) {
-            return redirect()->back()->with('errors', 'Nenhum registro localizado no banco de dados');
-        }
+        return view('documento.show')->with('documento', $this->tramitacaoService->findDocs($id));
     }
 
     /**

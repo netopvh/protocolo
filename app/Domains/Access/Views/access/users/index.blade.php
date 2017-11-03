@@ -62,7 +62,7 @@
                         <tr>
                             <th onclick="return window.location.href='{{ route('admin.users',array_merge(request()->query(),['orderBy'=>'id'])) }}'" width="70">#</th>
                             <th onclick="return window.location.href='{{ route('admin.users',array_merge(request()->query(),['orderBy'=>'name'])) }}'">Nome Completo</th>
-                            <th>Órgão/Unidade</th>
+                            <th>Departamento/Setor</th>
                             <th>Perfil</th>
                             <th width="80" class="text-center">Ações</th>
                         </tr>
@@ -73,7 +73,7 @@
                                 <tr>
                                     <td>{{ $user->id }}</td>
                                     <td>{{ $user->name }}</td>
-                                    <td>{{ is_null($user->secretaria_id)?'Não Atribuído':$user->secretaria->descricao }}</td>
+                                    <td>{{ is_null($user->id_departamento)?'Não Atribuído':$user->departamento->descricao }}</td>
                                     <td>
                                         @foreach($user->roles as $role)
                                             {{ $role->display_name }}

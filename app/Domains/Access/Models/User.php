@@ -11,8 +11,7 @@ use OwenIt\Auditing\Contracts\UserResolver;
 use Laratrust\Traits\LaratrustUserTrait;
 use App\Core\Notifications\ResetPassword;
 use Adldap\Laravel\Traits\HasLdapUser;
-use App\Domains\Comissionado\Models\Servidor;
-use App\Domains\Comissionado\Models\Secretarias;
+use App\Domains\Protocolo\Models\Departamento;
 
 class User extends Authenticatable implements AuditableContract, UserResolver
 {
@@ -36,14 +35,9 @@ class User extends Authenticatable implements AuditableContract, UserResolver
         'remember_token',
     ];
 
-    public function servidor()
+    public function departamento()
     {
-        return $this->belongsTo(Servidor::class);
-    }
-
-    public function secretaria()
-    {
-        return $this->belongsTo(Secretarias::class,'secretaria_id','id');
+        return $this->belongsTo(Departamento::class,'id_departamento','id');
     }
 
     /**

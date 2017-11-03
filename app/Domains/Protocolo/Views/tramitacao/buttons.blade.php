@@ -1,14 +1,16 @@
 <ul class="icons-list">
     <li><a href="{{ route('admin.documento.show',['id' => $documento->id]) }}"
-       data-popup="tooltip" title="Visualizar Documentos" data-placement="bottom"><i
-                class="icon-copy4"></i></a>
+           data-popup="tooltip" title="Visualizar Documentos" data-placement="bottom"><i
+                    class="icon-copy4"></i></a>
     <li>
-    <li>
-        <a href="{{ route('admin.documento.edit',['id' => $documento->id]) }}"
-           data-popup="tooltip" title="Editar" data-placement="bottom"><i
-                    class="icon-pencil7"></i>
-        </a>
-    </li>
+    @if(in_admin_group())
+        <li>
+            <a href="{{ route('admin.documento.edit',['id' => $documento->id]) }}"
+               data-popup="tooltip" title="Editar" data-placement="bottom"><i
+                        class="icon-pencil7"></i>
+            </a>
+        </li>
+    @endif
     <li>
         <form class="form-delete"
               action="{{ route('admin.documento.destroy',['id'=>$documento->id]) }}"

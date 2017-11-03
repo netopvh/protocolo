@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div id="orgsec" class="col-md-8 collapse">
+                                <div id="orgsec" class="col-md-6 collapse">
                                     <div class="form-group">
                                         <label class="text-bold">Órgão/Secretaria:</label>
                                         <select class="select-search" name="id_secretaria">
@@ -79,7 +79,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div id="setdep" class="col-md-8 collapse">
+                                <div id="setdep" class="col-md-6 collapse">
                                     <div class="form-group">
                                         <label class="text-bold">Setor/Departamento:</label>
                                         <select class="select-search" name="id_departamento">
@@ -114,14 +114,14 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="text-bold display-block">Anexos: <span class="text-danger text-size-mini">*Permitido apenas arquivos .PDF|.DOC|.DOCX</span></label>
-                                        <input type="file" name="documentos[]" class="file-styled-primary" multiple required>
+                                        <input type="file" name="documento" class="file-styled-primary" multiple required>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="text-bold display-block">Despacho: </label>
+                                        <label class="text-bold display-block">Descrição (Objeto): </label>
                                         <textarea name="despacho" class="textarea" cols="30" rows="10"></textarea>
                                     </div>
                                 </div>

@@ -24,6 +24,9 @@ class UserController extends Controller
      */
     public $roleRepository;
 
+    /**
+     * @var DepartamentoRepository
+     */
     public $departamentosRepository;
 
     public function __construct(UserRepository $userRepository, RoleRepository $roleRepository, DepartamentoRepository $departamentoRepository)
@@ -39,7 +42,7 @@ class UserController extends Controller
         $this->userRepository->pushCriteria(new RequestCriteria($request));
 
         return view('access.users.index')
-            ->with('users', $this->userRepository->with('secretaria')->paginate(10));
+            ->with('users', $this->userRepository->with('departamento')->paginate(10));
     }
 
     public function create()
@@ -64,7 +67,8 @@ class UserController extends Controller
         try {
             return view('access.users.edit')
                 ->with('user', $this->userRepository->findUser($id))
-                ->with('roles', $this->roleRepository->all());
+                ->with('roles', $this->roleRepository->all())
+                ->with('departamentos', $this->departamentosRepository->all());
         } catch (GeneralException $e) {
             return redirect()->back()->with('errors', $e->getMessage());
         }

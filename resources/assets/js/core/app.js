@@ -868,6 +868,14 @@ $(function() {
         $(".upper").val(($(".upper").val()).toUpperCase());
     });
 
+    //Fix Datatable Width
+    $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+        // var target = $(e.target).attr("href"); // activated tab
+        // alert (target);
+        $($.fn.dataTable.tables( true ) ).css('width', '100%');
+        $($.fn.dataTable.tables( true ) ).DataTable().columns.adjust().draw();
+    } );
+
     //Variável de tradução
     var dt_trans = {
                 "sEmptyTable": "Nenhum registro encontrado",
@@ -939,6 +947,8 @@ $(function() {
     *   DOCUMENTOS MODULE
     *
     */
+
+    //DOCUMENTOS NO SETOR
     var documento = $('#tbl_documento');
     if(documento.length){
         var oTable = documento.DataTable({
@@ -972,7 +982,7 @@ $(function() {
         });
     }
 
-    //Documentos Pendentes
+    //DOCUMENTOS PENDENTES
     var documentoPend = $('#tbl_doc_pendentes');
     if(documentoPend.length){
         var oTableP = documentoPend.DataTable({

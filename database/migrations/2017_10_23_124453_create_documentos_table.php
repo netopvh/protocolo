@@ -27,6 +27,7 @@ class CreateDocumentosTable extends Migration
             $table->foreign('id_departamento')->references('id')->on('departamentos');
             $table->integer('id_secretaria')->nullable()->unsigned();
             $table->foreign('id_secretaria')->references('id')->on('secretarias');
+            $table->boolean('arquivado')->default(false);
             $table->timestamps();
 		});
 	}

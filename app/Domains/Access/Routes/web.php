@@ -11,7 +11,7 @@ $this->post('logout', 'LoginController@logout')->name('logout');
 //$this->get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
 //$this->post('password/reset', 'ResetPasswordController@reset');
 
-$this->group(['prefix' => 'dashboard','middleware' => ['permission:ver-administracao']],function (){
+$this->group(['prefix' => 'dashboard'],function (){
     $this->group(['prefix' => 'users'], function (){
         $this->get('/departamento','UserController@getDepartamento')->name('admin.users.departamento');
         $this->patch('/secretaria/{id}','UserController@postDepartamento')->name('admin.users.departamento.update');

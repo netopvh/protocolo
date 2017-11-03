@@ -14,6 +14,7 @@ use App\Domains\Protocolo\Repositories\Contracts\SecretariasRepository;
 use App\Domains\Protocolo\Repositories\Contracts\DepartamentoRepository;
 use App\Domains\Protocolo\Repositories\Contracts\DocumentoAnexoRepository;
 use App\Domains\Protocolo\Repositories\Contracts\TramitacaoRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Prettus\Validator\Exceptions\ValidatorException;
 
@@ -62,20 +63,55 @@ class TramitacaoService
         return $this->tipoDocumentoRepository->all();
     }
 
+    public function getDocumentsCounter()
+    {
+        $docsSetor = $this->tramitacaoRepository->query()
+            ->join('documentos','documentos.id','=','tramitacaos.id_documento')
+            ->where('documentos.arquivado',false)
+            ->where('documentos.id_departamento', auth()->user()->id_departamento)
+            ->where('tramitacaos.status','<>','P')
+            ->get()
+            ->count();
+
+        $pendentes = $this->tramitacaoRepository->query()
+            ->join('documentos','documentos.id','=','tramitacaos.id_documento')
+            ->where('documentos.arquivado',false)
+            ->where('documentos.id_departamento', auth()->user()->id_departamento)
+            ->where('tramitacaos.status','P')
+            ->get()
+            ->count();
+
+        $arquivado = $this->documentoRepository->findWhere([
+            'arquivado' => true
+        ])->count();
+
+        $arrDados = [
+            'noSetor' => $docsSetor,
+            'pendentes' => $pendentes,
+            'arquivado' => $arquivado
+        ];
+
+        return $arrDados;
+    }
+
     public function builder()
     {
-//        dd($this->tramitacaoRepository
-//            ->with('documentos')
-//            ->all());
-
         return $this->documentoRepository
             ->with('tipo_documento')
-            ->query();
+            ->query()
+            ->join('tramitacaos','tramitacaos.id_documento','=','documentos.id')
+            ->where('documentos.id_departamento',auth()->user()->id_departamento)
+            ->where('tramitacaos.status','R');
     }
 
     public function builderPendents()
     {
-        //return $this->
+        return $this->documentoRepository
+            ->with('tipo_documento')
+            ->query()
+            ->join('tramitacaos','tramitacaos.id_documento','=','documentos.id')
+            ->where('documentos.id_departamento',auth()->user()->id_departamento)
+            ->where('tramitacaos.status','P');
     }
 
     public function getDataCreate()
@@ -101,27 +137,33 @@ class TramitacaoService
     {
         try{
             if($documento = $this->documentoRepository->create($attributes->all())){
-                foreach ($attributes->documentos as $doc) {
-                    $filename = $doc->store('protocolo','public');
-                    $this->documentoAnexoRepository->create([
+                $filename = $attributes->documento->store('protocolo','public');
+                $documento->path_doc = $filename;
+                if ($documento->save()){
+                    $this->tramitacaoRepository->create([
+                        'data_tram' => date('d/m/Y'),
                         'id_documento' => $documento->id,
-                        'filename' => $filename
+                        'id_origem' => $attributes->int_ext=='I'?auth()->user()->id_departamento:$attributes->id_secretaria,
+                        'id_destino' => $attributes->id_departamento,
+                        'id_usuario' => auth()->user()->id,
+                        'tipo_tram' => 'R',
+                        'despacho' => $attributes->despacho,
+                        'status' => 'P'
                     ]);
-                }
 
-                $this->tramitacaoRepository->create([
-                    'data_tram' => date('d/m/Y'),
-                    'id_documento' => $documento->id,
-                    'id_origem' => $attributes->int_ext=='I'?auth()->user()->id_departamento:$attributes->id_secretaria,
-                    'id_destino' => $attributes->id_departamento,
-                    'id_usuario' => auth()->user()->id,
-                    'tipo_tram' => 'R',
-                    'despacho' => $attributes->despacho,
-                    'status' => 'P'
-                ]);
+                }
             }
         }catch (ValidatorException $e){
             return redirect()->back()->with('errors',$e->getMessageBag());
+        }
+    }
+
+    public function findDocs($id)
+    {
+        try {
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('errors', 'Nenhum registro localizado no banco de dados');
         }
     }
     

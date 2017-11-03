@@ -28,7 +28,8 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <form action="{{ route('admin.users.update',['id' => $user->id]) }}" class="form-validate-jquery" method="POST">
+                    <form action="{{ route('admin.users.update',['id' => $user->id]) }}" class="form-validate-jquery"
+                          method="POST">
                         {{ csrf_field() }}
                         {{ method_field('PATCH') }}
                         <fieldset>
@@ -37,13 +38,15 @@
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label>Nome Completo:</label>
-                                        <input name="name" value="{{ $user->name }}" type="text" class="form-control text-uppercase" required>
+                                        <input name="name" value="{{ $user->name }}" type="text"
+                                               class="form-control text-uppercase" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Login / Matrícula:</label>
-                                        <input name="username" value="{{ $user->username }}" type="text" class="form-control" disabled>
+                                        <input name="username" value="{{ $user->username }}" type="text"
+                                               class="form-control" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -51,13 +54,18 @@
                                 <div class="col-md-9">
                                     <div class="form-group">
                                         <label>E-mail:</label>
-                                        <input name="email" value="{{ $user->email }}" type="email" class="form-control" required>
+                                        <input name="email" value="{{ $user->email }}" type="email" class="form-control"
+                                               required>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Órgão/Unidade:</label>
-                                        <input value="{{ convert_dn($user->orgao) }}" type="text" class="form-control" disabled>
+                                        <label>Departamento/Setor:</label>
+                                        <select name="id_departamento" class="select">
+                                            @foreach($departamentos as $departamento)
+                                                <option value="{{ $departamento->id }}"{{ $departamento->id==$user->id_departamento?' selected':'' }}>{{ $departamento->descricao }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -79,7 +87,8 @@
                         </fieldset>
 
                         <div class="text-right">
-                            <a href="{{ route('admin.users') }}" class="btn btn-info legitRipple"><i class="icon-database-arrow"></i> Retornar</a>
+                            <a href="{{ route('admin.users') }}" class="btn btn-info legitRipple"><i
+                                        class="icon-database-arrow"></i> Retornar</a>
                             <button type="submit" class="btn btn-primary legitRipple">Alterar Registro <i
                                         class="icon-database-insert position-right"></i></button>
                         </div>
