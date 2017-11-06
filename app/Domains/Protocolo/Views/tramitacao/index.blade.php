@@ -43,17 +43,17 @@
                             <ul class="nav nav-tabs nav-tabs-highlight">
                                 <li class="active">
                                     <a href="#highlighted-tab1" data-toggle="tab">
-                                        Documentos no Setor <span class="badge badge-success position-right">{{ $counters['noSetor'] }}</span>
+                                        Documentos no Setor <span class="badge badge-success position-right" id="setor"></span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#highlighted-tab2" data-toggle="tab">
-                                        Documentos á Receber <span class="badge badge-info position-right">{{ $counters['pendentes'] }}</span>
+                                        Documentos á Receber <span class="badge badge-info position-right" id="pendente"></span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#highlighted-tab3" data-toggle="tab">
-                                        Documentos Arquivados <span class="badge badge-warning position-right">{{ $counters['arquivado'] }}</span>
+                                        Documentos Arquivados <span class="badge badge-warning position-right" id="arquivado"></span>
                                     </a>
                                 </li>
                             </ul>
@@ -115,11 +115,11 @@
                                         <form method="POST" id="search-form-pend" class="form-inline" role="form">
                                             <div class="form-group">
                                                 <label for="name">Numero:</label>
-                                                <input type="text" class="form-control" name="numero" id="numero">
+                                                <input type="text" class="form-control" name="numero" id="numeroPendente">
                                             </div>
                                             <div class="form-group">
                                                 <label for="email">Ano:</label>
-                                                <select name="ano" id="ano" class="form-control">
+                                                <select name="ano" id="anoPendente" class="form-control">
                                                     <option value="2015"{{ selected(date('Y'),'2015') }}>2015</option>
                                                     <option value="2016"{{ selected(date('Y'),'2016') }}>2016</option>
                                                     <option value="2017"{{ selected(date('Y'),'2017') }}>2017</option>
@@ -134,7 +134,7 @@
                                             <button type="submit" class="btn btn-primary">Pesquisar</button>
                                         </form>
                                         <hr>
-                                        <table id="tbl_doc_pendentes" class="table table-framed table-bordered table-striped text-size-base">
+                                        <table id="tbl_doc_pendentes" class="table table-framed table-bordered table-striped text-size-base" data-form="recebePendente">
                                             <thead>
                                             <tr>
                                                 <th>Número</th>
@@ -204,13 +204,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Remoção de registro</h4>
+                    <h4 class="modal-title">Recebimento de documentos</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Tem certeza que deseja remover este registro?</p>
+                    <p>Tem certeza que deseja receber este documento?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-primary" id="delete-btn">Remover</button>
+                    <button type="button" class="btn btn-sm btn-primary" id="confirm-btn">Confirmar</button>
                     <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>

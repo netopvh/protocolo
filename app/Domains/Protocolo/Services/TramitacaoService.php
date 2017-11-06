@@ -166,5 +166,20 @@ class TramitacaoService
             return redirect()->back()->with('errors', 'Nenhum registro localizado no banco de dados');
         }
     }
+
+    public function defineStatus($attributes)
+    {
+        try{
+            $tramitacao = $this->tramitacaoRepository->find($attributes->id);
+            $tramitacao->fill(['status' => $attributes->value]);
+            if ($tramitacao->save()){
+                return true;
+            }else{
+                return false;
+            }
+        }catch (\Exception $e){
+            return redirect()->back()->with('errors', $e->getMessage());
+        }
+    }
     
 }

@@ -43,8 +43,11 @@ $this->group(['prefix' => 'dashboard'],function (){
         $this->get('/','TramitacaoController@index')->name('admin.tramitacao');
         $this->get('/data','TramitacaoController@data');
         $this->get('/pendente','TramitacaoController@dataPendentes');
+        $this->post('/action','TramitacaoController@action');
         $this->get('/create','TramitacaoController@create')->name('admin.tramitacao.create');
         $this->post('/create','TramitacaoController@store')->name('admin.tramitacao.store');
         $this->get('/documento/{id}/show','TramitacaoController@showDoc')->name('admin.tramitacao.doc.show');
+        $this->get('/counters','TramitacaoController@counters');
+
     });
 });

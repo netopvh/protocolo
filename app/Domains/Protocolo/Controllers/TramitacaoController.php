@@ -17,7 +17,7 @@ class TramitacaoController extends Controller
         TramitacaoService $service
     )
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
         $this->tramitacaoService = $service;
     }
 
@@ -31,8 +31,7 @@ class TramitacaoController extends Controller
     {
         //dd($this->tramitacaoService->builder());
         return view('tramitacao.index')
-            ->with('tipo_documentos', $this->tramitacaoService->getAllDocumentsType())
-            ->with('counters', $this->tramitacaoService->getDocumentsCounter());
+            ->with('tipo_documentos', $this->tramitacaoService->getAllDocumentsType());
     }
 
     /**
@@ -88,6 +87,32 @@ class TramitacaoController extends Controller
             ->toJson();
     }
 
+    public function counters()
+    {
+        return response()->json($this->tramitacaoService->getDocumentsCounter());
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function action(Request $request)
+    {
+        if ($this->tramitacaoService->defineStatus($request)){
+            return response()->json(
+                [
+                    'status' => 'OK'
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    'status' => 'Error'
+                ]
+            );
+        }
+    }
+
     /**
      * Show the form for creating a new Servidor.
      *
@@ -123,7 +148,6 @@ class TramitacaoController extends Controller
      */
     public function showDoc($id)
     {
-        //dd($this->tramitacaoService->findDocs($id));
         return view('tramitacao.show')->with('documento', $this->tramitacaoService->findDocs($id));
     }
 
