@@ -161,7 +161,7 @@ class TramitacaoService
     public function findDocs($id)
     {
         try {
-
+            return $this->documentoRepository->find($id);
         } catch (\Exception $e) {
             return redirect()->back()->with('errors', 'Nenhum registro localizado no banco de dados');
         }

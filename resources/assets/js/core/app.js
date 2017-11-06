@@ -1013,6 +1013,12 @@ $(function() {
             oTableP.draw();
             e.preventDefault();
         });
+
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        console.log("teste");
+        $("#receber").click(function(){
+            console.log(CSRF_TOKEN);
+        });
     }
 
 
@@ -1027,9 +1033,9 @@ $(function() {
                 $("select[name=id_secretaria]").prop('required',false);
             }
             else if(this.value === 'E') {
-                $('#setdep').collapse('hide');
+                $('#setdep').collapse('show');
                 $('#orgsec').collapse('show');
-                $("select[name=id_departamento]").prop('required',false);
+                $("select[name=id_departamento]").prop('required',true);
                 $("select[name=id_secretaria]").prop('required',true);
             }
         });

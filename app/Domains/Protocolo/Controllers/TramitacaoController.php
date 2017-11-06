@@ -50,7 +50,7 @@ class TramitacaoController extends Controller
                 return $documento->tipo_documento->descricao;
             })
             ->addColumn('action', function ($documento) {
-                return view('documento.buttons')->with('documento', $documento);
+                return view('tramitacao.buttons_setor')->with('documento', $documento);
             })
             ->filter(function ($documento) use ($request) {
                 if ($request->has('numero')) {
@@ -75,7 +75,7 @@ class TramitacaoController extends Controller
                 return $documento->tipo_documento->descricao;
             })
             ->addColumn('action', function ($documento) {
-                return view('documento.buttons')->with('documento', $documento);
+                return view('tramitacao.buttons_pendentes')->with('documento', $documento);
             })
             ->filter(function ($documento) use ($request) {
                 if ($request->has('numero')) {
@@ -84,11 +84,8 @@ class TramitacaoController extends Controller
                 if ($request->has('ano')) {
                     $documento->where('ano', $request->get('ano'));
                 }
-                if ($request->has('id_tipo_doc') && !empty($request->get('id_tipo_doc'))) {
-                    $documento->where('id_tipo_doc', $request->get('id_tipo_doc'));
-                }
             })
-            ->make(true);
+            ->toJson();
     }
 
     /**
@@ -124,9 +121,10 @@ class TramitacaoController extends Controller
      *
      * @return mixed
      */
-    public function show($id)
+    public function showDoc($id)
     {
-        return view('documento.show')->with('documento', $this->tramitacaoService->findDocs($id));
+        //dd($this->tramitacaoService->findDocs($id));
+        return view('tramitacao.show')->with('documento', $this->tramitacaoService->findDocs($id));
     }
 
     /**
@@ -134,7 +132,7 @@ class TramitacaoController extends Controller
      *
      * @param  int $id
      *
-     * @return Response
+     * @return mixed
      */
     public function edit($id)
     {
@@ -149,9 +147,9 @@ class TramitacaoController extends Controller
      * Update the specified Servidor in storage.
      *
      * @param  int $id
-     * @param UpdateServidorRequest $request
+     * @param Request $request
      *
-     * @return Response
+     * @return mixed
      */
     public function update($id, Request $request)
     {

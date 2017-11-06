@@ -45,5 +45,6 @@ $this->group(['prefix' => 'dashboard'],function (){
         $this->get('/pendente','TramitacaoController@dataPendentes');
         $this->get('/create','TramitacaoController@create')->name('admin.tramitacao.create');
         $this->post('/create','TramitacaoController@store')->name('admin.tramitacao.store');
+        $this->get('/documento/{id}/show','TramitacaoController@showDoc')->name('admin.tramitacao.doc.show');
     });
 });

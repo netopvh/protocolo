@@ -9,7 +9,7 @@
 @stop
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('admin.documento.show') }}
+    {{ Breadcrumbs::render('admin.tramitacao.doc.show') }}
 @stop
 
 @section('content')
@@ -26,28 +26,14 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-2">
-                            <table class="table table-bordered table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th>Arquivos</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($documento->documentos as $doc)
-                                        <tr>
-                                            <td>
-                                                <button id="link{{ $doc->id }}" class="btn-link file" data-id="{{ $doc->id }}" data-url="{{ asset('storage/'.$doc->filename) }}">
-                                                    <i class="icon-books"></i> Doc. {{ $loop->iteration }}
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div class="col-md-5">
+                            <a href="{{ url()->previous() }}" class="btn btn-info legitRipple"><i class="icon-database-arrow"></i> Retornar</a>
                         </div>
-                        <div class="col-md-10 embed-responsive embed-responsive-16by9">
-                            <iframe class="docs-show" src="" frameborder="0" width="100%" height="40%" allowfullscreen></iframe>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12 embed-responsive embed-responsive-16by9">
+                            <iframe class="docs-show" src="{{ asset('storage/'.$documento->path_doc) }}" frameborder="0" width="100%" height="40%" allowfullscreen></iframe>
                         </div>
                     </div>
                 </div>
