@@ -951,6 +951,7 @@ $(function () {
             "<'row'<'col-xs-12'<'col-xs-6'i><'col-xs-6'p>>>",
             serverSide: true,
             processing: true,
+            responsive: true,
             language: dt_trans,
             ajax: {
                 url: '/dashboard/tramitacao/data',
@@ -966,7 +967,7 @@ $(function () {
                 {data: 'assunto', name: 'documentos.assunto'},
                 {data: 'tipo', name: 'tipo_documentos.descricao'},
                 {data: 'data_doc', name: 'documentos.data_doc', width: '180px'},
-                {data: 'action', orderable: false, searchable: false, width: '130px'}
+                {data: 'action', orderable: false, searchable: false, width: '170px'}
             ]
         });
 
@@ -985,6 +986,7 @@ $(function () {
             "<'row'<'col-xs-12'<'col-xs-6'i><'col-xs-6'p>>>",
             serverSide: true,
             processing: true,
+            responsive: true,
             language: dt_trans,
             ajax: {
                 url: '/dashboard/tramitacao/pendente',
@@ -1022,7 +1024,7 @@ $(function () {
                         type: "POST",
                         data: data,
                         dataType: "json",
-                        success: function (data) {
+                        success: function () {
                             oTableP.draw();
                             $('#confirm').modal('hide');
                             reloadCounters();

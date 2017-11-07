@@ -32,6 +32,11 @@ class Documento extends Model implements AuditableContract
         return $this->hasMany(DocumentoAnexo::class,'id_documento','id');
     }
 
+    public function tramitacoes()
+    {
+        return $this->hasMany(Tramitacao::class,'id_documento','id');
+    }
+
     public function setAssuntoAttribute($value)
     {
         $this->attributes['assunto'] = mb_strtoupper($value, "UTF-8");

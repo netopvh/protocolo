@@ -65,19 +65,17 @@ class TramitacaoService
 
     public function getDocumentsCounter()
     {
-        $docsSetor = $this->tramitacaoRepository->query()
-            ->join('documentos','documentos.id','=','tramitacaos.id_documento')
-            ->where('documentos.arquivado',false)
-            ->where('documentos.id_departamento', auth()->user()->id_departamento)
-            ->where('tramitacaos.status','<>','P')
+        $docsSetor = $this->documentoRepository->query()
+            ->where('arquivado', false)
+            ->where('id_departamento', auth()->user()->id_departamento)
+            ->where('status', '<>', 'P')
             ->get()
             ->count();
 
-        $pendentes = $this->tramitacaoRepository->query()
-            ->join('documentos','documentos.id','=','tramitacaos.id_documento')
-            ->where('documentos.arquivado',false)
-            ->where('documentos.id_departamento', auth()->user()->id_departamento)
-            ->where('tramitacaos.status','P')
+        $pendentes = $this->documentoRepository->query()
+            ->where('arquivado', false)
+            ->where('id_departamento', auth()->user()->id_departamento)
+            ->where('status', 'P')
             ->get()
             ->count();
 
@@ -99,9 +97,8 @@ class TramitacaoService
         return $this->documentoRepository
             ->with('tipo_documento')
             ->query()
-            ->join('tramitacaos','tramitacaos.id_documento','=','documentos.id')
-            ->where('documentos.id_departamento',auth()->user()->id_departamento)
-            ->where('tramitacaos.status','R');
+            ->where('id_departamento', auth()->user()->id_departamento)
+            ->where('status', 'R');
     }
 
     public function builderPendents()
@@ -109,16 +106,15 @@ class TramitacaoService
         return $this->documentoRepository
             ->with('tipo_documento')
             ->query()
-            ->join('tramitacaos','tramitacaos.id_documento','=','documentos.id')
-            ->where('documentos.id_departamento',auth()->user()->id_departamento)
-            ->where('tramitacaos.status','P');
+            ->where('id_departamento', auth()->user()->id_departamento)
+            ->where('status', 'P');
     }
 
     public function getDataCreate()
     {
 
-        $years=[];
-        for ($i=2014; $i<=2025 ; $i++) {
+        $years = [];
+        for ($i = 2014; $i <= 2025; $i++) {
             $years[] = $i;
         }
 
@@ -135,26 +131,58 @@ class TramitacaoService
 
     public function createAndUpload(Request $attributes)
     {
-        try{
-            if($documento = $this->documentoRepository->create($attributes->all())){
-                $filename = $attributes->documento->store('protocolo','public');
+        try {
+            if ($documento = $this->documentoRepository->create($attributes->all())) {
+                $filename = $attributes->documento->store('protocolo', 'public');
                 $documento->path_doc = $filename;
-                if ($documento->save()){
-                    $this->tramitacaoRepository->create([
+                if ($documento->save()) {
+                    $tram = $this->tramitacaoRepository->create([
                         'data_tram' => date('d/m/Y'),
                         'id_documento' => $documento->id,
-                        'id_origem' => $attributes->int_ext=='I'?auth()->user()->id_departamento:$attributes->id_secretaria,
-                        'id_destino' => $attributes->id_departamento,
                         'id_usuario' => auth()->user()->id,
-                        'tipo_tram' => 'R',
+                        'tipo_tram' => 'N',
                         'despacho' => $attributes->despacho,
                         'status' => 'P'
                     ]);
+                    if ($attributes->int_ext == 'I'){
+                        $tram->id_departamento_origem = auth()->user()->id_departamento;
+                        $tram->id_departamento_destino = $attributes->id_departamento;
+                    }else{
+                        $tram->id_secretaria_origem = auth()->user()->id_departamento;
+                        $tram->id_departamento_destino = $attributes->id_departamento;
+                    }
 
                 }
             }
-        }catch (ValidatorException $e){
-            return redirect()->back()->with('errors',$e->getMessageBag());
+        } catch (ValidatorException $e) {
+            return redirect()->back()->with('errors', $e->getMessageBag());
+        }
+    }
+
+    public function recebeDoc($attributes)
+    {
+        try {
+            $documento = $this->documentoRepository->with('tramitacoes')->find($attributes->id);
+            $documento->status = 'R';
+            if ($documento->save()) {
+                $model = $this->tramitacaoRepository->create([
+                    'data_tram' => date('d/m/Y'),
+                    'id_documento' => $attributes->id,
+                    'id_origem' => $documento->tramitacoes->last()->id_origem,
+                    'id_destino' => $documento->tramitacoes->last()->id_destino,
+                    'id_usuario' => auth()->user()->id,
+                    'tipo_tram' => 'N',
+                    'despacho' => $documento->tramitacoes->last()->despacho,
+                    'status' => $attributes->value
+                ]);
+                if ($model) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (ValidatorException $e) {
+            return redirect()->back()->with('errors', $e->getMessageBag());
         }
     }
 
@@ -167,19 +195,28 @@ class TramitacaoService
         }
     }
 
+    public function findDocMovimentacao($id)
+    {
+        try {
+            return $this->documentoRepository->with('tramitacoes')->find($id);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('errors', 'Nenhum registro localizado no banco de dados');
+        }
+    }
+
     public function defineStatus($attributes)
     {
-        try{
+        try {
             $tramitacao = $this->tramitacaoRepository->find($attributes->id);
             $tramitacao->fill(['status' => $attributes->value]);
-            if ($tramitacao->save()){
+            if ($tramitacao->save()) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return redirect()->back()->with('errors', $e->getMessage());
         }
     }
-    
+
 }

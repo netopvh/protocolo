@@ -48,6 +48,8 @@ $this->group(['prefix' => 'dashboard'],function (){
         $this->post('/create','TramitacaoController@store')->name('admin.tramitacao.store');
         $this->get('/documento/{id}/show','TramitacaoController@showDoc')->name('admin.tramitacao.doc.show');
         $this->get('/counters','TramitacaoController@counters');
-
+        $this->get('/{id}/movimentar','TramitacaoController@movimentarIndex')->name('admin.tramitacao.movimentar.index');
+        $this->post('/movimentar','TramitacaoController@movimentarStore')->name('admin.tramitacao.movimentar.store');
+        $this->get('/{id}/tramite','TramitacaoController@getMovimentos')->name('admin.tramitacao.movimento');
     });
 });

@@ -27,7 +27,7 @@ class Tramitacao extends Model implements AuditableContract
 
     public function documentos()
     {
-        return $this->belongsTo(Documento::class,'id_documento');
+        return $this->belongsTo(Documento::class,'id_documento','id');
     }
 
 }

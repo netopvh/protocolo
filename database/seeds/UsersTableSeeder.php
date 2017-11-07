@@ -11,27 +11,13 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-       
+       /*
         \App\Domains\Access\Models\User::create([
             'name' => 'ANGELO MENDONÇA NETO',
             'username' => '00545841240',
             'email' => 'netopvh@gmail.com@gmail.com',
             'password' => bcrypt('123456'),
-        ]);
-
-        
-        \App\Domains\Access\Models\User::create([
-            'name' => 'TESTE',
-            'username' => '741',
-            'email' => 'testedois@gmail.com',
-            'password' => bcrypt('123456'),
-        ]);
-        \App\Domains\Access\Models\User::create([
-            'name' => 'TESTE DOIS',
-            'username' => '8523',
-            'email' => 'testetres@gmail.com',
-            'password' => bcrypt('123456'),
-        ]);
+        ]); */
 
         \App\Domains\Access\Models\User::create([
             'name' => 'PAULO SERGIO ALVES SILVA',

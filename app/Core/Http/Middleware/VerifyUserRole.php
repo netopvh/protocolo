@@ -19,13 +19,9 @@ class VerifyUserRole
     public function handle($request, Closure $next)
     {
 
-        $autorizedUsers = [
-            '00545841240','50984926291','289505'
-        ];
-
         if (auth()->check()){
             if (auth()->user()->roles()->count() <= 0){
-                if (in_array(auth()->user()->username,$autorizedUsers)){
+                if (in_array(auth()->user()->username, config('protocolo.administradores'))){
                     auth()->user()->roles()->attach($this->role->find(1));
                 }else{
                     auth()->user()->roles()->attach($this->role->find(3));

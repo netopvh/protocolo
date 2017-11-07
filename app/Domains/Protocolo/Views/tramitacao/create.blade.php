@@ -129,7 +129,7 @@
                         </fieldset>
 
                         <div class="text-right">
-                            <a href="{{ route('admin.documento') }}" class="btn btn-info legitRipple"><i class="icon-database-arrow"></i> Retornar</a>
+                            <a href="{{ route('admin.tramitacao') }}" class="btn btn-info legitRipple"><i class="icon-database-arrow"></i> Retornar</a>
                             <button type="submit" id="btn_tramitacao" class="btn btn-primary legitRipple">Salvar Registro <i
                                         class="icon-database-insert position-right"></i></button>
                         </div>

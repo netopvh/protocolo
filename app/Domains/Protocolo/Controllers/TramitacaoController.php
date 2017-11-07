@@ -98,18 +98,10 @@ class TramitacaoController extends Controller
      */
     public function action(Request $request)
     {
-        if ($this->tramitacaoService->defineStatus($request)){
-            return response()->json(
-                [
-                    'status' => 'OK'
-                ]
-            );
+        if ($this->tramitacaoService->recebeDoc($request)){
+            return response()->json(['status' => 'OK']);
         }else{
-            return response()->json(
-                [
-                    'status' => 'Error'
-                ]
-            );
+            return response()->json(['status' => 'Error']);
         }
     }
 
@@ -161,7 +153,7 @@ class TramitacaoController extends Controller
     public function edit($id)
     {
         try {
-            return view('documento.edit')->with('documento', $this->documentoRepository->find($id));
+            return view('documento.edit')->with('documento', $this->tramitacaoService->find($id));
         } catch (\Exception $e) {
             return redirect()->back()->with('errors', 'Nenhum registro localizado no banco de dados');
         }
@@ -178,9 +170,9 @@ class TramitacaoController extends Controller
     public function update($id, Request $request)
     {
         try {
-            $this->documentoRepository->find($id);
+            $this->tramitacaoService->find($id);
 
-            $this->documentoRepository->update($request->all(), $id);
+            $this->tramitacaoService->update($request->all(), $id);
 
             return redirect()->route('admin.documento')->with('success', 'Registro atualizado com sucesso');
         } catch (\Exception $e) {
@@ -188,23 +180,23 @@ class TramitacaoController extends Controller
         }
     }
 
-    /**
-     * Remove the specified Servidor from storage.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function destroy($id)
+    public function movimentarIndex($id)
     {
-        try {
-            $this->documentoRepository->find($id);
+        //dd($this->tramitacaoService->findDocMovimentacao($id));
+        return view('tramitacao.movimentar')
+            ->with('documento',$this->tramitacaoService->findDocMovimentacao($id))
+            ->with('dados',$this->tramitacaoService->getDataCreate());
+    }
 
-            $this->documentoRepository->delete($id);
+    public function movimentarStore(Request $request)
+    {
+        $this->tramitacaoService->createTramitacao($request->all());
 
-            return redirect()->back()->with('success', 'Registro removido com sucesso');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('errors', 'Nenhum registro localizado no banco de dados');
-        }
+        return redirect()->route('admin.tramitacao')->with('success', 'Registro inserido com sucesso!');
+    }
+
+    public function getMovimentos($id)
+    {
+        return view('tramitacao.tramite')->with('documento', $this->tramitacaoService->findDocMovimentacao($id));
     }
 }

@@ -15,25 +15,25 @@ $this->group(['prefix' => 'dashboard'],function (){
     $this->group(['prefix' => 'users'], function (){
         $this->get('/departamento','UserController@getDepartamento')->name('admin.users.departamento');
         $this->patch('/secretaria/{id}','UserController@postDepartamento')->name('admin.users.departamento.update');
-        $this->get('/','UserController@index')->middleware('permission:ver-administracao')->name('admin.users');
-        $this->get('/create','UserController@create')->middleware('permission:criar-usuario')->name('admin.users.create');
-        $this->post('/','UserController@store')->middleware('permission:criar-usuario')->name('admin.users.store');
-        $this->get('/{id}','UserController@edit')->middleware('permission:atualizar-usuario')->name('admin.users.edit');
-        $this->patch('/{id}','UserController@update')->middleware('permission:atualizar-usuario')->name('admin.users.update');
-        $this->delete('/{id}','UserController@destroy')->middleware('permission:remover-usuario')->name('admin.users.destroy');
+        $this->get('/',['middleware' => ['permission:ver-administracao|ver-usuario,require_all'], 'uses' => 'UserController@index'])->name('admin.users');
+        $this->get('/create',['middleware' => ['permission:ver-administracao|criar-usuario,require_all'], 'uses' => 'UserController@create'])->name('admin.users.create');
+        $this->post('/',['middleware' => ['permission:ver-administracao|criar-usuario,require_all'], 'uses' => 'UserController@store'])->name('admin.users.store');
+        $this->get('/{id}',['middleware' => ['permission:ver-administracao|atualizar-usuario,require_all'], 'uses' => 'UserController@edit'])->name('admin.users.edit');
+        $this->patch('/{id}',['middleware' => ['permission:ver-administracao|atualizar-usuario,require_all'], 'uses' => 'UserController@update'])->name('admin.users.update');
+        $this->delete('/{id}',['middleware' => ['permission:ver-administracao|remover-usuario,require_all'], 'uses' => 'UserController@destroy'])->name('admin.users.destroy');
     });
 
     $this->group(['prefix' => 'roles'], function (){
-        $this->get('/','RoleController@index')->middleware('permission:ver-administracao')->name('admin.roles');
-        $this->get('/create','RoleController@create')->middleware('permission:criar-perfil')->name('admin.roles.create');
-        $this->post('/','RoleController@store')->middleware('permission:criar-perfil')->name('admin.roles.store');
-        $this->get('/{id}','RoleController@edit')->middleware('permission:atualizar-perfil')->name('admin.roles.edit');
-        $this->patch('/{id}','RoleController@update')->middleware('permission:atualizar-perfil')->name('admin.roles.update');
-        $this->delete('/{id}','RoleController@destroy')->middleware('permission:remover-peril')->name('admin.roles.destroy');
+        $this->get('/',['middleware' => ['permission:ver-administracao|ver-perfil,require_all'], 'uses' => 'RoleController@index'])->name('admin.roles');
+        $this->get('/create',['middleware' => ['permission:ver-administracao|criar-perfil,require_all'], 'uses' => 'RoleController@create'])->name('admin.roles.create');
+        $this->post('/',['middleware' => ['permission:ver-administracao|criar-perfil,require_all'], 'uses' => 'RoleController@store'])->name('admin.roles.store');
+        $this->get('/{id}',['middleware' => ['permission:ver-administracao|atualizar-perfil,require_all'], 'uses' => 'RoleController@edit'])->name('admin.roles.edit');
+        $this->patch('/{id}',['middleware' => ['permission:ver-administracao|atualizar-perfil,require_all'], 'uses' => 'RoleController@update'])->name('admin.roles.update');
+        $this->delete('/{id}',['middleware' => ['permission:ver-administracao|remover-perfil,require_all'], 'uses' => 'RoleController@destroy'])->name('admin.roles.destroy');
     });
 
     $this->group(['prefix' => 'audit'], function (){
-        $this->get('/','AuditController@index')->middleware('permission:ver-administracao')->name('admin.auditor');
+        $this->get('/',['middleware' => ['permission:ver-administracao|ver-auditoria,require_all'], 'uses' => 'AuditController@index'])->name('admin.auditor');
     });
 
     $this->group(['prefix' => 'account'], function (){

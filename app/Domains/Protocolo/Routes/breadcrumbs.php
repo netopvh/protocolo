@@ -103,3 +103,8 @@ Breadcrumbs::register('admin.tramitacao.doc.show', function ($breadcrumbs) {
     $breadcrumbs->parent('admin.tramitacao');
     $breadcrumbs->push('Documento', '');
 });
+
+Breadcrumbs::register('admin.tramitacao.movimentar', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin.tramitacao');
+    $breadcrumbs->push('Movimentar', '');
+});

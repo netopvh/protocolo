@@ -51,5 +51,38 @@ class DependencyTableSeeder extends Seeder
             \App\Domains\Protocolo\Models\Departamento::create(['descricao' => $departamento]);
         }
 
+        $roles = [
+            ['name' => 'superadministrador', 'display_name' => 'SUPERADMINISTRADOR','description' => 'SuperAdministrador'],
+            ['name' => 'administrador', 'display_name' => 'ADMINISTRADOR','description' => 'Administrador'],
+            ['name' => 'usuario', 'display_name' => 'USUÁRIO','description' => 'Usuário']
+        ];
+
+        $this->command->info('Criando Perfis');
+        foreach ($roles as$role){
+            \App\Domains\Access\Models\Role::create($role);
+        }
+
+        $permissions = [
+            ['name' => 'ver-administracao','display_name' => 'Ver Administração','description' => 'Ver Administração'],
+            ['name' => 'ver-usuario','display_name' => 'Ver Usuário','description' => 'Ver Usuário'],
+            ['name' => 'criar-usuario','display_name' => 'Criar Usuário','description' => 'Criar Usuário'],
+            ['name' => 'atualizar-usuario','display_name' => 'Atualizar Usuário','description' => 'Atualizar Usuário'],
+            ['name' => 'remover-usuario','display_name' => 'Remover Usuário','description' => 'Remover Usuário'],
+            ['name' => 'ver-perfil','display_name' => 'Ver Perfil','description' => 'Ver Perfil'],
+            ['name' => 'criar-perfil','display_name' => 'Criar Perfil','description' => 'Criar Perfil'],
+            ['name' => 'atualizar-perfil','display_name' => 'Atualizar Perfil','description' => 'Atualizar Perfil'],
+            ['name' => 'remover-perfil','display_name' => 'Remover Perfil','description' => 'Remover Perfil'],
+            ['name' => 'ver-parametros','display_name' => 'Ver Parâmetros','description' => 'Ver Parâmetros'],
+            ['name' => 'ver-auditoria','display_name' => 'Ver Auditoria','description' => 'Ver Auditoria']
+        ];
+
+        $this->command->info('Criando Permissões');
+
+        foreach ($permissions as $permission) {
+            \App\Domains\Access\Models\Permission::create($permission);
+        }
+
+        $roleAdmin = \App\Domains\Access\Models\Role::find(1);
+        $roleAdmin->permissions()->attach([1,2,3,4,5,6,7,8,9,10,11]);
     }
 }

@@ -63,22 +63,30 @@
                             <span>Gerenciamento de Acesso</span>
                         </a>
                         <ul>
+                            @permission('ver-usuario')
                             <li class="{{ active(['admin.users','admin.users.*']) }}">
                                 <a href="{{ route('admin.users') }}">
-                                    <i class="icon-user"></i> 
+                                    <i class="icon-user"></i>
                                     <span class="text-bold">Usuários</span>
                                 </a>
                             </li>
+                            @endpermission
+                            @permission('ver-perfil')
                             <li class="{{ active(['admin.roles','admin.roles.*']) }}">
                                 <a href="{{ route('admin.roles') }}">
-                                    <i class="icon-users4"></i> 
+                                    <i class="icon-users4"></i>
                                     <span class="text-bold">Perfil de Acesso</span>
                                 </a>
                             </li>
+                            @endpermission
                         </ul>
                     </li>
+                    @permission('ver-parametros')
                     <li><a href=""><i class="icon-cog"></i> Parâmetros do Sistema</a></li>
+                    @endpermission
+                    @permission('ver-auditoria')
                     <li class="{{ active(['admin.auditor']) }}"><a href="{{ route('admin.auditor') }}"><i class="icon-stack-star"></i> Auditoria e Logs</a></li>
+                    @endpermission
                     <!-- /administracao -->
                     @endpermission
                 </ul>
