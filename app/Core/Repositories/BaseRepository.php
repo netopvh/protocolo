@@ -29,7 +29,7 @@ class BaseRepository extends PrettusRepository implements BaseRepositoryContract
         try {
             return $this->find($id, $columns);
         } catch (\Exception $e) {
-            return $e->getTraceAsString();
+            return;
         }
     }
 

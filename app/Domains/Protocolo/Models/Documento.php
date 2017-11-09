@@ -25,7 +25,17 @@ class Documento extends Model implements AuditableContract
 	public function departamento()
     {
     	return $this->belongsTo(Departamento::class,'id_departamento','id');
-    } 
+    }
+
+    public function departamento_origem()
+    {
+        return $this->hasManyThrough(Departamento::class,Tramitacao::class,'id_documento','id');
+    }
+
+    public function secretaria_origem()
+    {
+        return $this->hasManyThrough(Secretarias::class,Tramitacao::class,'id_documento','id');
+    }
 
     public function documentos()
     {
@@ -55,6 +65,11 @@ class Documento extends Model implements AuditableContract
     public function getDataDocAttribute($value)
     {
         return Carbon::createFromFormat('Y-m-d',$value)->format('d/m/Y');
+    }
+
+    public function scopeDepartamento($query)
+    {
+        return $query->where('id_departamento', auth()->user()->id_departamento);
     }
 
 }

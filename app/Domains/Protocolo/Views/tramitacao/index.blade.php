@@ -12,6 +12,12 @@
     {{ Breadcrumbs::render('admin.tramitacao') }}
 @stop
 
+@push('scripts-before')
+    <script>
+        CKEDITOR.replace('editor');
+    </script>
+@endpush
+
 @section('content')
     <div class="row">
         <div class="col-md-12">
@@ -43,17 +49,20 @@
                             <ul class="nav nav-tabs nav-tabs-highlight">
                                 <li class="active">
                                     <a href="#highlighted-tab1" data-toggle="tab">
-                                        Documentos no Setor <span class="badge badge-success position-right" id="setor"></span>
+                                        {{ in_admin_group()?'Todos os Documentos Recebidos no Sistema':'Documentos no Setor' }}
+                                        <span class="badge badge-success position-right" id="setor"></span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#highlighted-tab2" data-toggle="tab">
-                                        Documentos á Receber <span class="badge badge-info position-right" id="pendente"></span>
+                                        {{ in_admin_group()?'Todos os Documentos á Receber no Sistema':'Documentos á Receber' }}
+                                        <span class="badge badge-info position-right" id="pendente"></span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#highlighted-tab3" data-toggle="tab">
-                                        Documentos Arquivados <span class="badge badge-warning position-right" id="arquivado"></span>
+                                        {{ in_admin_group()?'Todos os Documentos Arquivados no Sistema':'Documentos Arquivados' }}
+                                        <span class="badge badge-warning position-right" id="arquivado"></span>
                                     </a>
                                 </li>
                             </ul>
@@ -94,13 +103,15 @@
                                             <button type="submit" class="btn btn-primary">Pesquisar</button>
                                         </form>
                                         <hr>
-                                        <table id="tbl_documento" class="table table-framed table-bordered table-striped text-size-base" data-form="deleteForm">
+                                        <table id="tbl_documento"
+                                               class="table table-framed table-bordered table-striped text-size-base"
+                                               data-form="deleteForm">
                                             <thead>
                                             <tr>
-                                                <th>Número</th>
-                                                <th>Ano</th>
+                                                <th>Número/Ano</th>
                                                 <th>Assunto</th>
                                                 <th>Tipo Documento</th>
+                                                <th>Protocolado por</th>
                                                 <th>Data Doc</th>
                                                 <th class="text-center">Ações</th>
                                             </tr>
@@ -115,7 +126,8 @@
                                         <form method="POST" id="search-form-pend" class="form-inline" role="form">
                                             <div class="form-group">
                                                 <label for="name">Numero:</label>
-                                                <input type="text" class="form-control" name="numero" id="numeroPendente">
+                                                <input type="text" class="form-control" name="numero"
+                                                       id="numeroPendente">
                                             </div>
                                             <div class="form-group">
                                                 <label for="email">Ano:</label>
@@ -134,13 +146,15 @@
                                             <button type="submit" class="btn btn-primary">Pesquisar</button>
                                         </form>
                                         <hr>
-                                        <table id="tbl_doc_pendentes" class="table table-framed table-bordered table-striped text-size-base" data-form="recebePendente">
+                                        <table id="tbl_doc_pendentes"
+                                               class="table table-framed table-bordered table-striped text-size-base"
+                                               data-form="recebePendente">
                                             <thead>
                                             <tr>
-                                                <th>Número</th>
-                                                <th>Ano</th>
+                                                <th>Número/Ano</th>
                                                 <th>Assunto</th>
                                                 <th>Tipo Documento</th>
+                                                <th>Origem</th>
                                                 <th>Data Doc</th>
                                                 <th class="text-center">Ações</th>
                                             </tr>
@@ -154,29 +168,41 @@
                                         <div class="col-md-12">
                                             <fieldset>
                                                 <legend>Documentos Arquivados</legend>
-                                                <form method="POST" id="search-form-pend" class="form-inline" role="form">
+                                                <form method="POST" id="search-form-pend" class="form-inline"
+                                                      role="form">
                                                     <div class="form-group">
                                                         <label for="name">Numero:</label>
-                                                        <input type="text" class="form-control" name="numero" id="numero">
+                                                        <input type="text" class="form-control" name="numero"
+                                                               id="numero">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="email">Ano:</label>
                                                         <select name="ano" id="ano" class="form-control">
-                                                            <option value="2015"{{ selected(date('Y'),'2015') }}>2015</option>
-                                                            <option value="2016"{{ selected(date('Y'),'2016') }}>2016</option>
-                                                            <option value="2017"{{ selected(date('Y'),'2017') }}>2017</option>
-                                                            <option value="2018"{{ selected(date('Y'),'2018') }}>2018</option>
-                                                            <option value="2019"{{ selected(date('Y'),'2019') }}>2019</option>
-                                                            <option value="2020"{{ selected(date('Y'),'2020') }}>2020</option>
-                                                            <option value="2021"{{ selected(date('Y'),'2021') }}>2021</option>
-                                                            <option value="2022"{{ selected(date('Y'),'2022') }}>2022</option>
-                                                            <option value="2023"{{ selected(date('Y'),'2023') }}>2023</option>
+                                                            <option value="2015"{{ selected(date('Y'),'2015') }}>2015
+                                                            </option>
+                                                            <option value="2016"{{ selected(date('Y'),'2016') }}>2016
+                                                            </option>
+                                                            <option value="2017"{{ selected(date('Y'),'2017') }}>2017
+                                                            </option>
+                                                            <option value="2018"{{ selected(date('Y'),'2018') }}>2018
+                                                            </option>
+                                                            <option value="2019"{{ selected(date('Y'),'2019') }}>2019
+                                                            </option>
+                                                            <option value="2020"{{ selected(date('Y'),'2020') }}>2020
+                                                            </option>
+                                                            <option value="2021"{{ selected(date('Y'),'2021') }}>2021
+                                                            </option>
+                                                            <option value="2022"{{ selected(date('Y'),'2022') }}>2022
+                                                            </option>
+                                                            <option value="2023"{{ selected(date('Y'),'2023') }}>2023
+                                                            </option>
                                                         </select>
                                                     </div>
                                                     <button type="submit" class="btn btn-primary">Pesquisar</button>
                                                 </form>
                                                 <hr>
-                                                <table id="tbl_doc_arquivado" class="table table-framed table-bordered table-striped text-size-base">
+                                                <table id="tbl_doc_arquivado"
+                                                       class="table table-framed table-bordered table-striped text-size-base">
                                                     <thead>
                                                     <tr>
                                                         <th>Número</th>
@@ -204,10 +230,16 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Recebimento de documentos</h4>
+                    <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
-                    <p>Tem certeza que deseja receber este documento?</p>
+                    <span id="title-modal">
+                        <p>Tem certeza que deseja receber este documento?</p>
+                    </span>
+                    <span class="despacho">
+                        <label class="text-bold display-block">Despacho: </label>
+                        <textarea name="editor" id="editor" class="editor" cols="30" rows="10"></textarea>
+                    </span>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-primary" id="confirm-btn">Confirmar</button>

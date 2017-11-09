@@ -963,9 +963,9 @@ $(function () {
             },
             columns: [
                 {data: 'numero', name: 'documentos.numero', width: '80px'},
-                {data: 'ano', name: 'documentos.ano', width: '100px'},
                 {data: 'assunto', name: 'documentos.assunto'},
                 {data: 'tipo', name: 'tipo_documentos.descricao'},
+                {data: 'origem'},
                 {data: 'data_doc', name: 'documentos.data_doc', width: '180px'},
                 {data: 'action', orderable: false, searchable: false, width: '170px'}
             ]
@@ -997,9 +997,9 @@ $(function () {
             },
             columns: [
                 {data: 'numero', name: 'documentos.numero', width: '80px'},
-                {data: 'ano', name: 'documentos.ano', width: '100px'},
                 {data: 'assunto', name: 'documentos.assunto'},
                 {data: 'tipo', name: 'tipo_documentos.descricao'},
+                {data: 'origem'},
                 {data: 'data_doc', name: 'documentos.data_doc', width: '180px'},
                 {data: 'action', orderable: false, searchable: false, width: '130px'}
             ]
@@ -1010,12 +1010,20 @@ $(function () {
             e.preventDefault();
         });
 
-        $('table[data-form="recebePendente"]').on('click', '.receber', function (e) {
+        var recebePendente = $('table[data-form="recebePendente"]');
+
+        var title = $('.modal-title');
+        var body = $('.modal-body');
+        recebePendente.on('click', '.receber', function (e) {
             e.preventDefault();
+            title.html('');
+            title.html('Recebimento de documentos');
+            $('#title-modal').show();
+            $('.despacho').hide();
             var data = {
                 _token: $('meta[name="csrf-token"]').attr('content'),
                 id: $(this).data('id'),
-                value: $(this).data('value')
+                action: 'R'
             };
             $('#confirm').modal({backdrop: 'static', keyboard: false})
                 .on('click', '#confirm-btn', function () {
@@ -1032,34 +1040,110 @@ $(function () {
                     });
                 });
         });
+
+        recebePendente.on('click', '.devolver', function (e) {
+            var docId = $(this).data('id');
+            e.preventDefault();
+            title.html('');
+            title.html('Devolução de documentos');
+            $('#title-modal').hide();
+            $('.despacho').show();
+
+            $('#confirm').modal({backdrop: 'static', keyboard: false})
+                .on('click', '#confirm-btn', function () {
+                    var instance = CKEDITOR.instances['editor'].getData();
+                    $.ajax({
+                        url: '/dashboard/tramitacao/action',
+                        type: "POST",
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            id: docId,
+                            despacho: instance,
+                            action: 'D'
+                        },
+                        dataType: "json",
+                        success: function () {
+                            oTableP.draw();
+                            $('#confirm').modal('hide');
+                            reloadCounters();
+                        }
+                    });
+
+                });
+        });
     }
 
 
     var formDocumento = $('#form_documento');
     if (formDocumento.length) {
-        //Changed Value dropdown
-        $('input:radio[name=int_ext]').change(function () {
+        //Modificador de Procedência
+        var rdIntExt =  $('input:radio[name=int_ext]');
+        rdIntExt.change(function () {
             if (this.value === 'I') {
+                $('#tipodoc').collapse('hide');
                 $('#setdep').collapse('show');
                 $('#orgsec').collapse('hide');
                 $("select[name=id_departamento]").prop('required', true);
+                $("input:radio[name=tipo_tram]").prop('required', false);
                 $("select[name=id_secretaria]").prop('required', false);
             }
             else if (this.value === 'E') {
-                $('#setdep').collapse('show');
-                $('#orgsec').collapse('show');
-                $("select[name=id_departamento]").prop('required', true);
-                $("select[name=id_secretaria]").prop('required', true);
+                $('#tipodoc').collapse('show');
+                $('#setdep').collapse('hide');
+                $('#orgsec').collapse('hide');
+                $("select[name=id_departamento]").prop('required', false);
+                $("input:radio[name=tipo_tram]").prop('required', true);
+                $("select[name=id_secretaria]").prop('required', false);
             }
         });
         //Onload Values
-        if ($('input:radio[name=int_ext]:checked').val() === 'N') {
-            $('#nomenclaturacargo').collapse('show');
-            $("input[name=nomenclatura_id]").prop('required', true);
+        if ($('input:radio[name=int_ext]:checked').val() === 'I') {
+            $('#tipodoc').collapse('hide');
+            $('#setdep').collapse('show');
+            $('#orgsec').collapse('hide');
+            $("select[name=id_departamento]").prop('required', true);
+            $("input:radio[name=tipo_tram]").prop('required', false);
+            $("select[name=id_secretaria]").prop('required', false);
+        }
+        else if ($('input:radio[name=int_ext]:checked').val() === 'E') {
+            $('#tipodoc').collapse('show');
+            $('#setdep').collapse('hide');
+            $('#orgsec').collapse('hide');
+            $("select[name=id_departamento]").prop('required', false);
+            $("input:radio[name=tipo_tram]").prop('required', true);
+            $("select[name=id_secretaria]").prop('required', false);
+        }
+
+        //Modificador de Tipo de Tramitacao
+        var rdTipo =  $('input:radio[name=tipo_tram]');
+        rdTipo.change(function () {
+            if (this.value === 'C') {
+                $('#setdep').collapse('show');
+                $('#orgsec').collapse('show');
+                $("#setdep").insertAfter("#orgsec");
+                $("select[name=id_departamento]").prop('required', true);
+                $("select[name=id_secretaria]").prop('required', false);
+            }
+            else if (this.value === 'S') {
+                $('#setdep').collapse('show');
+                $('#orgsec').collapse('show');
+                $("#orgsec").insertAfter("#setdep");
+                $("select[name=id_departamento]").prop('required', false);
+                $("select[name=id_secretaria]").prop('required', false);
+            }
+        });
+        //Onload Values
+        if ($('input:radio[name=tipo_tram]:checked').val() === 'C') {
+            $('#setdep').collapse('show');
+            $('#orgsec').collapse('show');
+            $("select[name=id_departamento]").prop('required', true);
+            $("select[name=id_secretaria]").prop('required', false);
         }
         else if ($('input:radio[name=int_ext]:checked').val() === 'S') {
-            $('#nomenclaturacargo').collapse('hide');
-            $("input[name=nomenclatura_id]").prop('required', false);
+            $('#setdep').collapse('show');
+            $('#orgsec').collapse('show');
+            $("select[name=id_departamento]").prop('required', false);
+            $("select[name=id_secretaria]").prop('required', false);
         }
 
         var btnTram = $('#btn_tramitacao');

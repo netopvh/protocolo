@@ -30,7 +30,7 @@
                         <fieldset>
                             <legend class="text-semibold">Entre com as informações</legend>
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="text-bold">Número:</label>
                                         <input name="numero" type="text" value="{{ old('numero') }}" class="form-control text-uppercase" required autofocus>
@@ -46,13 +46,13 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="text-bold">Data do Doc:</label>
                                         <input name="data_doc" type="text" class="form-control datepicker" required>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="text-bold display-block">Procedência:</label>
                                         <label class="radio-inline">
@@ -63,6 +63,20 @@
                                         <label class="radio-inline">
                                             <input type="radio" name="int_ext" value="E" class="styled" required>
                                             Externo
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="tipodoc" class="col-md-3 collapse">
+                                    <div class="form-group">
+                                        <label class="text-bold display-block">Tipo:</label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="tipo_tram" value="C" class="styled" required>
+                                            Entrada
+                                        </label>
+
+                                        <label class="radio-inline">
+                                            <input type="radio" name="tipo_tram" value="S" class="styled" required>
+                                            Saída
                                         </label>
                                     </div>
                                 </div>

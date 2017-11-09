@@ -3,6 +3,7 @@
 namespace App\Domains\Protocolo\Repositories;
 
 use App\Core\Repositories\BaseRepository;
+use App\Exceptions\Access\GeneralException;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Domains\Protocolo\Repositories\Contracts\DocumentoRepository;
 use App\Domains\Protocolo\Models\Documento;

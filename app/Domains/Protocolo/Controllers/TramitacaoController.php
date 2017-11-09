@@ -2,9 +2,13 @@
 
 namespace App\Domains\Protocolo\Controllers;
 
+use App\Domains\Protocolo\Enum\TipoTramEnum;
 use App\Domains\Protocolo\Services\TramitacaoService;
 use App\Core\Http\Controllers\Controller;
+use App\Exceptions\Access\GeneralException;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Prettus\Validator\Exceptions\ValidatorException;
 use Yajra\DataTables\DataTables;
 
@@ -45,8 +49,18 @@ class TramitacaoController extends Controller
         $query = $this->tramitacaoService->builder();
 
         return $dataTables->eloquent($query)
+            ->editColumn('numero', function($documento){
+                return $documento->numero.'/'.$documento->ano;
+            })
             ->addColumn('tipo', function ($documento) {
                 return $documento->tipo_documento->descricao;
+            })
+            ->addColumn('origem', function($documento){
+                if ($documento->int_ext=='I'){
+                    return $documento->tramitacoes->last()->departamento_origem->descricao;
+                }else{
+                    return $documento->tramitacoes->last()->secretaria_origem->descricao;
+                }
             })
             ->addColumn('action', function ($documento) {
                 return view('tramitacao.buttons_setor')->with('documento', $documento);
@@ -70,8 +84,18 @@ class TramitacaoController extends Controller
         $query = $this->tramitacaoService->builderPendents();
 
         return $dataTables->eloquent($query)
+            ->editColumn('numero',function($documento){
+                return $documento->numero.'/'.$documento->ano;
+            })
             ->addColumn('tipo', function ($documento) {
                 return $documento->tipo_documento->descricao;
+            })
+            ->addColumn('origem', function($documento){
+                if ($documento->int_ext=='I'){
+                    return $documento->tramitacoes->last()->departamento_origem->descricao;
+                }else{
+                    return $documento->tramitacoes->last()->secretaria_origem->descricao;
+                }
             })
             ->addColumn('action', function ($documento) {
                 return view('tramitacao.buttons_pendentes')->with('documento', $documento);
@@ -98,10 +122,19 @@ class TramitacaoController extends Controller
      */
     public function action(Request $request)
     {
-        if ($this->tramitacaoService->recebeDoc($request)){
-            return response()->json(['status' => 'OK']);
-        }else{
-            return response()->json(['status' => 'Error']);
+        if ($request->action == 'R'){
+            if ($this->tramitacaoService->recebeDoc($request)){
+                return response()->json(['status' => 'OK']);
+            }else{
+                return response()->json(['status' => 'Error']);
+            }
+        }else if($request->action == 'D'){
+            Log::info($request->despacho);
+            if ($this->tramitacaoService->devolveDoc($request)){
+                return response()->json(['status' => 'OK']);
+            }else{
+                return response()->json(['status' => 'Error']);
+            }
         }
     }
 
@@ -180,6 +213,10 @@ class TramitacaoController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return $this
+     */
     public function movimentarIndex($id)
     {
         //dd($this->tramitacaoService->findDocMovimentacao($id));
@@ -188,15 +225,35 @@ class TramitacaoController extends Controller
             ->with('dados',$this->tramitacaoService->getDataCreate());
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function movimentarStore(Request $request)
     {
-        $this->tramitacaoService->createTramitacao($request->all());
+        $this->tramitacaoService->createTramitacao($request);
 
         return redirect()->route('admin.tramitacao')->with('success', 'Registro inserido com sucesso!');
     }
 
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function getMovimentos($id)
     {
-        return view('tramitacao.tramite')->with('documento', $this->tramitacaoService->findDocMovimentacao($id));
+        try{
+            Carbon::setLocale('pt-BR');
+
+            $movimentos = $this->tramitacaoService->findDocMovimentacao($id);
+
+            return view('tramitacao.tramite')
+                ->with('documento', $movimentos)
+                ->with('tipos',TipoTramEnum::getConstants());
+        }catch (GeneralException $e){
+            return redirect()->route('admin.tramitacao')->with('errors', $e->getMessage());
+        }catch (\Exception $e) {
+            return redirect()->route('admin.tramitacao')->with('errors', $e->getMessage());
+        }
     }
 }

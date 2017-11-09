@@ -14,16 +14,6 @@ if (! function_exists('array_last_value')) {
     }
 }
 
-if(! function_exists('user_in_cgm')){
-
-	function user_in_cgm()
-	{
-
-		return dd(auth()->user()->ldap);
-	}
-
-}
-
 if(! function_exists('mask')){
 
     function mask($val, $mask)
@@ -44,19 +34,6 @@ if(! function_exists('mask')){
          }
      }
      return $maskared;
-    }
-}
-
-if(! function_exists('get_sec')){
-    function get_sec($id){
-        $retorno = \App\Domains\Comissionado\Models\Secretarias::find($id);
-        return $retorno->descricao;
-    }
-}
-
-if(! function_exists('in_admin_group')){
-    function in_admin_group(){
-        return in_array(auth()->user()->roles->first()->id,[config('protocolo.role_admin')]);
     }
 }
 

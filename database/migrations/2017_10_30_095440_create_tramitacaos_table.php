@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Domains\Protocolo\Enum\TipoTramEnum;
 
 class CreateTramitacaosTable extends Migration
 {
@@ -23,7 +24,7 @@ class CreateTramitacaosTable extends Migration
             $table->integer('id_departamento_destino')->unsigned()->nullable();
             $table->integer('id_secretaria_destino')->unsigned()->nullable();
             $table->integer('id_usuario')->unsigned();
-            $table->char('tipo_tram',1);
+            $table->enum('tipo_tram', TipoTramEnum::getKeys())->nullable();
             $table->longText('despacho')->nullable();
             $table->char('status',1);
             $table->timestamps();
