@@ -79,6 +79,11 @@ class TramitacaoController extends Controller
             ->make(true);
     }
 
+    /**
+     * @param DataTables $dataTables
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function dataPendentes(DataTables $dataTables, Request $request)
     {
         $query = $this->tramitacaoService->builderPendents();
@@ -111,6 +116,9 @@ class TramitacaoController extends Controller
             ->toJson();
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function counters()
     {
         return response()->json($this->tramitacaoService->getDocumentsCounter());
@@ -162,18 +170,6 @@ class TramitacaoController extends Controller
         $this->tramitacaoService->createAndUpload($request);
 
         return redirect()->route('admin.tramitacao')->with('success', 'Registro inserido com sucesso!');
-    }
-
-    /**
-     * Display the specified Servidor.
-     *
-     * @param  int $id
-     *
-     * @return mixed
-     */
-    public function showDoc($id)
-    {
-        return view('tramitacao.show')->with('documento', $this->tramitacaoService->findDocs($id));
     }
 
     /**
@@ -238,7 +234,7 @@ class TramitacaoController extends Controller
 
     /**
      * @param $id
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * @return mixed
      */
     public function getMovimentos($id)
     {
@@ -255,5 +251,27 @@ class TramitacaoController extends Controller
         }catch (\Exception $e) {
             return redirect()->route('admin.tramitacao')->with('errors', $e->getMessage());
         }
+    }
+
+    public function showDocPublic()
+    {
+        return view('tramitacao.tramite_public');
+    }
+
+    public function getConsultaPublica(Request $request)
+    {
+        return response()->json($request->toArray());
+    }
+
+    /**
+     * Display the specified Servidor.
+     *
+     * @param  int $id
+     *
+     * @return mixed
+     */
+    public function showDoc($id)
+    {
+        return view('tramitacao.show')->with('documento', $this->tramitacaoService->findDocs($id));
     }
 }

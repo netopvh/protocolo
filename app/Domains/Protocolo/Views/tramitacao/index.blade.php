@@ -34,7 +34,7 @@
                         <i class="icon-database-add"></i>
                         Novo Protocolo
                     </a>
-                    <a href="{{ route('admin.tramitacao.create') }}" class="btn btn-primary btn-raised legitRipple">
+                    <a href="{{ route('admin.tramitacao.doc.consulta') }}" class="btn btn-primary btn-raised legitRipple">
                         <i class="icon-search4"></i>
                         Localizar Documento
                     </a>

@@ -208,7 +208,6 @@ class TramitacaoService
                     'id_departamento_destino' => $documento->tramitacoes->last()->id_departamento_destino,
                     'id_usuario' => auth()->user()->id,
                     'tipo_tram' => 'R',
-                    'despacho' => $documento->tramitacoes->last()->despacho,
                     'status' => 'R'
                 ]);
                 if ($model) {

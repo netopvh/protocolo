@@ -677,14 +677,14 @@ $(function () {
     });
 
     // Switchery toggles
-    var elems = Array.prototype.slice.call(document.querySelectorAll('.switchery'));
+    let elems = Array.prototype.slice.call(document.querySelectorAll('.switchery'));
     elems.forEach(function (html) {
-        var switchery = new Switchery(html);
+        let switchery = new Switchery(html);
     });
 
     $('table[data-form="deleteForm"]').on('click', '.form-delete', function (e) {
         e.preventDefault();
-        var $form = $(this);
+        let $form = $(this);
         $('#confirm').modal({backdrop: 'static', keyboard: false})
             .on('click', '#delete-btn', function () {
                 $form.submit();
@@ -713,7 +713,7 @@ $(function () {
     // ------------------------------
 
     // Initialize
-    var validator = $(".form-validate-jquery").validate({
+    let validator = $(".form-validate-jquery").validate({
         ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
         errorClass: 'validation-error-label',
         successClass: 'validation-valid-label',
@@ -855,7 +855,7 @@ $(function () {
     });
 
     //Variável de tradução
-    var dt_trans = {
+    let dt_trans = {
         "sEmptyTable": "Nenhum registro encontrado",
         "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
         "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
@@ -877,14 +877,14 @@ $(function () {
             "sSortAscending": ": Ordenar colunas de forma ascendente",
             "sSortDescending": ": Ordenar colunas de forma descendente"
         }
-    }
+    };
 
     /**
      *
      *   DEPARTAMENTO MODULE
      *
      */
-    var departamento = $('#tbl_departamento');
+    let departamento = $('#tbl_departamento');
     if (departamento.length) {
         departamento.DataTable({
             serverSide: true,
@@ -904,7 +904,7 @@ $(function () {
      *   TIPO DOCUMENTOS MODULE
      *
      */
-    var tipoDocumento = $('#tbl_tp_documento');
+    let tipoDocumento = $('#tbl_tp_documento');
     if (tipoDocumento.length) {
         tipoDocumento.DataTable({
             serverSide: true,
@@ -940,12 +940,12 @@ $(function () {
     }
 
     //DOCUMENTOS NO SETOR
-    var documento = $('#tbl_documento');
+    let documento = $('#tbl_documento');
     if (documento.length) {
 
         reloadCounters();
 
-        var oTable = documento.DataTable({
+        let oTable = documento.DataTable({
             dom: "<'row'<'col-xs-12'<'col-xs-12'>>r>" +
             "<'row'<'col-xs-12't>>" +
             "<'row'<'col-xs-12'<'col-xs-6'i><'col-xs-6'p>>>",
@@ -967,7 +967,7 @@ $(function () {
                 {data: 'tipo', name: 'tipo_documentos.descricao'},
                 {data: 'origem'},
                 {data: 'data_doc', name: 'documentos.data_doc', width: '180px'},
-                {data: 'action', orderable: false, searchable: false, width: '170px'}
+                {data: 'action', orderable: false, searchable: false, width: '140px'}
             ]
         });
 
@@ -978,9 +978,9 @@ $(function () {
     }
 
     //DOCUMENTOS PENDENTES
-    var documentoPend = $('#tbl_doc_pendentes');
+    let documentoPend = $('#tbl_doc_pendentes');
     if (documentoPend.length) {
-        var oTableP = documentoPend.DataTable({
+        let oTableP = documentoPend.DataTable({
             dom: "<'row'<'col-xs-12'<'col-xs-12'>>r>" +
             "<'row'<'col-xs-12't>>" +
             "<'row'<'col-xs-12'<'col-xs-6'i><'col-xs-6'p>>>",
@@ -1010,17 +1010,17 @@ $(function () {
             e.preventDefault();
         });
 
-        var recebePendente = $('table[data-form="recebePendente"]');
+        let recebePendente = $('table[data-form="recebePendente"]');
 
-        var title = $('.modal-title');
-        var body = $('.modal-body');
+        let title = $('.modal-title');
+        let body = $('.modal-body');
         recebePendente.on('click', '.receber', function (e) {
             e.preventDefault();
             title.html('');
             title.html('Recebimento de documentos');
             $('#title-modal').show();
             $('.despacho').hide();
-            var data = {
+            let data = {
                 _token: $('meta[name="csrf-token"]').attr('content'),
                 id: $(this).data('id'),
                 action: 'R'
@@ -1042,7 +1042,7 @@ $(function () {
         });
 
         recebePendente.on('click', '.devolver', function (e) {
-            var docId = $(this).data('id');
+            let docId = $(this).data('id');
             e.preventDefault();
             title.html('');
             title.html('Devolução de documentos');
@@ -1051,7 +1051,7 @@ $(function () {
 
             $('#confirm').modal({backdrop: 'static', keyboard: false})
                 .on('click', '#confirm-btn', function () {
-                    var instance = CKEDITOR.instances['editor'].getData();
+                    let instance = CKEDITOR.instances['editor'].getData();
                     $.ajax({
                         url: '/dashboard/tramitacao/action',
                         type: "POST",
@@ -1073,11 +1073,16 @@ $(function () {
         });
     }
 
+    let getDespacho = $('#despacho');
 
-    var formDocumento = $('#form_documento');
+    getDespacho.on("click", function () {
+        alert($(this).data('id'));
+    });
+
+    let formDocumento = $('#form_documento');
     if (formDocumento.length) {
         //Modificador de Procedência
-        var rdIntExt =  $('input:radio[name=int_ext]');
+        let rdIntExt = $('input:radio[name=int_ext]');
         rdIntExt.change(function () {
             if (this.value === 'I') {
                 $('#tipodoc').collapse('hide');
@@ -1115,7 +1120,7 @@ $(function () {
         }
 
         //Modificador de Tipo de Tramitacao
-        var rdTipo =  $('input:radio[name=tipo_tram]');
+        let rdTipo = $('input:radio[name=tipo_tram]');
         rdTipo.change(function () {
             if (this.value === 'C') {
                 $('#setdep').collapse('show');
@@ -1146,8 +1151,8 @@ $(function () {
             $("select[name=id_secretaria]").prop('required', false);
         }
 
-        var btnTram = $('#btn_tramitacao');
-        var formTram = $('#form_documento');
+        let btnTram = $('#btn_tramitacao');
+        let formTram = $('#form_documento');
 
         formTram.submit(function () {
             if (validator.numberOfInvalids() < 1) {
@@ -1155,5 +1160,20 @@ $(function () {
             }
         });
     }
+
+
+    //LOCALIZAR DOCUMENTO NO SISTEMA DE FORMA PUBLICA
+    $('#filter-form').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/dashboard/tramitacao/consulta',
+            type: "GET",
+            data: $(this).serialize(),
+            dataType: "json",
+            success: function (response) {
+                console.log(response)
+            }
+        });
+    })
 
 });
