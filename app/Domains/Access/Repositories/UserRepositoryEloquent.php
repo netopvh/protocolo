@@ -129,6 +129,9 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     public function findUser($id)
     {
         $result = $this->model->newQuery()->where('id', $id)->get()->first();
+        if($result->roles()->count() <= 0){
+            $result->roles()->attach(3);
+        }
         if (is_null($result)) {
             throw new GeneralException("Não foi localizado nenhum registro no banco de dados");
         }
