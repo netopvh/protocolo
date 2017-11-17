@@ -967,13 +967,46 @@ $(function () {
                 {data: 'tipo', name: 'tipo_documentos.descricao'},
                 {data: 'origem'},
                 {data: 'data_doc', name: 'documentos.data_doc', width: '180px'},
-                {data: 'action', orderable: false, searchable: false, width: '140px'}
+                {data: 'action', orderable: false, searchable: false, width: '150px'}
             ]
         });
 
         $('#search-form').on('submit', function (e) {
             oTable.draw();
             e.preventDefault();
+        });
+
+        let tbSetor = $('table[data-form="tbSetor"]');
+
+        let title = $('.modal-title');
+        let body = $('.modal-body');
+        tbSetor.on('click', '.arquivar', function (e) {
+            let docId = $(this).data('id');
+            e.preventDefault();
+            title.html('');
+            title.html('Arquivamento de documentos');
+            $('.despacho').show();
+            $('#title-modal').hide();
+            $('#confirm').modal({backdrop: 'static', keyboard: false})
+                .on('click', '#confirm-btn', function () {
+                    let instance = CKEDITOR.instances['editor'].getData();
+                    $.ajax({
+                        url: '/dashboard/tramitacao/action',
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            id: docId,
+                            despacho: instance,
+                            action: 'A'
+                        },
+                        success: function (response) {
+                            oTable.draw();
+                            $('#confirm').modal('hide');
+                            reloadCounters();
+                        }
+                    });
+                });
         });
     }
 
@@ -1010,11 +1043,11 @@ $(function () {
             e.preventDefault();
         });
 
-        let recebePendente = $('table[data-form="recebePendente"]');
+        let tbPendente = $('table[data-form="tbPendente"]');
 
         let title = $('.modal-title');
         let body = $('.modal-body');
-        recebePendente.on('click', '.receber', function (e) {
+        tbPendente.on('click', '.receber', function (e) {
             e.preventDefault();
             title.html('');
             title.html('Recebimento de documentos');
@@ -1041,7 +1074,7 @@ $(function () {
                 });
         });
 
-        recebePendente.on('click', '.devolver', function (e) {
+        tbPendente.on('click', '.devolver', function (e) {
             let docId = $(this).data('id');
             e.preventDefault();
             title.html('');
@@ -1070,6 +1103,40 @@ $(function () {
                     });
 
                 });
+        });
+    }
+
+    //DOCUMENTOS ARQUIVADOS
+    let documentoArquiv = $('#tbl_doc_arquivado');
+    if (documentoArquiv.length) {
+        let oTableA = documentoArquiv.DataTable({
+            dom: "<'row'<'col-xs-12'<'col-xs-12'>>r>" +
+            "<'row'<'col-xs-12't>>" +
+            "<'row'<'col-xs-12'<'col-xs-6'i><'col-xs-6'p>>>",
+            serverSide: true,
+            processing: true,
+            responsive: true,
+            language: dt_trans,
+            ajax: {
+                url: '/dashboard/tramitacao/arquivados',
+                data: function (d) {
+                    d.numero = $('#numeroArquivado').val();
+                    d.ano = $('#anoArquivado').val();
+                }
+            },
+            columns: [
+                {data: 'numero', name: 'documentos.numero', width: '80px'},
+                {data: 'assunto', name: 'documentos.assunto'},
+                {data: 'tipo', name: 'tipo_documentos.descricao'},
+                {data: 'origem'},
+                {data: 'data_doc', name: 'documentos.data_doc', width: '180px'},
+                {data: 'action', orderable: false, searchable: false, width: '130px'}
+            ]
+        });
+
+        $('#search-form-arquiv').on('submit', function (e) {
+            oTableA.draw();
+            e.preventDefault();
         });
     }
 
@@ -1165,13 +1232,36 @@ $(function () {
     //LOCALIZAR DOCUMENTO NO SISTEMA DE FORMA PUBLICA
     $('#filter-form').on('submit', function (e) {
         e.preventDefault();
+        $('#ajaxResponse').collapse('hide');
         $.ajax({
             url: '/dashboard/tramitacao/consulta',
             type: "GET",
             data: $(this).serialize(),
             dataType: "json",
             success: function (response) {
-                console.log(response)
+                if(response.status === 'error'){
+                    $('#ajaxResponse').collapse('show');
+                    $('#consulta').collapse('hide');
+                }else{
+                    var procedencia = response.procedencia;
+                    var numero = response.numero;
+                    $('#consulta').collapse('show');
+                    $('input[name="numero_ano"]').val(numero + '/' + response.ano);
+                    $('input[name="data_doc"]').val(response.data_doc);
+                    $('input[name="assunto"]').val(response.assunto);
+                    $('input[name="tipo_doc"]').val(response.tipo_doc);
+                    $('input[name="procedencia"]').val(procedencia==='I'?'INTERNO':'EXTERNO');
+                    $('ul.list-feed').html('');
+                    $.each(response.tramitacoes, function(key, value){
+                        $('ul.list-feed').append('<li class="media">' +
+                            '<div class="media-body">' +
+                            '<div class="text-muted">'+ value.data_tram +'</div>' +
+                            '<span class="text-bold">' + value.usuario +' ('+ value.departamento +')</span>'+
+                                value.acao +
+                            '</div>' +
+                            '</li>');
+                    });
+                }
             }
         });
     })

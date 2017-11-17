@@ -66,39 +66,26 @@ class TramitacaoService
 
     public function getDocumentsCounter()
     {
-        if(in_admin_group()){
-            $docsSetor = $this->documentoRepository->query()
-                ->where('status', 'R')
-                ->get()
-                ->count();
-        }else{
-            $docsSetor = $this->documentoRepository->query()
-                ->where('arquivado', false)
-                ->where('id_departamento', auth()->user()->id_departamento)
-                ->where('status', '<>', 'P')
-                ->get()
-                ->count();
-        }
+        $docsSetor = $this->documentoRepository->query()
+            ->departamento()
+            ->where('arquivado', false)
+            ->where('status', '<>', 'P')
+            ->get()
+            ->count();
 
 
-        if(in_admin_group()){
-            $pendentes = $this->documentoRepository->query()
-                ->where('arquivado', false)
-                ->where('status', 'P')
-                ->get()
-                ->count();
-        }else{
-            $pendentes = $this->documentoRepository->query()
-                ->where('arquivado', false)
-                ->where('id_departamento', auth()->user()->id_departamento)
-                ->where('status', 'P')
-                ->get()
-                ->count();
-        }
+        $pendentes = $this->documentoRepository->query()
+            ->departamento()
+            ->where('arquivado', false)
+            ->where('status', 'P')
+            ->get()
+            ->count();
 
-        $arquivado = $this->documentoRepository->findWhere([
-            'arquivado' => true
-        ])->count();
+        $arquivado = $this->documentoRepository->query()
+        ->departamento()
+        ->where('arquivado',true)
+        ->get()
+        ->count();
 
         $arrDados = [
             'noSetor' => $docsSetor,
@@ -111,34 +98,31 @@ class TramitacaoService
 
     public function builder()
     {
-        if(in_admin_group()){
-            return $this->documentoRepository
-                ->with(['tipo_documento','departamento_origem','secretaria_origem'])
-                ->query()
-                ->where('status', 'R');
-        }else{
-            return $this->documentoRepository
-                ->with(['tipo_documento','departamento_origem','secretaria_origem'])
-                ->query()
-                ->where('id_departamento', auth()->user()->id_departamento)
-                ->where('status', 'R');
-        }
+        return $this->documentoRepository
+            ->with(['tipo_documento','departamento_origem','secretaria_origem'])
+            ->query()
+            ->departamento()
+            ->where('status', 'R')
+            ->where('arquivado',false);
     }
 
     public function builderPendents()
     {
-        if (in_admin_group()){
-            return $this->documentoRepository
-                ->with(['tipo_documento','departamento_origem','secretaria_origem'])
-                ->query()
-                ->where('status', 'P');
-        }else{
-            return $this->documentoRepository
-                ->with(['tipo_documento','departamento_origem','secretaria_origem'])
-                ->query()
-                ->where('id_departamento', auth()->user()->id_departamento)
-                ->where('status', 'P');
-        }
+        return $this->documentoRepository
+            ->with(['tipo_documento','departamento_origem','secretaria_origem'])
+            ->query()
+            ->departamento()
+            ->where('status', 'P')
+            ->where('arquivado',false);
+    }
+
+    public function builderArquivados()
+    {
+        return $this->documentoRepository
+            ->with(['tipo_documento','departamento_origem','secretaria_origem'])
+            ->query()
+            ->departamento()
+            ->where('arquivado',true);
     }
 
     public function getDataCreate()
@@ -233,7 +217,7 @@ class TramitacaoService
                     'data_tram' => date('d/m/Y'),
                     'id_documento' => $attributes->id,
                     $documento->int_ext=='I'?'id_departamento_origem':'id_secretaria_origem' => $documento->int_ext=='I'?$dptOrigem:$documento->tramitacoes->last()->id_secretaria_origem,
-                    'id_departamento_destino' => $documento->tramitacoes->last()->id_departamento_origem,
+                    'id_departamento_destino' => $documento->int_ext=='I'?$documento->tramitacoes->last()->id_departamento_origem:user_dpt($documento->tramitacoes->last()->id_usuario),
                     'id_usuario' => auth()->user()->id,
                     'tipo_tram' => 'D',
                     'despacho' => $attributes->despacho,
@@ -304,7 +288,7 @@ class TramitacaoService
                     $documento->int_ext=='I'?'id_departamento_origem':'id_secretaria_origem' => $documento->int_ext=='I'?$documento->tramitacoes->last()->id_departamento_origem:$documento->tramitacoes->last()->id_secretaria_origem,
                     'id_departamento_destino' => $attributes->id_destino,
                     'id_usuario' => auth()->user()->id,
-                    'tipo_tram' => 'D',
+                    'tipo_tram' => 'P',
                     'despacho' => $attributes->despacho,
                     'status' => 'P'
                 ]);
@@ -316,6 +300,50 @@ class TramitacaoService
             }
         } catch (ValidatorException $e) {
             return redirect()->back()->with('errors', $e->getMessageBag());
+        }
+    }
+
+    public function arquivaDoc($attributes)
+    {
+        try{
+            $documento = $this->documentoRepository->with('tramitacoes')->find($attributes->id);
+            $documento->arquivado = true;
+            if($documento->save()){
+                $model = $this->tramitacaoRepository->create([
+                    'data_tram' => date('d/m/Y'),
+                    'id_documento' => $attributes->id,
+                    $documento->int_ext=='I'?'id_departamento_origem':'id_secretaria_origem' => $documento->int_ext=='I'?$documento->tramitacoes->last()->id_departamento_origem:$documento->tramitacoes->last()->id_secretaria_origem,
+                    'id_usuario' => auth()->user()->id,
+                    'tipo_tram' => 'A',
+                    'despacho' => $attributes->despacho,
+                    'status' => 'A'
+                ]);
+                if ($model) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }catch (ValidatorException $e){
+            return redirect()->back()->with('errors', $e->getMessageBag());
+        }
+    }
+
+    public function getConsultaPublica($attributes)
+    {
+        try{
+            $tramitacao = $this->documentoRepository->with(['tipo_documento','tramitacoes'])->findWhere([
+                'numero' => $attributes->numero,
+                'ano' => $attributes->ano
+            ])->first();
+
+            if(empty($tramitacao)){
+                return false;
+            }else{
+                return $tramitacao;
+            }
+        }catch (\Exception $e){
+            return redirect()->back()->with('errors', $e->getMessage());
         }
     }
 

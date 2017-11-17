@@ -53,8 +53,10 @@
                             </form>
                         </div>
                     </div>
-                    <span id="ajaxResponse"></span>
                     <br>
+                    <span id="ajaxResponse" class="alert alert-warning collapse">
+                        Nenhum registro foi localizado!
+                    </span>
                     <div id="consulta" class="collapse">
                         <div class="row">
                             <div class="col-md-2">
@@ -73,6 +75,34 @@
                                 <div class="form-group">
                                     <label class="text-bold display-block">Assunto:</label>
                                     <input name="assunto" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="text-bold display-block">Procedência:</label>
+                                    <input name="procedencia" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <dif class="form-group">
+                                    <label class="text-bold display-block">Tipo de Documento:</label>
+                                    <input type="text" name="tipo_doc" class="form-control" disabled>
+                                </dif>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="panel panel-body border-top-teal">
+                                    <ul class="list-feed media-list">
+                                        <li class="media">
+                                            <div class="media-body">
+                                                
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>

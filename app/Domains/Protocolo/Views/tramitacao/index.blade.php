@@ -105,7 +105,7 @@
                                         <hr>
                                         <table id="tbl_documento"
                                                class="table table-framed table-bordered table-striped text-size-base"
-                                               data-form="deleteForm">
+                                               data-form="tbSetor">
                                             <thead>
                                             <tr>
                                                 <th>Número/Ano</th>
@@ -148,7 +148,7 @@
                                         <hr>
                                         <table id="tbl_doc_pendentes"
                                                class="table table-framed table-bordered table-striped text-size-base"
-                                               data-form="recebePendente">
+                                               data-form="tbPendente">
                                             <thead>
                                             <tr>
                                                 <th>Número/Ano</th>
@@ -168,16 +168,16 @@
                                         <div class="col-md-12">
                                             <fieldset>
                                                 <legend>Documentos Arquivados</legend>
-                                                <form method="POST" id="search-form-pend" class="form-inline"
+                                                <form method="POST" id="search-form-arquiv" class="form-inline"
                                                       role="form">
                                                     <div class="form-group">
                                                         <label for="name">Numero:</label>
                                                         <input type="text" class="form-control" name="numero"
-                                                               id="numero">
+                                                               id="numeroArquivado">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="email">Ano:</label>
-                                                        <select name="ano" id="ano" class="form-control">
+                                                        <select name="ano" id="anoArquivado" class="form-control">
                                                             <option value="2015"{{ selected(date('Y'),'2015') }}>2015
                                                             </option>
                                                             <option value="2016"{{ selected(date('Y'),'2016') }}>2016
@@ -234,7 +234,7 @@
                 </div>
                 <div class="modal-body">
                     <span id="title-modal">
-                        <p>Tem certeza que deseja receber este documento?</p>
+                        Tem certeza que deseja receber este documento?
                     </span>
                     <span class="despacho">
                         <label class="text-bold display-block">Despacho: </label>

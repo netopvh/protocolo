@@ -23,7 +23,8 @@ class Tramitacao extends Model implements AuditableContract
 
     public function getDataTramAttribute($value)
     {
-        return Carbon::createFromFormat('Y-m-d',$value)->format('d/m/Y');
+        //return Carbon::createFromFormat('Y-m-d',$value)->format('d/m/Y');
+        return date('d/m/Y', strtotime($value));
     }
 
     public function documentos()

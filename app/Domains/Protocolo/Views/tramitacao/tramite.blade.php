@@ -61,22 +61,21 @@
                                                             class="text-bold">{{ $tramitacao->departamento_destino->descricao }}</span>
                                                 @elseif($documento->int_ext=='I' && $tramitacao->tipo_tram == 'D')
                                                     Devolveu o Documento Nº {{ $documento->numero }} para o Departamento
-                                                    <span
-                                                            class="text-bold">{{ $tramitacao->departamento_destino->descricao }}</span>
+                                                    <span class="text-bold">{{ $tramitacao->departamento_destino->descricao }}</span>
                                                 @elseif($documento->int_ext=='E' && $tramitacao->tipo_tram == 'D')
                                                     Devolveu o Documento Nº {{ $documento->numero }} para o Departamento
-                                                    <span
-                                                            class="text-bold">{{ $tramitacao->departamento_destino->descricao }}</span>
+                                                    <span class="text-bold">{{ $tramitacao->departamento_destino->descricao }}</span>
+                                                @elseif($documento->int_ext=='E' && $tramitacao->tipo_tram == 'P')
+                                                    Enviou o Documento Nº {{ $documento->numero }} para o Departamento
+                                                    <span class="text-bold">{{ $tramitacao->departamento_destino->descricao }}</span>
                                                 @elseif($documento->int_ext=='E' && $tramitacao->tipo_tram=='C')
                                                     {{ $tipos[$tramitacao->tipo_tram] }} o Documento
-                                                    Nº {{ $documento->numero }} para <span
-                                                            class="text-bold">{{ $tramitacao->departamento_destino->descricao }}</span>
-                                                    protocolado por <span
-                                                            class="text-bold">{{ $tramitacao->secretaria_origem->descricao }}</span>
-                                                    @if($documento->int_ext=='I')
-
-                                                    @endif
+                                                    Nº {{ $documento->numero }} para <span class="text-bold">{{ $tramitacao->departamento_destino->descricao }}</span>
+                                                    protocolado por <span  class="text-bold">{{ $tramitacao->secretaria_origem->descricao }}</span>
                                                 @elseif($tramitacao->tipo_tram=='R')
+                                                    {{ $tipos[$tramitacao->tipo_tram] }} o Documento
+                                                    Nº {{ $documento->numero }}
+                                                @elseif($tramitacao->tipo_tram=='A')
                                                     {{ $tipos[$tramitacao->tipo_tram] }} o Documento
                                                     Nº {{ $documento->numero }}
                                                 @endif
@@ -85,7 +84,9 @@
                                                 <ul class="icons-list icons-list-extended text-nowrap">
                                                     <li>
                                                         @if(!is_null($tramitacao->despacho))
-                                                            <button name="confirm-modal" class="despacho" id="despacho{{ $tramitacao->id }}" data-id="{{ $tramitacao->id }}" title="Ver Despacho"
+                                                            <button name="confirm-modal" class="despacho"
+                                                                    id="despacho{{ $tramitacao->id }}"
+                                                                    data-id="{{ $tramitacao->id }}" title="Ver Despacho"
                                                                     style="padding: 0 0 0 0;border: 0; background: transparent;">
                                                                 <i class="icon-bubble-dots4"></i></button>
                                                         @endif

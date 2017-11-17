@@ -25,4 +25,10 @@
             <i class="icon-flip-vertical3"></i>
         </a>
     </li>
+    <li>
+        <button name="confirm-modal" title="Arquivar" class="arquivar" data-id="{{ $documento->id }}"
+                style="padding: 0 0 0 0;border: 0; background: transparent;">
+            <i class="icon-archive" style="padding-top: 2px;"></i>
+        </button>
+    </li>
 </ul>

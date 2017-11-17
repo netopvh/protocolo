@@ -3,7 +3,7 @@
 namespace App\Domains\Protocolo\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Prettus\Repository\Contracts\Transformable;
+use App\Domains\Protocolo\Scopes\DepartamentoScope;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
 use Carbon\Carbon;
@@ -15,7 +15,6 @@ class Documento extends Model implements AuditableContract
     protected $fillable = [
     	'numero','ano','data_doc','assunto','id_tipo_doc','int_ext','id_departamento','id_secretaria'
     ];
-
 
     public function tipo_documento()
     {
