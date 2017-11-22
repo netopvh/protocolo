@@ -59,6 +59,7 @@ class TramitacaoService
         $this->tramitacaoRepository = $tramitacaoRepository;
     }
 
+    
     public function getAllDocumentsType()
     {
         return $this->tipoDocumentoRepository->all();
@@ -245,13 +246,10 @@ class TramitacaoService
 
     public function findDocMovimentacao($id)
     {
-        if (in_admin_group()){
-            $result = $this->documentoRepository->with('tramitacoes')->find($id);
-        }else{
-            $result = $this->documentoRepository->with('tramitacoes')->scopeQuery(function ($query){
-                return $query->where('id_departamento',auth()->user()->id_departamento);
-            })->findWithoutFail($id);
-        }
+        $result = $this->documentoRepository->with('tramitacoes')
+            ->query()
+            ->departamento()
+            ->find($id);
 
         if(empty($result)){
             throw new GeneralException("Nenhum registro localizado no banco de dados ou Usuário sem permissão");
@@ -336,6 +334,21 @@ class TramitacaoService
                 'numero' => $attributes->numero,
                 'ano' => $attributes->ano
             ])->first();
+
+            if(empty($tramitacao)){
+                return false;
+            }else{
+                return $tramitacao;
+            }
+        }catch (\Exception $e){
+            return redirect()->back()->with('errors', $e->getMessage());
+        }
+    }
+
+    public function getDespacho($attributes)
+    {
+        try{
+            $tramitacao = $this->tramitacaoRepository->query()->find($attributes->id);
 
             if(empty($tramitacao)){
                 return false;

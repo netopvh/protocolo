@@ -8,8 +8,6 @@ use App\Core\Http\Controllers\Controller;
 use App\Exceptions\Access\GeneralException;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Prettus\Validator\Exceptions\ValidatorException;
 use Yajra\DataTables\DataTables;
 
 class TramitacaoController extends Controller
@@ -21,7 +19,7 @@ class TramitacaoController extends Controller
         TramitacaoService $service
     )
     {
-        //$this->middleware('auth');
+        $this->middleware('auth');
         $this->tramitacaoService = $service;
     }
 
@@ -185,6 +183,8 @@ class TramitacaoController extends Controller
             } else {
                 return response()->json(['status' => 'Error']);
             }
+        }else if($request->action == 'V'){
+            return response()->json(['data' => 'OK']);
         }
     }
 
@@ -364,5 +364,12 @@ class TramitacaoController extends Controller
     public function showDoc($id)
     {
         return view('tramitacao.show')->with('documento', $this->tramitacaoService->findDocs($id));
+    }
+
+    public function getDespacho(Request $request)
+    {
+        $despacho = $this->tramitacaoService->getDespacho($request);
+
+        return response()->json(['data' => $despacho]);
     }
 }

@@ -68,7 +68,9 @@ class Documento extends Model implements AuditableContract
 
     public function scopeDepartamento($query)
     {
-        return $query->where('id_departamento', auth()->user()->id_departamento);
+        if(!in_admin_group()){
+            return $query->where('id_departamento', auth()->user()->id_departamento);
+        }
     }
 
 }

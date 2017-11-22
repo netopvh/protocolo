@@ -10,9 +10,15 @@ use Yajra\DataTables\DataTables;
 
 class TipoDocumentoController extends Controller
 {
-    /** @var  DepartamentoRepository */
+    /**
+     * @var TipoDocumentoRepository
+     */
     private $tipoDocumentoRepository;
 
+    /**
+     * TipoDocumentoController constructor.
+     * @param TipoDocumentoRepository $tipoDocumentoRepository
+     */
     public function __construct(TipoDocumentoRepository $tipoDocumentoRepository)
     {
         $this->middleware('auth');
@@ -20,10 +26,9 @@ class TipoDocumentoController extends Controller
     }
 
     /**
-     * Display a listing of the Servidor.
+     * Item inicial do Controller
      *
-     * @param Request $request
-     * @return
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
@@ -47,9 +52,9 @@ class TipoDocumentoController extends Controller
     }
 
     /**
-     * Show the form for creating a new Servidor.
+     * Exibe formulário de cadastro
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -57,11 +62,10 @@ class TipoDocumentoController extends Controller
     }
 
     /**
-     * Store a newly created Servidor in storage.
+     * Armazena registro no banco de dados
      *
      * @param Request $request
-     *
-     * @return mixed
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -74,23 +78,10 @@ class TipoDocumentoController extends Controller
     }
 
     /**
-     * Display the specified Servidor.
+     * Localiza registro no banco de dados para edição.
      *
-     * @param  int $id
-     *
+     * @param $id
      * @return mixed
-     */
-    public function show($id)
-    {
-        
-    }
-
-    /**
-     * Show the form for editing the specified Servidor.
-     *
-     * @param  int $id
-     *
-     * @return Response
      */
     public function edit($id)
     {
@@ -102,12 +93,11 @@ class TipoDocumentoController extends Controller
     }
 
     /**
-     * Update the specified Servidor in storage.
+     * Atualiza informações no banco de dados
      *
-     * @param  int              $id
-     * @param UpdateServidorRequest $request
-     *
-     * @return Response
+     * @param $id
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update($id, Request $request)
     {
@@ -123,11 +113,10 @@ class TipoDocumentoController extends Controller
     }
 
     /**
-     * Remove the specified Servidor from storage.
+     * Remove registro do banco de dados
      *
-     * @param  int $id
-     *
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {

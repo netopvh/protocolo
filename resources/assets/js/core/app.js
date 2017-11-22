@@ -939,12 +939,63 @@ $(function () {
         });
     }
 
+    //DASHBOARD TABLE
+    let dashboardTbl = $('#tbl_dashboard');
+    if (dashboardTbl.length) {
+        let oTableDash = dashboardTbl.DataTable({
+            dom: "<'row'<'col-xs-12'<'col-xs-12'>>r>" +
+            "<'row'<'col-xs-12't>>" +
+            "<'row'<'col-xs-12'<'col-xs-6'i><'col-xs-6'p>>>",
+            serverSide: true,
+            processing: true,
+            responsive: true,
+            language: dt_trans,
+            ajax: '/documentos',
+            columns: [
+                {data: 'numero', name: 'documentos.numero', width: '80px'},
+                {data: 'assunto', name: 'documentos.assunto'},
+                {data: 'tipo', name: 'tipo_documentos.descricao'},
+                {data: 'origem'},
+                {data: 'data_doc', name: 'documentos.data_doc', width: '180px'},
+                {data: 'action', orderable: false, searchable: false, width: '70px'}
+            ]
+        });
+
+        let tbDashboard = $('table[data-form="tbDashboard"]');
+
+        let title = $('.modal-title');
+        let body = $('.modal-body');
+        tbDashboard.on('click', '.receber', function (e) {
+            e.preventDefault();
+            title.html('');
+            title.html('Recebimento de documentos');
+            $('#title-modal').show();
+            $('.despacho').hide();
+            let data = {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                id: $(this).data('id'),
+                action: 'R'
+            };
+            $('#confirm').modal({backdrop: 'static', keyboard: false})
+                .on('click', '#confirm-btn', function () {
+                    $.ajax({
+                        url: '/dashboard/tramitacao/action',
+                        type: "POST",
+                        data: data,
+                        dataType: "json",
+                        success: function () {
+                            oTableDash.draw();
+                            $('#confirm').modal('hide');
+                            reloadCounters();
+                        }
+                    });
+                });
+        });
+    }
+
     //DOCUMENTOS NO SETOR
     let documento = $('#tbl_documento');
     if (documento.length) {
-
-        reloadCounters();
-
         let oTable = documento.DataTable({
             dom: "<'row'<'col-xs-12'<'col-xs-12'>>r>" +
             "<'row'<'col-xs-12't>>" +
@@ -959,6 +1010,9 @@ $(function () {
                     d.numero = $('#numero').val();
                     d.ano = $('#ano').val();
                     d.id_tipo_doc = $('#id_tipo_doc').val();
+                },
+                complete: function () {
+                    reloadCounters();
                 }
             },
             columns: [
@@ -1026,6 +1080,9 @@ $(function () {
                 data: function (d) {
                     d.numero = $('#numeroPendete').val();
                     d.ano = $('#anoPendente').val();
+                },
+                complete: function () {
+                    reloadCounters();
                 }
             },
             columns: [
@@ -1122,6 +1179,9 @@ $(function () {
                 data: function (d) {
                     d.numero = $('#numeroArquivado').val();
                     d.ano = $('#anoArquivado').val();
+                },
+                complete: function () {
+                    reloadCounters();
                 }
             },
             columns: [
@@ -1140,10 +1200,24 @@ $(function () {
         });
     }
 
-    let getDespacho = $('#despacho');
-
-    getDespacho.on("click", function () {
-        alert($(this).data('id'));
+    let getDespacho = $('.despacho');
+    getDespacho.on("click", function (e) {
+        let tramitacaoId = $(this).data('id');
+        let body = $('.modal-body');
+        $.ajax({
+            url: '/dashboard/tramitacao/despacho',
+            type: "GET",
+            data: {
+                id: tramitacaoId
+            },
+            dataType: "json",
+            success: function (response) {
+                body.html('');
+                body.html('<div class="well">'+ response.data.despacho +'</div>');
+                //alert(response.data);
+                $('#modal-despacho').modal({backdrop: 'static', keyboard: false});
+            }
+        });
     });
 
     let formDocumento = $('#form_documento');
@@ -1219,9 +1293,8 @@ $(function () {
         }
 
         let btnTram = $('#btn_tramitacao');
-        let formTram = $('#form_documento');
 
-        formTram.submit(function () {
+        formDocumento.submit(function () {
             if (validator.numberOfInvalids() < 1) {
                 btnTram.prop('disabled', true);
             }

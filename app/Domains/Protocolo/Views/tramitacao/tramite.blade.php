@@ -105,7 +105,7 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="confirm">
+    <div class="modal fade" id="modal-despacho">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -113,13 +113,9 @@
                     <h4 class="modal-title">Despacho</h4>
                 </div>
                 <div class="modal-body">
-                    <span id="title-modal">
-                        <p>Tem certeza que deseja receber este documento?</p>
-                    </span>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-primary" id="confirm-btn">Confirmar</button>
-                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>

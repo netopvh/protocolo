@@ -5,9 +5,13 @@ namespace App\Domains\Dashboard\Controllers;
 use Illuminate\Http\Request;
 use App\Core\Http\Controllers\Controller;
 use Jenssegers\Date\Date;
+use Yajra\DataTables\DataTables;
+use App\Domains\Protocolo\Services\TramitacaoService;
 
 class HomeController extends Controller
 {
+
+    private $tramitacaoService;
 
     private $servidorRepo;
     /**
@@ -15,11 +19,36 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(TramitacaoService $tramitacaoService)
     {
         $this->middleware('auth');
+        $this->tramitacaoService = $tramitacaoService;
     }
 
+    public function data(DataTables $dataTables)
+    {
+        $query = $this->tramitacaoService->builderPendents();
+
+        return $dataTables->eloquent($query)
+            ->editColumn('numero', function ($documento) {
+                return $documento->numero . '/' . $documento->ano;
+            })
+            ->addColumn('tipo', function ($documento) {
+                return $documento->tipo_documento->descricao;
+            })
+            ->addColumn('origem', function ($documento) {
+                if ($documento->int_ext == 'I') {
+                    return $documento->tramitacoes->last()->departamento_origem->descricao;
+                } else {
+                    return $documento->tramitacoes->last()->secretaria_origem->descricao;
+                }
+            })
+            ->addColumn('action', function ($documento) {
+                return view('buttons')->with('documento', $documento);
+            })
+            ->toJson();
+    }
+    
     /**
      * Show the application dashboard.
      *

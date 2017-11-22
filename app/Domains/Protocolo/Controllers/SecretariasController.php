@@ -20,7 +20,7 @@ class SecretariasController extends Controller
     }
 
     /**
-     * Display a listing of the Secretarias.
+     * Item inicial do Controller
      *
      * @param Request $request
      * @return mixed
@@ -33,9 +33,9 @@ class SecretariasController extends Controller
     }
 
     /**
-     * Show the form for creating a new Secretarias.
+     * Exibe formulário de cadastro
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -43,11 +43,10 @@ class SecretariasController extends Controller
     }
 
     /**
-     * Store a newly created Secretarias in storage.
+     * Armazena registro no banco de dados
      *
-     * @param CreateSecretariasRequest $request
-     *
-     * @return Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -60,27 +59,10 @@ class SecretariasController extends Controller
     }
 
     /**
-     * Display the specified Secretarias.
+     * Localiza registro no banco de dados para edição.
      *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function show($id)
-    {
-        try {
-            return view('secretarias.show')->with('secretaria', $this->secretariasRepository->find($id));
-        } catch (\Exception $e) {
-            return redirect()->route('admin.secretarias')->with('errors','Nenhum registro localizado no banco de dados');
-        }
-    }
-
-    /**
-     * Show the form for editing the specified Secretarias.
-     *
-     * @param  int $id
-     *
-     * @return Response
+     * @param $id
+     * @return mixed
      */
     public function edit($id)
     {
@@ -92,12 +74,11 @@ class SecretariasController extends Controller
     }
 
     /**
-     * Update the specified Secretarias in storage.
+     * Atualiza informações no banco de dados
      *
-     * @param  int              $id
-     * @param UpdateSecretariasRequest $request
-     *
-     * @return Response
+     * @param $id
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update($id, Request $request)
     {
@@ -113,11 +94,10 @@ class SecretariasController extends Controller
     }
 
     /**
-     * Remove the specified Secretarias from storage.
+     *  Remove registro do banco de dados
      *
-     * @param  int $id
-     *
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {

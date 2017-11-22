@@ -38,10 +38,6 @@
                         <i class="icon-search4"></i>
                         Localizar Documento
                     </a>
-                    <a href="{{ route('admin.tramitacao.create') }}" class="btn btn-primary btn-raised legitRipple">
-                        <i class="icon-archive"></i>
-                        Arquivar Documento
-                    </a>
                 </div>
                 <div class="panel panel-flat">
                     <div class="panel-body">

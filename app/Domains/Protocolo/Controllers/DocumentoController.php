@@ -29,6 +29,15 @@ class DocumentoController extends Controller
      /** @var  DepartamentoRepository */
     private $documentoAnexoRepository;
 
+
+    /**
+     * DocumentoController constructor.
+     * @param DocumentoRepository $documentoRepository
+     * @param TipoDocumentoRepository $tipoDocumentoRepository
+     * @param SecretariasRepository $secretariaRepository
+     * @param DepartamentoRepository $departamentoRepository
+     * @param DocumentoAnexoRepository $documentoAnexoRepository
+     */
     public function __construct(
         DocumentoRepository $documentoRepository,
         TipoDocumentoRepository $tipoDocumentoRepository,
@@ -46,7 +55,7 @@ class DocumentoController extends Controller
     }
 
     /**
-     * Display a listing of the Servidor.
+     * Item inicial do Controller
      *
      * @param Request $request
      * @return
@@ -89,9 +98,9 @@ class DocumentoController extends Controller
     }
 
     /**
-     * Show the form for creating a new Servidor.
+     * Exibe formulário de cadastro
      *
-     * @return mixed
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -107,11 +116,10 @@ class DocumentoController extends Controller
     }
 
     /**
-     * Store a newly created Servidor in storage.
+     * Armazena registro no banco de dados
      *
      * @param Request $request
-     *
-     * @return mixed
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -131,27 +139,10 @@ class DocumentoController extends Controller
     }
 
     /**
-     * Display the specified Servidor.
+     * Localiza registro no banco de dados para edição.
      *
-     * @param  int $id
-     *
-     * @return mixed
-     */
-    public function show($id)
-    {
-        try {
-            return view('documento.show')->with('documento', $this->documentoRepository->find($id));
-        } catch (\Exception $e) {
-            return redirect()->back()->with('errors','Nenhum registro localizado no banco de dados');
-        }
-    }
-
-    /**
-     * Show the form for editing the specified Servidor.
-     *
-     * @param  int $id
-     *
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id)
     {
@@ -163,12 +154,11 @@ class DocumentoController extends Controller
     }
 
     /**
-     * Update the specified Servidor in storage.
+     * Atualiza informações no banco de dados
      *
-     * @param  int              $id
-     * @param UpdateServidorRequest $request
-     *
-     * @return Response
+     * @param $id
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update($id, Request $request)
     {
@@ -184,11 +174,10 @@ class DocumentoController extends Controller
     }
 
     /**
-     * Remove the specified Servidor from storage.
+     * Remove registro do banco de dados
      *
-     * @param  int $id
-     *
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {

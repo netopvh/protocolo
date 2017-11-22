@@ -13,6 +13,10 @@ class DepartamentoController extends Controller
     /** @var  DepartamentoRepository */
     private $departamentoRepository;
 
+    /**
+     * DepartamentoController constructor.
+     * @param DepartamentoRepository $departamentoRepository
+     */
     public function __construct(DepartamentoRepository $departamentoRepository)
     {
         $this->middleware('auth');
@@ -20,7 +24,7 @@ class DepartamentoController extends Controller
     }
 
     /**
-     * Display a listing of the Servidor.
+     * Item inicial do Controller
      *
      * @param Request $request
      * @return
@@ -47,9 +51,9 @@ class DepartamentoController extends Controller
     }
 
     /**
-     * Show the form for creating a new Servidor.
+     * Exibe formulário de cadastro
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -57,11 +61,10 @@ class DepartamentoController extends Controller
     }
 
     /**
-     * Store a newly created Servidor in storage.
+     * Armazena registro no banco de dados
      *
      * @param Request $request
-     *
-     * @return mixed
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -74,23 +77,10 @@ class DepartamentoController extends Controller
     }
 
     /**
-     * Display the specified Servidor.
+     * Localiza registro no banco de dados para edição.
      *
-     * @param  int $id
-     *
-     * @return mixed
-     */
-    public function show($id)
-    {
-        
-    }
-
-    /**
-     * Show the form for editing the specified Servidor.
-     *
-     * @param  int $id
-     *
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id)
     {
@@ -102,12 +92,11 @@ class DepartamentoController extends Controller
     }
 
     /**
-     * Update the specified Servidor in storage.
+     * Atualiza informações no banco de dados
      *
-     * @param  int              $id
-     * @param UpdateServidorRequest $request
-     *
-     * @return Response
+     * @param $id
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update($id, Request $request)
     {
@@ -123,11 +112,10 @@ class DepartamentoController extends Controller
     }
 
     /**
-     * Remove the specified Servidor from storage.
+     * Remove registro do banco de dados
      *
-     * @param  int $id
-     *
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {

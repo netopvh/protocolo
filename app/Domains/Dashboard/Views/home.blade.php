@@ -23,15 +23,15 @@
                         <div class="col-md-12">
                             <fieldset>
                                 <legend>Documentos Pendentes de Recebimento</legend>
-                                <table class="table table-bordered table-condensed table-striped">
+                                <table id="tbl_dashboard" class="table table-bordered table-condensed table-striped" data-form="tbDashboard">
                                     <thead>
                                         <tr>
-                                            <th width="100">Número</th>
+                                            <th>Número/Ano</th>
                                             <th>Assunto</th>
                                             <th>Tipo</th>
                                             <th>Encaminhado por</th>
                                             <th>Data</th>
-                                            <th width="110" class="text-center">Ações</th>
+                                            <th class="text-center">Ações</th>
                                         </tr>
                                     </thead>
                                 </table>

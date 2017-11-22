@@ -54,5 +54,6 @@ $this->group(['prefix' => 'dashboard'],function (){
         $this->get('/{id}/tramite','TramitacaoController@getMovimentos')->name('admin.tramitacao.movimento');
         $this->get('/documento/consulta','TramitacaoController@showDocPublic')->name('admin.tramitacao.doc.consulta');
         $this->get('/consulta','TramitacaoController@getConsultaPublica');
+        $this->get('/despacho','TramitacaoController@getDespacho');
     });
 });
