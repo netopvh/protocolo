@@ -55,5 +55,7 @@ $this->group(['prefix' => 'dashboard'],function (){
         $this->get('/documento/consulta','TramitacaoController@showDocPublic')->name('admin.tramitacao.doc.consulta');
         $this->get('/consulta','TramitacaoController@getConsultaPublica');
         $this->get('/despacho','TramitacaoController@getDespacho');
+        $this->get('/arquivar/{id}','TramitacaoController@arquivarIndex')->name('admin.tramitacao.doc.arquivar');
+        $this->post('arquivar/{id}/store','TramitacaoController@arquivarStore')->name('admin.tramitacao.doc.arquivar.store');
     });
 });

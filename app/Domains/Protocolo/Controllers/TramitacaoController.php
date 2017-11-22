@@ -177,21 +177,13 @@ class TramitacaoController extends Controller
             } else {
                 return response()->json(['status' => 'Error']);
             }
-        }else if($request->action == 'A'){
-            if ($this->tramitacaoService->arquivaDoc($request)) {
-                return response()->json(['status' => 'OK']);
-            } else {
-                return response()->json(['status' => 'Error']);
-            }
-        }else if($request->action == 'V'){
-            return response()->json(['data' => 'OK']);
         }
     }
 
     /**
      * Show the form for creating a new Servidor.
      *
-     * @return mixed
+     * @return \Illuminate\View\View;
      */
     public function create()
     {
@@ -208,7 +200,6 @@ class TramitacaoController extends Controller
      */
     public function store(Request $request)
     {
-
         $this->tramitacaoService->createAndUpload($request);
 
         return redirect()->route('admin.tramitacao')->with('success', 'Registro inserido com sucesso!');
@@ -276,6 +267,28 @@ class TramitacaoController extends Controller
 
     /**
      * @param $id
+     * @return \Illuminate\View\View;
+     */
+    public function arquivarIndex($id)
+    {
+        return view('tramitacao.arquivar')
+            ->with('documento',$this->tramitacaoService->findDocs($id));
+    }
+
+    /**
+     * @param $id
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function arquivarStore($id, Request $request)
+    {
+        $this->tramitacaoService->arquivaDoc($id, $request);
+
+        return redirect()->route('admin.tramitacao')->with('success', 'Documento arquivado com sucesso!');
+    }
+    
+    /**
+     * @param $id
      * @return mixed
      */
     public function getMovimentos($id)
@@ -300,7 +313,8 @@ class TramitacaoController extends Controller
      */
     public function showDocPublic()
     {
-        return view('tramitacao.tramite_public');
+        return view('tramitacao.tramite_public')
+            ->with('dados',$this->tramitacaoService->getDataCreate());
     }
 
     /**
@@ -317,10 +331,14 @@ class TramitacaoController extends Controller
                 $action = "";
                 if ($documento->int_ext == 'I' && $tramitacao->tipo_tram == 'S') {
                     $action = ' Criou o Documento Nº ' . $documento->numero . ' e enviou para o <span class="text-bold">' . $tramitacao->departamento_destino->descricao . '</span>';
-                } else if ($documento->int_ext == 'I' && $tramitacao->tipo_tram == 'D') {
+                }else if ($documento->int_ext == 'I' && $tramitacao->tipo_tram == 'D') {
                     $action = ' Devolveu o Documento Nº ' . $documento->numero . ' para o Departamento <span class="text-bold">' . $tramitacao->departamento_destino->descricao . '</span>';
+                }else if ($documento->int_ext == 'I' && $tramitacao->tipo_tram == 'P') {
+                    $action = ' Enviou o Documento Nº ' . $documento->numero . ' para o Departamento <span class="text-bold">' . $tramitacao->departamento_destino->descricao . '</span>';
                 }else if ($documento->int_ext == 'E' && $tramitacao->tipo_tram == 'D') {
                     $action = ' Devolveu o Documento Nº ' . $documento->numero . ' para o Departamento <span class="text-bold">' . $tramitacao->departamento_destino->descricao . '</span>';
+                }else if ($documento->int_ext == 'E' && $tramitacao->tipo_tram == 'O') {
+                    $action = ' Enviou o Documento Nº ' . $documento->numero . ' para <span class="text-bold">' . $tramitacao->secretaria_destino->descricao . '</span>';
                 }else if ($documento->int_ext == 'E' && $tramitacao->tipo_tram == 'P') {
                     $action = ' Enviou o Documento Nº ' . $documento->numero . ' para o Departamento <span class="text-bold">' . $tramitacao->departamento_destino->descricao . '</span>';
                 } else if ($documento->int_ext == 'E' && $tramitacao->tipo_tram == 'C') {
@@ -366,6 +384,10 @@ class TramitacaoController extends Controller
         return view('tramitacao.show')->with('documento', $this->tramitacaoService->findDocs($id));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getDespacho(Request $request)
     {
         $despacho = $this->tramitacaoService->getDespacho($request);

@@ -75,7 +75,7 @@
                                         </label>
 
                                         <label class="radio-inline">
-                                            <input type="radio" name="tipo_tram" value="S" class="styled" required>
+                                            <input type="radio" name="tipo_tram" value="O" class="styled" required>
                                             Saída
                                         </label>
                                     </div>

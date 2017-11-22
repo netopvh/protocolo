@@ -62,6 +62,9 @@
                                                 @elseif($documento->int_ext=='I' && $tramitacao->tipo_tram == 'D')
                                                     Devolveu o Documento Nº {{ $documento->numero }} para o Departamento
                                                     <span class="text-bold">{{ $tramitacao->departamento_destino->descricao }}</span>
+                                                @elseif($documento->int_ext=='I' && $tramitacao->tipo_tram == 'P')
+                                                    Enviou o Documento Nº {{ $documento->numero }} para o Departamento
+                                                    <span class="text-bold">{{ $tramitacao->departamento_destino->descricao }}</span>
                                                 @elseif($documento->int_ext=='E' && $tramitacao->tipo_tram == 'D')
                                                     Devolveu o Documento Nº {{ $documento->numero }} para o Departamento
                                                     <span class="text-bold">{{ $tramitacao->departamento_destino->descricao }}</span>

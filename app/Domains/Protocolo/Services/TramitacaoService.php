@@ -59,7 +59,7 @@ class TramitacaoService
         $this->tramitacaoRepository = $tramitacaoRepository;
     }
 
-    
+
     public function getAllDocumentsType()
     {
         return $this->tipoDocumentoRepository->all();
@@ -70,7 +70,7 @@ class TramitacaoService
         $docsSetor = $this->documentoRepository->query()
             ->departamento()
             ->where('arquivado', false)
-            ->where('status', '<>', 'P')
+            ->where('status', '=', 'R')
             ->get()
             ->count();
 
@@ -83,10 +83,10 @@ class TramitacaoService
             ->count();
 
         $arquivado = $this->documentoRepository->query()
-        ->departamento()
-        ->where('arquivado',true)
-        ->get()
-        ->count();
+            ->departamento()
+            ->where('arquivado', true)
+            ->get()
+            ->count();
 
         $arrDados = [
             'noSetor' => $docsSetor,
@@ -100,30 +100,30 @@ class TramitacaoService
     public function builder()
     {
         return $this->documentoRepository
-            ->with(['tipo_documento','departamento_origem','secretaria_origem'])
+            ->with(['tipo_documento', 'departamento_origem', 'secretaria_origem'])
             ->query()
             ->departamento()
             ->where('status', 'R')
-            ->where('arquivado',false);
+            ->where('arquivado', false);
     }
 
     public function builderPendents()
     {
         return $this->documentoRepository
-            ->with(['tipo_documento','departamento_origem','secretaria_origem'])
+            ->with(['tipo_documento', 'departamento_origem', 'secretaria_origem'])
             ->query()
             ->departamento()
             ->where('status', 'P')
-            ->where('arquivado',false);
+            ->where('arquivado', false);
     }
 
     public function builderArquivados()
     {
         return $this->documentoRepository
-            ->with(['tipo_documento','departamento_origem','secretaria_origem'])
+            ->with(['tipo_documento', 'departamento_origem', 'secretaria_origem'])
             ->query()
             ->departamento()
-            ->where('arquivado',true);
+            ->where('arquivado', true);
     }
 
     public function getDataCreate()
@@ -151,23 +151,24 @@ class TramitacaoService
             if ($documento = $this->documentoRepository->create($attributes->all())) {
                 $filename = $attributes->documento->store('protocolo', 'public');
                 $documento->path_doc = $filename;
+                $documento->status = $attributes->tipo_tram == 'O' ? 'S' : 'P';
                 if ($documento->save()) {
                     $tram = $this->tramitacaoRepository->create([
                         'data_tram' => date('d/m/Y'),
                         'id_documento' => $documento->id,
                         'id_usuario' => auth()->user()->id,
-                        'tipo_tram' => isset($attributes->tipo_tram)?$attributes->tipo_tram:'S',
+                        'tipo_tram' => isset($attributes->tipo_tram) ? $attributes->tipo_tram : 'S',
                         'despacho' => $attributes->despacho,
-                        'status' => 'P'
+                        'status' => $attributes->tipo_tram == 'O' ? 'S' : 'P'
                     ]);
-                    if ($attributes->int_ext == 'I'){
+                    if ($attributes->int_ext == 'I') {
                         $tram->id_departamento_origem = auth()->user()->id_departamento;
                         $tram->id_departamento_destino = $attributes->id_departamento;
-                    }else if($attributes->int_ext == 'E'){
-                        if ($attributes->tipo_tram == 'C'){
+                    } else if ($attributes->int_ext == 'E') {
+                        if ($attributes->tipo_tram == 'C') {
                             $tram->id_secretaria_origem = $attributes->id_secretaria;
                             $tram->id_departamento_destino = $attributes->id_departamento;
-                        }else if($attributes->tipo_tram == 'S'){
+                        } else if ($attributes->tipo_tram == 'O') {
                             $tram->id_departamento_origem = $attributes->id_departamento;
                             $tram->id_secretaria_destino = $attributes->id_secretaria;
                         }
@@ -189,8 +190,8 @@ class TramitacaoService
                 $model = $this->tramitacaoRepository->create([
                     'data_tram' => date('d/m/Y'),
                     'id_documento' => $attributes->id,
-                    $documento->int_ext=='I'?'id_departamento_origem':'id_secretaria_origem' => $documento->int_ext=='I'?$documento->tramitacoes->last()->id_departamento_origem:$documento->tramitacoes->last()->id_secretaria_origem,
-                    'id_departamento_destino' => $documento->tramitacoes->last()->id_departamento_destino,
+                    $documento->int_ext == 'I' ? 'id_departamento_origem' : 'id_secretaria_origem' => $documento->int_ext == 'I' ? $documento->tramitacoes->first()->id_departamento_origem : $documento->tramitacoes->first()->id_secretaria_origem,
+                    'id_departamento_destino' => $documento->tramitacoes->first()->id_departamento_destino,
                     'id_usuario' => auth()->user()->id,
                     'tipo_tram' => 'R',
                     'status' => 'R'
@@ -212,13 +213,13 @@ class TramitacaoService
             $documento = $this->documentoRepository->with('tramitacoes')->find($attributes->id);
             $dptOrigem = $documento->id_departamento;
             $documento->status = 'P';
-            $documento->id_departamento = $documento->int_ext=='I'?$documento->tramitacoes->last()->id_departamento_origem:user_dpt($documento->tramitacoes->last()->id_usuario);
+            $documento->id_departamento = $documento->int_ext == 'I' ? $documento->tramitacoes->first()->id_departamento_origem : user_dpt($documento->tramitacoes->first()->id_usuario);
             if ($documento->save()) {
                 $model = $this->tramitacaoRepository->create([
                     'data_tram' => date('d/m/Y'),
                     'id_documento' => $attributes->id,
-                    $documento->int_ext=='I'?'id_departamento_origem':'id_secretaria_origem' => $documento->int_ext=='I'?$dptOrigem:$documento->tramitacoes->last()->id_secretaria_origem,
-                    'id_departamento_destino' => $documento->int_ext=='I'?$documento->tramitacoes->last()->id_departamento_origem:user_dpt($documento->tramitacoes->last()->id_usuario),
+                    $documento->int_ext == 'I' ? 'id_departamento_origem' : 'id_secretaria_origem' => $documento->int_ext == 'I' ? $dptOrigem : $documento->tramitacoes->first()->id_secretaria_origem,
+                    'id_departamento_destino' => $documento->int_ext == 'I' ? $documento->tramitacoes->first()->id_departamento_origem : user_dpt($documento->tramitacoes->first()->id_usuario),
                     'id_usuario' => auth()->user()->id,
                     'tipo_tram' => 'D',
                     'despacho' => $attributes->despacho,
@@ -251,25 +252,10 @@ class TramitacaoService
             ->departamento()
             ->find($id);
 
-        if(empty($result)){
+        if (empty($result)) {
             throw new GeneralException("Nenhum registro localizado no banco de dados ou Usuário sem permissão");
-        }else{
+        } else {
             return $result;
-        }
-    }
-
-    public function defineStatus($attributes)
-    {
-        try {
-            $tramitacao = $this->tramitacaoRepository->find($attributes->id);
-            $tramitacao->fill(['status' => $attributes->value]);
-            if ($tramitacao->save()) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (\Exception $e) {
-            return redirect()->back()->with('errors', $e->getMessage());
         }
     }
 
@@ -283,7 +269,7 @@ class TramitacaoService
                 $model = $this->tramitacaoRepository->create([
                     'data_tram' => date('d/m/Y'),
                     'id_documento' => $attributes->id_documento,
-                    $documento->int_ext=='I'?'id_departamento_origem':'id_secretaria_origem' => $documento->int_ext=='I'?$documento->tramitacoes->last()->id_departamento_origem:$documento->tramitacoes->last()->id_secretaria_origem,
+                    $documento->int_ext == 'I' ? 'id_departamento_origem' : 'id_secretaria_origem' => $documento->int_ext == 'I' ? $documento->tramitacoes->first()->id_departamento_destino : $documento->tramitacoes->first()->id_secretaria_origem,
                     'id_departamento_destino' => $attributes->id_destino,
                     'id_usuario' => auth()->user()->id,
                     'tipo_tram' => 'P',
@@ -301,16 +287,16 @@ class TramitacaoService
         }
     }
 
-    public function arquivaDoc($attributes)
+    public function arquivaDoc($id, $attributes)
     {
-        try{
-            $documento = $this->documentoRepository->with('tramitacoes')->find($attributes->id);
+        try {
+            $documento = $this->documentoRepository->with('tramitacoes')->find($id);
             $documento->arquivado = true;
-            if($documento->save()){
+            if ($documento->save()) {
                 $model = $this->tramitacaoRepository->create([
                     'data_tram' => date('d/m/Y'),
-                    'id_documento' => $attributes->id,
-                    $documento->int_ext=='I'?'id_departamento_origem':'id_secretaria_origem' => $documento->int_ext=='I'?$documento->tramitacoes->last()->id_departamento_origem:$documento->tramitacoes->last()->id_secretaria_origem,
+                    'id_documento' => $documento->id,
+                    $documento->int_ext == 'I' ? 'id_departamento_origem' : 'id_secretaria_origem' => $documento->int_ext == 'I' ? $documento->tramitacoes->first()->id_departamento_origem : $documento->tramitacoes->first()->id_secretaria_origem,
                     'id_usuario' => auth()->user()->id,
                     'tipo_tram' => 'A',
                     'despacho' => $attributes->despacho,
@@ -322,40 +308,49 @@ class TramitacaoService
                     return false;
                 }
             }
-        }catch (ValidatorException $e){
+        } catch (ValidatorException $e) {
             return redirect()->back()->with('errors', $e->getMessageBag());
         }
     }
 
     public function getConsultaPublica($attributes)
     {
-        try{
-            $tramitacao = $this->documentoRepository->with(['tipo_documento','tramitacoes'])->findWhere([
-                'numero' => $attributes->numero,
-                'ano' => $attributes->ano
-            ])->first();
+        try {
+            $tramitacao = $this->documentoRepository
+                ->with(['tipo_documento', 'tramitacoes'])
+                ->query()
+                ->where('numero', $attributes->numero)
+                ->where('ano', $attributes->ano)
+                ->where(function ($query) use ($attributes){
+                    if($attributes->has('int_ext')){
+                        $query->where('int_ext', $attributes->int_ext);
+                    }
+                })
+                ->get()
+                ->first();
 
-            if(empty($tramitacao)){
+
+            if (empty($tramitacao)) {
                 return false;
-            }else{
+            } else {
                 return $tramitacao;
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return redirect()->back()->with('errors', $e->getMessage());
         }
     }
 
     public function getDespacho($attributes)
     {
-        try{
+        try {
             $tramitacao = $this->tramitacaoRepository->query()->find($attributes->id);
 
-            if(empty($tramitacao)){
+            if (empty($tramitacao)) {
                 return false;
-            }else{
+            } else {
                 return $tramitacao;
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return redirect()->back()->with('errors', $e->getMessage());
         }
     }

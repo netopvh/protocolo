@@ -26,9 +26,9 @@
         </a>
     </li>
     <li>
-        <button name="confirm-modal" title="Arquivar" class="arquivar" data-id="{{ $documento->id }}"
-                style="padding: 0 0 0 0;border: 0; background: transparent;">
-            <i class="icon-archive" style="padding-top: 2px;"></i>
-        </button>
+        <a href="{{ route('admin.tramitacao.doc.arquivar',['id' => $documento->id]) }}"
+           data-popup="tooltip" title="Arquivar Documentos" data-placement="bottom">
+            <i class="icon-archive"></i>
+        </a>
     </li>
 </ul>

@@ -36,6 +36,11 @@ class Documento extends Model implements AuditableContract
         return $this->hasManyThrough(Secretarias::class,Tramitacao::class,'id_documento','id');
     }
 
+    public function secretaria_destino()
+    {
+        return $this->hasManyThrough(Secretarias::class,Tramitacao::class,'id_documento','id');
+    }
+
     public function documentos()
     {
         return $this->hasMany(DocumentoAnexo::class,'id_documento','id');
@@ -43,7 +48,7 @@ class Documento extends Model implements AuditableContract
 
     public function tramitacoes()
     {
-        return $this->hasMany(Tramitacao::class,'id_documento','id');
+        return $this->hasMany(Tramitacao::class,'id_documento','id')->orderBy('id','desc');
     }
 
     public function setAssuntoAttribute($value)

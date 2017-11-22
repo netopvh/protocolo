@@ -26,7 +26,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <form method="POST" id="filter-form" class="form-inline" role="form">
                                 <fieldset>
                                     <legend>Localizar Documento no Sistema</legend>
@@ -37,16 +37,22 @@
                                     <div class="form-group">
                                         <label for="email">Ano:</label>
                                         <select name="ano" id="ano" class="form-control">
-                                            <option value="2015"{{ selected(date('Y'),'2015') }}>2015</option>
-                                            <option value="2016"{{ selected(date('Y'),'2016') }}>2016</option>
-                                            <option value="2017"{{ selected(date('Y'),'2017') }}>2017</option>
-                                            <option value="2018"{{ selected(date('Y'),'2018') }}>2018</option>
-                                            <option value="2019"{{ selected(date('Y'),'2019') }}>2019</option>
-                                            <option value="2020"{{ selected(date('Y'),'2020') }}>2020</option>
-                                            <option value="2021"{{ selected(date('Y'),'2021') }}>2021</option>
-                                            <option value="2022"{{ selected(date('Y'),'2022') }}>2022</option>
-                                            <option value="2023"{{ selected(date('Y'),'2023') }}>2023</option>
+                                            @foreach($dados['years'] as $year)
+                                                <option value="{{ $year }}"{{ selected(date('Y'),$year) }}>{{ $year }}</option>
+                                            @endforeach
                                         </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Procedência:</label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="int_ext" value="I" class="styled" required>
+                                            Interno
+                                        </label>
+
+                                        <label class="radio-inline">
+                                            <input type="radio" name="int_ext" value="E" class="styled" required>
+                                            Externo
+                                        </label>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Pesquisar</button>
                                 </fieldset>
@@ -99,7 +105,7 @@
                                     <ul class="list-feed media-list">
                                         <li class="media">
                                             <div class="media-body">
-                                                
+
                                             </div>
                                         </li>
                                     </ul>

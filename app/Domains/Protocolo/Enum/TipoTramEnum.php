@@ -18,4 +18,5 @@ class TipoTramEnum extends AbstractEnum
     const R = 'Recebeu';
     const P = 'Enviou';
     const A = 'Arquivou';
+    const O = 'Enviou';
 }

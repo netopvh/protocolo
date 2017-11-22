@@ -1029,39 +1029,6 @@ $(function () {
             oTable.draw();
             e.preventDefault();
         });
-
-        let tbSetor = $('table[data-form="tbSetor"]');
-
-        let title = $('.modal-title');
-        let body = $('.modal-body');
-        tbSetor.on('click', '.arquivar', function (e) {
-            let docId = $(this).data('id');
-            e.preventDefault();
-            title.html('');
-            title.html('Arquivamento de documentos');
-            $('.despacho').show();
-            $('#title-modal').hide();
-            $('#confirm').modal({backdrop: 'static', keyboard: false})
-                .on('click', '#confirm-btn', function () {
-                    let instance = CKEDITOR.instances['editor'].getData();
-                    $.ajax({
-                        url: '/dashboard/tramitacao/action',
-                        type: "POST",
-                        dataType: "json",
-                        data: {
-                            _token: $('meta[name="csrf-token"]').attr('content'),
-                            id: docId,
-                            despacho: instance,
-                            action: 'A'
-                        },
-                        success: function (response) {
-                            oTable.draw();
-                            $('#confirm').modal('hide');
-                            reloadCounters();
-                        }
-                    });
-                });
-        });
     }
 
     //DOCUMENTOS PENDENTES
@@ -1270,7 +1237,7 @@ $(function () {
                 $("select[name=id_departamento]").prop('required', true);
                 $("select[name=id_secretaria]").prop('required', false);
             }
-            else if (this.value === 'S') {
+            else if (this.value === 'O') {
                 $('#setdep').collapse('show');
                 $('#orgsec').collapse('show');
                 $("#orgsec").insertAfter("#setdep");
