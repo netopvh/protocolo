@@ -128,7 +128,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="text-bold">Prioridade:</label>
-                                        <select name="priodidade" class="select">
+                                        <select name="prioridade" class="select">
                                             <option value="3">ALTA</option>
                                             <option value="2">MÉDIA</option>
                                             <option value="1" selected>BAIXA</option>
