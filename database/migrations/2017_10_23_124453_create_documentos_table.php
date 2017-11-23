@@ -19,6 +19,7 @@ class CreateDocumentosTable extends Migration
             $table->integer('ano');
             $table->date('data_doc');
             $table->text('assunto');
+            $table->integer('prioridade')->unsigned();
             $table->string('path_doc')->nullable();
             $table->integer('id_tipo_doc')->unsigned();
             $table->foreign('id_tipo_doc')->references('id')->on('tipo_documentos');

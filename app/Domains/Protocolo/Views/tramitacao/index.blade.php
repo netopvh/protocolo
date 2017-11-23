@@ -64,7 +64,7 @@
                                 <li>
                                     <a href="#highlighted-tab4" data-toggle="tab">
                                         {{ in_admin_group()?'Documentos Enviados no Sistema':'Documentos Enviados/Externos' }}
-                                        <span class="badge badge-warning position-right" id="enviado"></span>
+                                        <span class="badge badge-primary position-right" id="enviado"></span>
                                     </a>
                                 </li>
                             </ul>

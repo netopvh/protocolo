@@ -13,7 +13,7 @@ class Documento extends Model implements AuditableContract
     use Auditable;
 
     protected $fillable = [
-    	'numero','ano','data_doc','assunto','id_tipo_doc','int_ext','id_departamento','id_secretaria'
+    	'numero','ano','data_doc','assunto','id_tipo_doc','int_ext','id_departamento','id_secretaria','prioridade'
     ];
 
     public function tipo_documento()

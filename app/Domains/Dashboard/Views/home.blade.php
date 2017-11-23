@@ -27,7 +27,7 @@
                                     <thead>
                                         <tr>
                                             <th>Número/Ano</th>
-                                            <th>Assunto</th>
+                                            <th>Prioridade</th>
                                             <th>Tipo</th>
                                             <th>Encaminhado por</th>
                                             <th>Data</th>

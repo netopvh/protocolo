@@ -1,3 +1,4 @@
+@auth
 <!-- Main navbar -->
 <div class="navbar navbar-inverse navbar-fixed-top bg-green">
     <div class="navbar-header">
@@ -14,6 +15,7 @@
             <li><a class="sidebar-control sidebar-main-toggle hidden-xs" title="Ocultar Barra"><i class="icon-paragraph-justify3"></i></a></li>
         </ul>
 
+        @auth
         <div class="navbar-right">
             <p class="navbar-text"><span class="label bg-success-400">Online</span></p>
 
@@ -54,19 +56,21 @@
                     <a class="dropdown-toggle legitRipple" data-toggle="dropdown" aria-expanded="true">
                         <span>{{ auth()->user()->name }}</span>
                         <i class="caret"></i>
-                    <span class="legitRipple-ripple" style="left: 67.254%; top: 24%; transform: translate3d(-50%, -50%, 0px); width: 212.203%; opacity: 0;"></span></a>
+                        <span class="legitRipple-ripple" style="left: 67.254%; top: 24%; transform: translate3d(-50%, -50%, 0px); width: 212.203%; opacity: 0;"></span></a>
 
                     <ul class="dropdown-menu dropdown-menu-right">
                         <li><a href="{{ route('logout') }}"
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
-                                    class="icon-switch2"></i> <span>Sair do sistema</span></a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                              style="display: none;">{{ csrf_field() }}</form>
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
+                                        class="icon-switch2"></i> <span>Sair do sistema</span></a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                  style="display: none;">{{ csrf_field() }}</form>
                         </li>
                     </ul>
                 </li>
             </ul>
         </div>
+        @endauth
     </div>
 </div>
 <!-- /main navbar -->
+@endauth

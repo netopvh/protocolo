@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>@yield('title',config('app.name'))</title>
     <link rel="icon" href="{{  asset('backend/images/favicon.ico') }}" type="image/x-icon"/>
     <link rel="shortcut icon" href="{{  asset('backend/images/favicon.ico') }}" type="image/x-icon"/>
@@ -17,6 +17,7 @@
     <link href="{{ asset('backend/css/core.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/css/components.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/css/colors.min.css') }}" rel="stylesheet" type="text/css">
+    @yield('styles')
     <!-- /global stylesheets -->
 </head>
 
@@ -35,7 +36,8 @@
     <!-- Main content -->
         <div class="content-wrapper">
 
-            <!-- Page header -->
+        @auth
+        <!-- Page header -->
             <div class="page-header page-header-default">
 
                 @yield('page-header')
@@ -43,15 +45,16 @@
                 @yield('breadcrumb')
             </div>
             <!-- /page header -->
+        @endauth
 
 
-            <!-- Content area -->
+        <!-- Content area -->
             <div class="content">
 
             @yield('content')
 
             <!-- Footer -->
-                <div class="footer text-green text-bold ">
+                <div class="footer text-grey-600 text-bold">
                     @include('layout.backend.partials.footer')
                 </div>
                 <!-- /footer -->

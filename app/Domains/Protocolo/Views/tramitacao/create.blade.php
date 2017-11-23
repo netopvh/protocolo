@@ -125,6 +125,18 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="text-bold">Prioridade:</label>
+                                        <select name="priodidade" class="select">
+                                            <option value="3">ALTA</option>
+                                            <option value="2">MÉDIA</option>
+                                            <option value="1" selected>BAIXA</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="text-bold display-block">Anexos: <span class="text-danger text-size-mini">*Permitido apenas arquivos .PDF|.DOC|.DOCX</span></label>

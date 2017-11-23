@@ -88,10 +88,17 @@ class TramitacaoService
             ->get()
             ->count();
 
+        $enviados = $this->documentoRepository->query()
+            ->departamento()
+            ->where('status', 'S')
+            ->get()
+            ->count();
+
         $arrDados = [
             'noSetor' => $docsSetor,
             'pendentes' => $pendentes,
-            'arquivado' => $arquivado
+            'arquivado' => $arquivado,
+            'enviados' => $enviados
         ];
 
         return $arrDados;
@@ -114,7 +121,8 @@ class TramitacaoService
             ->query()
             ->departamento()
             ->where('status', 'P')
-            ->where('arquivado', false);
+            ->where('arquivado', false)
+            ->orderBy('prioridade','desc');
     }
 
     public function builderArquivados()

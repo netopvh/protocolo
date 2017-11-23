@@ -935,6 +935,7 @@ $(function () {
                 $('#setor').html(data.noSetor);
                 $('#pendente').html(data.pendentes);
                 $('#arquivado').html(data.arquivado);
+                $('#enviado').html(data.enviados);
             }
         });
     }
@@ -953,12 +954,21 @@ $(function () {
             ajax: '/documentos',
             columns: [
                 {data: 'numero', name: 'documentos.numero', width: '80px'},
-                {data: 'assunto', name: 'documentos.assunto'},
+                {data: 'prioridade', name: 'documentos.prioridade'},
                 {data: 'tipo', name: 'tipo_documentos.descricao'},
                 {data: 'origem'},
                 {data: 'data_doc', name: 'documentos.data_doc', width: '180px'},
                 {data: 'action', orderable: false, searchable: false, width: '70px'}
-            ]
+            ],
+            rowCallback: function( row, data, dataIndex ) {
+                if ( data.prioridade == 3 ) {
+                    $('td:eq(1)', row).html( '<span class="label label-danger">ALTA</span>' );
+                }else if( data.prioridade == 2 ){
+                    $('td:eq(1)', row).html( '<span class="label label-info">MÉDIA</span>' );
+                }else if( data.prioridade == 1 ){
+                    $('td:eq(1)', row).html( '<span class="label label-success">BAIXA</span>' );
+                }
+            }
         });
 
         let tbDashboard = $('table[data-form="tbDashboard"]');

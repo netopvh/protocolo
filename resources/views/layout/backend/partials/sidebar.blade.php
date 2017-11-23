@@ -1,3 +1,4 @@
+@auth
 <!-- Main sidebar -->
 <div class="sidebar sidebar-main sidebar-default sidebar-fixed">
     <div class="sidebar-content">
@@ -14,30 +15,30 @@
                         </a>
                     </li>
                     <li class="navigation-header">
-                        <span>Módulo Protocolo</span> 
+                        <span>Módulo Protocolo</span>
                         <i class="icon-menu" title="Gerenciamento"></i>
                     </li>
                     <li>
                         <a href="#">
-                            <i class="icon-stack"></i> 
+                            <i class="icon-stack"></i>
                             <span class="text-bold">Cadastros</span>
                         </a>
                         <ul>
                             <li class="{{ active(['admin.departamento','admin.departamento.*']) }}">
                                 <a href="{{ route('admin.departamento') }}">
-                                    <i class="icon-portfolio"></i> 
+                                    <i class="icon-portfolio"></i>
                                     <span class="text-bold">Departamentos</span>
                                 </a>
                             </li>
                             <li class="{{ active(['admin.secretarias','admin.secretarias.*']) }}">
                                 <a href="{{ route('admin.secretarias') }}">
-                                    <i class="icon-office"></i> 
+                                    <i class="icon-office"></i>
                                     <span class="text-bold">Órgãos/Secretarias</span>
                                 </a>
                             </li>
                             <li class="{{ active(['admin.tipo_documento','admin.tipo_documento.*']) }}">
                                 <a href="{{ route('admin.tipo_documento') }}">
-                                    <i class="icon-stack"></i> 
+                                    <i class="icon-stack"></i>
                                     <span class="text-bold">Tipos de Documentos</span>
                                 </a>
                             </li>
@@ -45,21 +46,21 @@
                     </li>
                     <li class="{{ active(['admin.documento','admin.documento.*']) }}">
                         <a href="{{ route('admin.tramitacao') }}">
-                            <i class="icon-magazine"></i> 
+                            <i class="icon-magazine"></i>
                             <span class="text-bold">Tramitação de Documentos</span>
                         </a>
                     </li>
                     <!-- /gerenciamento -->
 
-                    @permission('ver-administracao')
+                @permission('ver-administracao')
                 <!-- Administração -->
                     <li class="navigation-header">
-                        <span>Módulo Administrativo</span> 
+                        <span>Módulo Administrativo</span>
                         <i class="icon-menu" title="Administração"></i>
                     </li>
                     <li>
                         <a href="#">
-                            <i class="icon-stack"></i> 
+                            <i class="icon-stack"></i>
                             <span>Gerenciamento de Acesso</span>
                         </a>
                         <ul>
@@ -87,7 +88,7 @@
                     @permission('ver-auditoria')
                     <li class="{{ active(['admin.auditor']) }}"><a href="{{ route('admin.auditor') }}"><i class="icon-stack-star"></i> Auditoria e Logs</a></li>
                     @endpermission
-                    <!-- /administracao -->
+                <!-- /administracao -->
                     @endpermission
                 </ul>
             </div>
@@ -97,3 +98,4 @@
     </div>
 </div>
 <!-- /main sidebar -->
+@endauth
