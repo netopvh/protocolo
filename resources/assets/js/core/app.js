@@ -1167,6 +1167,44 @@ $(function () {
         });
     }
 
+    //DOCUMENTOS ENVIADOS
+    let documentEnviado = $('#tbl_doc_enviado');
+    if (documentEnviado.length) {
+        let oTableEnv = documentEnviado.DataTable({
+            dom: "<'row'<'col-xs-12'<'col-xs-12'>>r>" +
+            "<'row'<'col-xs-12't>>" +
+            "<'row'<'col-xs-12'<'col-xs-6'i><'col-xs-6'p>>>",
+            serverSide: true,
+            processing: true,
+            responsive: true,
+            language: dt_trans,
+            ajax: {
+                url: '/dashboard/tramitacao/enviados',
+                data: function (d) {
+                    d.numero = $('#numeroEnviado').val();
+                    d.ano = $('#anoEnviado').val();
+                },
+                complete: function () {
+                    reloadCounters();
+                }
+            },
+            columns: [
+                {data: 'numero', name: 'documentos.numero', width: '60px'},
+                {data: 'assunto', name: 'documentos.assunto'},
+                {data: 'tipo', name: 'tipo_documentos.descricao'},
+                {data: 'destino'},
+                {data: 'data_doc', name: 'documentos.data_doc', width: '180px'},
+                {data: 'action', orderable: false, searchable: false, width: '130px'}
+            ]
+        });
+
+        $('#search-form-enviado').on('submit', function (e) {
+            oTableEnv.draw();
+            e.preventDefault();
+        });
+    }
+
+
     let getDespacho = $('.despacho');
     getDespacho.on("click", function (e) {
         let tramitacaoId = $(this).data('id');

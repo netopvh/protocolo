@@ -126,6 +126,15 @@ class TramitacaoService
             ->where('arquivado', true);
     }
 
+    public function builderEnviados()
+    {
+        return $this->documentoRepository
+            ->with(['tipo_documento', 'departamento_origem', 'secretaria_origem'])
+            ->query()
+            ->departamento()
+            ->where('status','S');
+    }
+
     public function getDataCreate()
     {
 

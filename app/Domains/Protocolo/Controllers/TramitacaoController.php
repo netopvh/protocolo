@@ -151,6 +151,34 @@ class TramitacaoController extends Controller
             ->toJson();
     }
 
+    public function dataEnviados(DataTables $dataTables, Request $request)
+    {
+        $query = $this->tramitacaoService->builderEnviados();
+
+        return $dataTables->eloquent($query)
+            ->editColumn('numero', function ($documento) {
+                return $documento->numero . '/' . $documento->ano;
+            })
+            ->addColumn('tipo', function ($documento) {
+                return $documento->tipo_documento->descricao;
+            })
+            ->addColumn('destino', function ($documento) {
+                return $documento->tramitacoes->last()->secretaria_destino->descricao;
+            })
+            ->addColumn('action', function ($documento) {
+                return view('tramitacao.buttons_enviados')->with('documento', $documento);
+            })
+            ->filter(function ($documento) use ($request) {
+                if ($request->has('numero')) {
+                    $documento->where('numero', 'like', "%{$request->get('numero')}%");
+                }
+                if ($request->has('ano')) {
+                    $documento->where('ano', $request->get('ano'));
+                }
+            })
+            ->toJson();
+    }
+
     /**
      * @return \Illuminate\Http\JsonResponse
      */
