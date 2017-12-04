@@ -189,11 +189,8 @@ return [
         App\Core\Providers\ComposerServiceProvider::class,
 
         App\Domains\Access\Providers\AccessServiceProvider::class,
-        //App\Domains\Comissionado\Providers\ComissionadoServiceProvider::class,
         App\Domains\Protocolo\Providers\ProtocoloServiceProvider::class,
         App\Domains\Dashboard\Providers\DashboardServiceProvider::class,
-        App\Domains\Frontend\Providers\FrontendServiceProvider::class,
-
     ],
 
     /*

@@ -58,5 +58,6 @@ $this->group(['prefix' => 'dashboard'],function (){
         $this->get('/despacho','TramitacaoController@getDespacho');
         $this->get('/arquivar/{id}','TramitacaoController@arquivarIndex')->name('admin.tramitacao.doc.arquivar');
         $this->post('arquivar/{id}/store','TramitacaoController@arquivarStore')->name('admin.tramitacao.doc.arquivar.store');
+        $this->get('{id}/consulta','TramitacaoController@getDocPublic');
     });
 });

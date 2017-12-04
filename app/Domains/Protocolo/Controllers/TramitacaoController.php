@@ -3,6 +3,7 @@
 namespace App\Domains\Protocolo\Controllers;
 
 use App\Domains\Protocolo\Enum\TipoTramEnum;
+use App\Domains\Protocolo\Events\DocumentoCadastrado;
 use App\Domains\Protocolo\Services\TramitacaoService;
 use App\Core\Http\Controllers\Controller;
 use App\Exceptions\Access\GeneralException;
@@ -151,6 +152,11 @@ class TramitacaoController extends Controller
             ->toJson();
     }
 
+    /**
+     * @param DataTables $dataTables
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function dataEnviados(DataTables $dataTables, Request $request)
     {
         $query = $this->tramitacaoService->builderEnviados();
@@ -228,7 +234,9 @@ class TramitacaoController extends Controller
      */
     public function store(Request $request)
     {
-        $this->tramitacaoService->createAndUpload($request);
+        $documento = $this->tramitacaoService->createAndUpload($request);
+
+        //event(new DocumentoCadastrado($documento));
 
         return redirect()->route('admin.tramitacao')->with('success', 'Registro inserido com sucesso!');
     }
@@ -345,6 +353,23 @@ class TramitacaoController extends Controller
             ->with('dados',$this->tramitacaoService->getDataCreate());
     }
 
+    public function getDocPublic($id)
+    {
+        try {
+            Carbon::setLocale('pt-BR');
+
+            $movimentos = $this->tramitacaoService->getDocumento($id);
+
+            return view('tramitacao.consulta_publica')
+                ->with('documento', $movimentos)
+                ->with('tipos', TipoTramEnum::getConstants());
+        } catch (GeneralException $e) {
+            return redirect()->route('admin.tramitacao')->with('errors', $e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->route('admin.tramitacao')->with('errors', $e->getMessage());
+        }
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -354,47 +379,20 @@ class TramitacaoController extends Controller
         Carbon::setLocale('pt-BR');
         if ($documento = $this->tramitacaoService->getConsultaPublica($request)) {
 
-            $arrTram = [];
-            foreach ($documento->tramitacoes as $tramitacao) {
-                $action = "";
-                if ($documento->int_ext == 'I' && $tramitacao->tipo_tram == 'S') {
-                    $action = ' Criou o Documento Nº ' . $documento->numero . ' e enviou para o <span class="text-bold">' . $tramitacao->departamento_destino->descricao . '</span>';
-                }else if ($documento->int_ext == 'I' && $tramitacao->tipo_tram == 'D') {
-                    $action = ' Devolveu o Documento Nº ' . $documento->numero . ' para o Departamento <span class="text-bold">' . $tramitacao->departamento_destino->descricao . '</span>';
-                }else if ($documento->int_ext == 'I' && $tramitacao->tipo_tram == 'P') {
-                    $action = ' Enviou o Documento Nº ' . $documento->numero . ' para o Departamento <span class="text-bold">' . $tramitacao->departamento_destino->descricao . '</span>';
-                }else if ($documento->int_ext == 'E' && $tramitacao->tipo_tram == 'D') {
-                    $action = ' Devolveu o Documento Nº ' . $documento->numero . ' para o Departamento <span class="text-bold">' . $tramitacao->departamento_destino->descricao . '</span>';
-                }else if ($documento->int_ext == 'E' && $tramitacao->tipo_tram == 'O') {
-                    $action = ' Enviou o Documento Nº ' . $documento->numero . ' para <span class="text-bold">' . $tramitacao->secretaria_destino->descricao . '</span>';
-                }else if ($documento->int_ext == 'E' && $tramitacao->tipo_tram == 'P') {
-                    $action = ' Enviou o Documento Nº ' . $documento->numero . ' para o Departamento <span class="text-bold">' . $tramitacao->departamento_destino->descricao . '</span>';
-                } else if ($documento->int_ext == 'E' && $tramitacao->tipo_tram == 'C') {
-                    $action = ' Encaminhou o Documento Nº ' . $documento->numero . ' para <span class="text-bold">' . $tramitacao->departamento_destino->descricao . '</span> protocolado por <span  class="text-bold">' . $tramitacao->secretaria_origem->descricao . '</span>';
-                }else if($tramitacao->tipo_tram=='R'){
-                    $action = ' Recebeu o Documento Nº '.$documento->numero;
-                }else if($tramitacao->tipo_tram == 'A'){
-                    $action = ' Arquivou o Documento Nº '.$documento->numero;
-                }
+            $arrAtributes = [];
 
-                $arrTram[] = [
-                    'data_tram' => $tramitacao->data_tram . ' - ' . $tramitacao->created_at->diffForHumans(),
-                    'usuario' => $tramitacao->usuario->name,
-                    'departamento' => $tramitacao->usuario->departamento->descricao,
-                    'tipo_tram' => $tramitacao->tipo_tram,
-                    'acao' => $action
+            foreach ($documento as $doc){
+                $arrAtributes[] = [
+                    'id' => $doc->id,
+                    'numero' => $doc->numero,
+                    'ano' => $doc->ano,
+                    'data_doc' => $doc->data_doc,
+                    'assunto' => $doc->assunto,
+                    'tipo_doc' => $doc->tipo_documento->descricao
                 ];
             }
 
-            return response()->json([
-                'numero' => $documento->numero,
-                'ano' => $documento->ano,
-                'data_doc' => $documento->data_doc,
-                'assunto' => $documento->assunto,
-                'tipo_doc' => $documento->tipo_documento->descricao,
-                'procedencia' => $documento->int_ext,
-                'tramitacoes' => $arrTram
-            ]);
+            return response()->json(['data' => $arrAtributes]);
         } else {
             return response()->json(['status' => 'error']);
         }

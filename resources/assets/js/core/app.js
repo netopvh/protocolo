@@ -1031,7 +1031,7 @@ $(function () {
                 {data: 'tipo', name: 'tipo_documentos.descricao'},
                 {data: 'origem'},
                 {data: 'data_doc', name: 'documentos.data_doc', width: '180px'},
-                {data: 'action', orderable: false, searchable: false, width: '150px'}
+                {data: 'action', orderable: false, searchable: false, width: '165px'}
             ]
         });
 
@@ -1321,6 +1321,7 @@ $(function () {
     $('#filter-form').on('submit', function (e) {
         e.preventDefault();
         $('#ajaxResponse').collapse('hide');
+        $('#table-content').html('');
         $.ajax({
             url: '/dashboard/tramitacao/consulta',
             type: "GET",
@@ -1331,27 +1332,21 @@ $(function () {
                     $('#ajaxResponse').collapse('show');
                     $('#consulta').collapse('hide');
                 }else{
-                    var procedencia = response.procedencia;
-                    var numero = response.numero;
                     $('#consulta').collapse('show');
-                    $('input[name="numero_ano"]').val(numero + '/' + response.ano);
-                    $('input[name="data_doc"]').val(response.data_doc);
-                    $('input[name="assunto"]').val(response.assunto);
-                    $('input[name="tipo_doc"]').val(response.tipo_doc);
-                    $('input[name="procedencia"]').val(procedencia==='I'?'INTERNO':'EXTERNO');
-                    $('ul.list-feed').html('');
-                    $.each(response.tramitacoes, function(key, value){
-                        $('ul.list-feed').append('<li class="media">' +
-                            '<div class="media-body">' +
-                            '<div class="text-muted">'+ value.data_tram +'</div>' +
-                            '<span class="text-bold">' + value.usuario +' ('+ value.departamento +')</span>'+
-                                value.acao +
-                            '</div>' +
-                            '</li>');
+                    $.each(response.data, function(key, value){
+                        $('#table-content').append('<tr>' +
+                            '<td>'+ value.numero+'/'+ value.ano +'</td>' +
+                            '<td>'+ value.tipo_doc +'</td>' +
+                            '<td>'+ value.assunto +'</td>' +
+                            '<td>'+ value.data_doc +'</td>' +
+                            '<td>' +
+                            '<a href="/dashboard/tramitacao/'+ value.id+'/consulta"><i class="icon-eye-plus"></i></a>' +
+                            '</td>');
                     });
                 }
             }
         });
     })
+
 
 });

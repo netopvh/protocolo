@@ -30,6 +30,7 @@ class CreateDocumentosTable extends Migration
             $table->foreign('id_secretaria')->references('id')->on('secretarias');
             $table->char('status',1)->default('P');
             $table->boolean('arquivado')->default(false);
+            $table->string('local_arquiv')->nullable();
             $table->timestamps();
 		});
 	}

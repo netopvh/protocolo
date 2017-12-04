@@ -27,34 +27,57 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-10">
-                            <form method="POST" id="filter-form" class="form-inline" role="form">
+                            <form method="POST" id="filter-form" role="form" autocomplete="off">
                                 <fieldset>
                                     <legend>Localizar Documento no Sistema</legend>
-                                    <div class="form-group">
-                                        <label for="name">Numero:</label>
-                                        <input type="text" class="form-control" name="numero" id="numero" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Ano:</label>
-                                        <select name="ano" id="ano" class="form-control">
-                                            @foreach($dados['years'] as $year)
-                                                <option value="{{ $year }}"{{ selected(date('Y'),$year) }}>{{ $year }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Procedência:</label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="int_ext" value="I" class="styled" required>
-                                            Interno
-                                        </label>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="name">Numero:</label>
+                                                <input type="text" class="form-control" name="numero" id="numero" autofocus>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="email">Ano:</label>
+                                                <select name="ano" id="ano" class="form-control">
+                                                    @foreach($dados['years'] as $year)
+                                                        <option value="{{ $year }}"{{ selected(date('Y'),$year) }}>{{ $year }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="display-block">Procedência:</label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="int_ext" value="I" class="styled">
+                                                    Interno
+                                                </label>
 
-                                        <label class="radio-inline">
-                                            <input type="radio" name="int_ext" value="E" class="styled" required>
-                                            Externo
-                                        </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="int_ext" value="E" class="styled">
+                                                    Externo
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Pesquisar</button>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="name">Assunto:</label>
+                                                <input type="text" class="form-control upper" name="assunto" id="assunto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary legitRipple"><i class="icon-search4"></i> Pesquisar</button>
+                                                <a href="{{ route('admin.tramitacao') }}" class="btn btn-info legitRipple"><i class="icon-reply"></i> voltar</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </fieldset>
                             </form>
                         </div>
@@ -65,51 +88,21 @@
                     </span>
                     <div id="consulta" class="collapse">
                         <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label class="text-bold display-block">Número / Ano:</label>
-                                    <input name="numero_ano" type="text" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label class="text-bold display-block">Data do Documento:</label>
-                                    <input name="data_doc" type="text" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <label class="text-bold display-block">Assunto:</label>
-                                    <input name="assunto" type="text" class="form-control" disabled>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label class="text-bold display-block">Procedência:</label>
-                                    <input name="procedencia" type="text" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <dif class="form-group">
-                                    <label class="text-bold display-block">Tipo de Documento:</label>
-                                    <input type="text" name="tipo_doc" class="form-control" disabled>
-                                </dif>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-10">
-                                <div class="panel panel-body border-top-teal">
-                                    <ul class="list-feed media-list">
-                                        <li class="media">
-                                            <div class="media-body">
+                            <div class="col-md-12">
+                                <table class="table table-striped table-condensed table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th width="90">Número/Ano</th>
+                                            <th width="100">Tipo</th>
+                                            <th>Assunto</th>
+                                            <th width="150">Data Documento</th>
+                                            <th width="50">Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-content">
 
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,7 @@
 @section('page-header')
     @component('layout.backend.components.header')
         @slot('title')
-            Trâmite do Documento
+            Consulta de Documentos
         @endslot
     @endcomponent
 @stop
@@ -80,21 +80,8 @@
                                                     Nº {{ $documento->numero }}
                                                 @elseif($tramitacao->tipo_tram=='A')
                                                     {{ $tipos[$tramitacao->tipo_tram] }} o Documento
-                                                    Nº {{ $documento->numero }} no local: <span class="text-bold">{{ $documento->local_arquiv }}</span>
+                                                    Nº {{ $documento->numero }}
                                                 @endif
-                                            </div>
-                                            <div class="media-right">
-                                                <ul class="icons-list icons-list-extended text-nowrap">
-                                                    <li>
-                                                        @if(!is_null($tramitacao->despacho))
-                                                            <button name="confirm-modal" class="despacho"
-                                                                    id="despacho{{ $tramitacao->id }}"
-                                                                    data-id="{{ $tramitacao->id }}" title="Ver Despacho"
-                                                                    style="padding: 0 0 0 0;border: 0; background: transparent;">
-                                                                <i class="icon-bubble-dots4"></i></button>
-                                                        @endif
-                                                    </li>
-                                                </ul>
                                             </div>
                                         </li>
                                     @endforeach
@@ -102,6 +89,11 @@
                             </div>
                             <!-- /top aligned -->
 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <a href="{{ route('admin.tramitacao.doc.consulta') }}" class="btn btn-primary legitRipple"><i class="icon-reply"></i> Voltar</a>
                         </div>
                     </div>
                 </div>

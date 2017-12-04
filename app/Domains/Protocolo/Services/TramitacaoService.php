@@ -193,6 +193,7 @@ class TramitacaoService
                     $tram->save();
                 }
             }
+            return $documento;
         } catch (ValidatorException $e) {
             return redirect()->back()->with('errors', $e->getMessageBag());
         }
@@ -309,6 +310,7 @@ class TramitacaoService
         try {
             $documento = $this->documentoRepository->with('tramitacoes')->find($id);
             $documento->arquivado = true;
+            $documento->local_arquiv = $attributes->local_arquiv;
             if ($documento->save()) {
                 $model = $this->tramitacaoRepository->create([
                     'data_tram' => date('d/m/Y'),
@@ -338,13 +340,14 @@ class TramitacaoService
                 ->query()
                 ->where('numero', $attributes->numero)
                 ->where('ano', $attributes->ano)
-                ->where(function ($query) use ($attributes){
+                ->orWhere(function ($query) use ($attributes){
                     if($attributes->has('int_ext')){
                         $query->where('int_ext', $attributes->int_ext);
+                    }elseif ($attributes->has('assunto')){
+                        $query->where('assunto','like', '%'.$attributes->assunto.'%');
                     }
                 })
-                ->get()
-                ->first();
+                ->get();
 
 
             if (empty($tramitacao)) {
@@ -372,4 +375,16 @@ class TramitacaoService
         }
     }
 
+    public function getDocumento($id)
+    {
+        $result = $this->documentoRepository->with('tramitacoes')
+            ->query()
+            ->find($id);
+
+        if (empty($result)) {
+            throw new GeneralException("Nenhum registro localizado no banco de dados ou Usuário sem permissão");
+        } else {
+            return $result;
+        }
+    }
 }

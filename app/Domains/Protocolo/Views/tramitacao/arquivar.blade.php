@@ -62,6 +62,14 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Local de Arquivamento:</label>
+                                        <input type="text" name="local_arquiv" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="text-bold display-block">Despacho: </label>
