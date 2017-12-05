@@ -170,6 +170,9 @@ class TramitacaoService
                 $documento->path_doc = $filename;
                 $documento->status = $attributes->tipo_tram == 'O' ? 'S' : 'P';
                 if ($documento->save()) {
+                    if($documento->id_tipo_doc == 11 || $documento->id_tipo_doc == 13){
+                        $documento->secretarias()->sync($attributes->secretarias);
+                    }
                     $tram = $this->tramitacaoRepository->create([
                         'data_tram' => date('d/m/Y'),
                         'id_documento' => $documento->id,

@@ -124,6 +124,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row collapse" id="seclist">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Secretarias:</label>
+                                        <select name="secretarias[]" multiple="multiple" class="form-control listbox-sec">
+                                            @foreach($dados['secretarias'] as $secretaria)
+                                                <option value="{{ $secretaria['id'] }}">{{ $secretaria['descricao'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">

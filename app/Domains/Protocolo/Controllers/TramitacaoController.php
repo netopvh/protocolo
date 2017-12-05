@@ -169,7 +169,15 @@ class TramitacaoController extends Controller
                 return $documento->tipo_documento->descricao;
             })
             ->addColumn('destino', function ($documento) {
-                return $documento->tramitacoes->last()->secretaria_destino->descricao;
+                if($documento->id_tipo_doc == 11 || $documento->id_tipo_doc == 13){
+                    $secretarias = [];
+                    foreach ($documento->secretarias as $secretaria) {
+                        $secretarias[] = $secretaria->descricao;
+                    }
+                    return implode(', ',$secretarias);
+                }else{
+                    return $documento->tramitacoes->last()->secretaria_destino->descricao;
+                }
             })
             ->addColumn('action', function ($documento) {
                 return view('tramitacao.buttons_enviados')->with('documento', $documento);
@@ -239,9 +247,7 @@ class TramitacaoController extends Controller
      */
     public function store(Request $request)
     {
-        $documento = $this->tramitacaoService->createAndUpload($request);
-
-        //event(new DocumentoCadastrado($documento));
+        $this->tramitacaoService->createAndUpload($request);
 
         return redirect()->route('admin.tramitacao')->with('success', 'Registro inserido com sucesso!');
     }

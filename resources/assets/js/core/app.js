@@ -701,6 +701,15 @@ $(function () {
         infoText: 'Mostrando todos os {0}',
         infoTextEmpty: 'Lista Vazia'
     });
+    $('.listbox-sec').bootstrapDualListbox({
+        nonSelectedListLabel: 'Todas Secretarias',
+        selectedListLabel: 'Secretarias Selecionadas',
+        filterPlaceHolder: 'Pesquisar',
+        moveAllLabel: 'Mover Tudo',
+        removeAllLabel: 'Remover Tudo',
+        infoText: 'Mostrando todos os {0}',
+        infoTextEmpty: 'Lista Vazia'
+    });
 
 
     // Multiple selection
@@ -1293,6 +1302,24 @@ $(function () {
             $("select[name=id_departamento]").prop('required', false);
             $("select[name=id_secretaria]").prop('required', false);
         }
+
+        let seclist = $('#seclist');
+        let tipo_doc = $('select[name="id_tipo_doc"]');
+
+        tipo_doc.on('change',function () {
+            if($(this).val() == 11){
+                seclist.collapse('show');
+                $('#orgsec').collapse('hide');
+
+            }else if($(this).val() == 13){
+                seclist.collapse('show');
+                $('#orgsec').collapse('hide');
+            }else{
+                $('.listbox-sec').bootstrapDualListbox('refresh',true);
+                seclist.collapse('hide');
+                $('#orgsec').collapse('show');
+            }
+        });
 
         let btnTram = $('#btn_tramitacao');
 

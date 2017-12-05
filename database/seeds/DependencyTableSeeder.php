@@ -42,7 +42,7 @@ class DependencyTableSeeder extends Seeder
         }
 
         $departamentos = [
-            'DAGEST','DEA','ASTEC','GABINETE CONTROLADOR','DOP','DIAPAD','DRF','DA'
+            'DAGEST','DEA','ASTEC','GABINETE CONTROLADOR','DOP','DIAPAD','DRF','DA','PROTOCOLO'
         ];
 
         $this->command->info('Criando Departamentos');

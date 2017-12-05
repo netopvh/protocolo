@@ -41,6 +41,11 @@ class Documento extends Model implements AuditableContract
         return $this->hasManyThrough(Secretarias::class,Tramitacao::class,'id_documento','id');
     }
 
+    public function secretarias()
+    {
+        return $this->belongsToMany(Secretarias::class,'documento_secretarias','id_documento','id_secretaria');
+    }
+
     public function documentos()
     {
         return $this->hasMany(DocumentoAnexo::class,'id_documento','id');
