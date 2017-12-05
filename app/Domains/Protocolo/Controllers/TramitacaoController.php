@@ -197,20 +197,25 @@ class TramitacaoController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function action(Request $request)
+    public function receber(Request $request)
     {
-        if ($request->action == 'R') {
-            if ($this->tramitacaoService->recebeDoc($request)) {
-                return response()->json(['status' => 'OK']);
-            } else {
-                return response()->json(['status' => 'Error']);
-            }
-        } else if ($request->action == 'D') {
-            if ($this->tramitacaoService->devolveDoc($request)) {
-                return response()->json(['status' => 'OK']);
-            } else {
-                return response()->json(['status' => 'Error']);
-            }
+        if ($this->tramitacaoService->recebeDoc($request)) {
+            return response()->json(['status' => 'OK']);
+        } else {
+            return response()->json(['status' => 'Error']);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function devolver(Request $request)
+    {
+        if ($this->tramitacaoService->devolveDoc($request)) {
+            return response()->json(['status' => 'OK']);
+        } else {
+            return response()->json(['status' => 'Error']);
         }
     }
 

@@ -1079,29 +1079,22 @@ $(function () {
 
         let tbPendente = $('table[data-form="tbPendente"]');
 
-        let title = $('.modal-title');
-        let body = $('.modal-body');
         tbPendente.on('click', '.receber', function (e) {
             e.preventDefault();
-            title.html('');
-            title.html('Recebimento de documentos');
-            $('#title-modal').show();
-            $('.despacho').hide();
-            let data = {
-                _token: $('meta[name="csrf-token"]').attr('content'),
-                id: $(this).data('id'),
-                action: 'R'
-            };
-            $('#confirm').modal({backdrop: 'static', keyboard: false})
-                .on('click', '#confirm-btn', function () {
+            let docId = $(this).data('id');
+            $('#recebimento').modal({backdrop: 'static', keyboard: false})
+                .on('click', '#confirm-recebe', function () {
                     $.ajax({
-                        url: '/dashboard/tramitacao/action',
+                        url: '/dashboard/tramitacao/action/receber',
                         type: "POST",
-                        data: data,
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            id: docId
+                        },
                         dataType: "json",
                         success: function () {
                             oTableP.draw();
-                            $('#confirm').modal('hide');
+                            $('#recebimento').modal('hide');
                             reloadCounters();
                         }
                     });
@@ -1109,29 +1102,23 @@ $(function () {
         });
 
         tbPendente.on('click', '.devolver', function (e) {
-            let docId = $(this).data('id');
             e.preventDefault();
-            title.html('');
-            title.html('Devolução de documentos');
-            $('#title-modal').hide();
-            $('.despacho').show();
-
-            $('#confirm').modal({backdrop: 'static', keyboard: false})
-                .on('click', '#confirm-btn', function () {
+            let docId = $(this).data('id');
+            $('#devolucao').modal({backdrop: 'static', keyboard: false})
+                .on('click', '#confirm-devolucao', function () {
                     let instance = CKEDITOR.instances['editor'].getData();
                     $.ajax({
-                        url: '/dashboard/tramitacao/action',
+                        url: '/dashboard/tramitacao/action/devolver',
                         type: "POST",
                         data: {
                             _token: $('meta[name="csrf-token"]').attr('content'),
                             id: docId,
-                            despacho: instance,
-                            action: 'D'
+                            despacho: instance
                         },
                         dataType: "json",
                         success: function () {
                             oTableP.draw();
-                            $('#confirm').modal('hide');
+                            $('#devolucao').modal('hide');
                             reloadCounters();
                         }
                     });

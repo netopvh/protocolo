@@ -45,7 +45,8 @@ $this->group(['prefix' => 'dashboard'],function (){
         $this->get('/pendente','TramitacaoController@dataPendentes');
         $this->get('/arquivados','TramitacaoController@dataArquivados');
         $this->get('/enviados','TramitacaoController@dataEnviados');
-        $this->post('/action','TramitacaoController@action');
+        $this->post('/action/receber','TramitacaoController@receber');
+        $this->post('/action/devolver','TramitacaoController@devolver');
         $this->get('/create','TramitacaoController@create')->name('admin.tramitacao.create');
         $this->post('/create','TramitacaoController@store')->name('admin.tramitacao.store');
         $this->get('/documento/{id}/show','TramitacaoController@showDoc')->name('admin.tramitacao.doc.show');

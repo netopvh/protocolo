@@ -283,24 +283,36 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="confirm">
+    <div class="modal" id="recebimento">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title"></h4>
+                    <h4 class="modal-title">Recebimento de documentos</h4>
                 </div>
                 <div class="modal-body">
-                    <span id="title-modal">
-                        Tem certeza que deseja receber este documento?
-                    </span>
-                    <span class="despacho">
-                        <label class="text-bold display-block">Despacho: </label>
-                        <textarea name="editor" id="editor" class="editor" cols="30" rows="10"></textarea>
-                    </span>
+                    Tem certeza que deseja receber este documento?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-primary" id="confirm-btn">Confirmar</button>
+                    <button type="button" class="btn btn-sm btn-primary" id="confirm-recebe">Confirmar</button>
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="devolucao">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Devolução de Documentos</h4>
+                </div>
+                <div class="modal-body">
+                    <label class="text-bold display-block">Despacho: </label>
+                    <textarea name="editor" id="editor" class="editor" cols="30" rows="10" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" id="confirm-devolucao">Confirmar</button>
                     <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>

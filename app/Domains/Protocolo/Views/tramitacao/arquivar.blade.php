@@ -65,7 +65,7 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label>Local de Arquivamento:</label>
-                                        <input type="text" name="local_arquiv" class="form-control">
+                                        <input type="text" name="local_arquiv" class="form-control text-uppercase">
                                     </div>
                                 </div>
                             </div>

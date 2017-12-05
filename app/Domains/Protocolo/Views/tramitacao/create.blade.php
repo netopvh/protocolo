@@ -82,6 +82,25 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label class="text-bold">Assunto:</label>
+                                        <input name="assunto" type="text" value="{{ old('assunto') }}" class="form-control text-uppercase" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label class="text-bold">Tipo de Documento:</label>
+                                        <select name="id_tipo_doc" class="select-search" required>
+                                            <option></option>
+                                            @foreach($dados['tipo_docs'] as $tipo_documento)
+                                                <option value="{{ $tipo_documento['id'] }}">{{ $tipo_documento['descricao'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div id="orgsec" class="col-md-6 collapse">
                                     <div class="form-group">
                                         <label class="text-bold">Órgão/Secretaria:</label>
@@ -100,25 +119,6 @@
                                             <option></option>
                                             @foreach($dados['departamentos'] as $departamento)
                                                 <option value="{{ $departamento['id'] }}">{{ $departamento['descricao'] }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <div class="form-group">
-                                        <label class="text-bold">Assunto:</label>
-                                        <input name="assunto" type="text" value="{{ old('assunto') }}" class="form-control text-uppercase" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class="text-bold">Tipo de Documento:</label>
-                                        <select name="id_tipo_doc" class="select-search" required>
-                                            <option></option>
-                                            @foreach($dados['tipo_docs'] as $tipo_documento)
-                                                <option value="{{ $tipo_documento['id'] }}">{{ $tipo_documento['descricao'] }}</option>
                                             @endforeach
                                         </select>
                                     </div>

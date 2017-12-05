@@ -13,7 +13,7 @@ class Documento extends Model implements AuditableContract
     use Auditable;
 
     protected $fillable = [
-    	'numero','ano','data_doc','assunto','id_tipo_doc','int_ext','id_departamento','id_secretaria','prioridade'
+    	'numero','ano','data_doc','assunto','id_tipo_doc','int_ext','id_departamento','id_secretaria','prioridade','local_arquiv'
     ];
 
     public function tipo_documento()
@@ -64,6 +64,11 @@ class Documento extends Model implements AuditableContract
     public function setDataDocAttribute($value)
     {
         $this->attributes['data_doc'] = Carbon::createFromFormat('d/m/Y',$value)->format('Y-m-d');
+    }
+
+    public function setLocalArquivAttribute($value)
+    {
+        $this->attributes['local_arquiv'] = mb_strtoupper($value,"UTF-8");
     }
 
     public function getDataDocAttribute($value)

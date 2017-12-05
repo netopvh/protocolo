@@ -80,7 +80,7 @@
                                                     Nº {{ $documento->numero }}
                                                 @elseif($tramitacao->tipo_tram=='A')
                                                     {{ $tipos[$tramitacao->tipo_tram] }} o Documento
-                                                    Nº {{ $documento->numero }}
+                                                    Nº {{ $documento->numero }} no local: <span class="text-bold">{{ $documento->local_arquiv }}</span>
                                                 @endif
                                             </div>
                                         </li>
