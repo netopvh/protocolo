@@ -83,6 +83,15 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <select name="active" class="select select2-hidden-accessible" tabindex="-1">
+                                            <option value="1"{{ $user->active?' selected':'' }}>ATIVO</option>
+                                            <option value="0"{{ $user->active?'':' selected' }}>INATIVO</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </fieldset>
 

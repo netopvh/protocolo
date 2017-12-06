@@ -1363,4 +1363,35 @@ $(function () {
     })
 
 
+    //LOCALIZAR DOCUMENTO PARA TRANSFORMAR EM PROCESSO
+    $('#filter-processo').on('submit', function (e) {
+        e.preventDefault();
+        $('#ajaxResponse').collapse('hide');
+        $('#table-content').html('');
+        $.ajax({
+            url: '/dashboard/processo/consulta',
+            type: "GET",
+            data: $(this).serialize(),
+            dataType: "json",
+            success: function (response) {
+                if(response.status === 'error'){
+                    $('#ajaxResponse').collapse('show');
+                    $('#consulta').collapse('hide');
+                }else{
+                    $('#consulta').collapse('show');
+                    $.each(response.data, function(key, value){
+                        $('#table-content').append('<tr>' +
+                            '<td>'+ value.numero+'/'+ value.ano +'</td>' +
+                            '<td>'+ value.tipo_doc +'</td>' +
+                            '<td>'+ value.assunto +'</td>' +
+                            '<td>'+ value.data_doc +'</td>' +
+                            '<td>' +
+                            '<a href="/dashboard/processo/'+ value.id+'/create" title="Criar Processo"><i class="icon-book2"></i></a>' +
+                            '</td>');
+                    });
+                }
+            }
+        });
+    })
+
 });

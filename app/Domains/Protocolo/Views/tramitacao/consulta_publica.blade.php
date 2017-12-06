@@ -81,6 +81,9 @@
                                                 @elseif($tramitacao->tipo_tram=='A')
                                                     {{ $tipos[$tramitacao->tipo_tram] }} o Documento
                                                     Nº {{ $documento->numero }} no local: <span class="text-bold">{{ $documento->local_arquiv }}</span>
+                                                @elseif($tramitacao->tipo_tram=='U')
+                                                    {{ $tipos[$tramitacao->tipo_tram] }} o Documento
+                                                    Nº {{ $documento->numero }} para o Processo N: <span class="text-bold">{{ $documento->num_processo }}</span>
                                                 @endif
                                             </div>
                                         </li>

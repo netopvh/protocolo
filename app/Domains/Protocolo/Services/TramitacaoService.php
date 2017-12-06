@@ -363,6 +363,78 @@ class TramitacaoService
         }
     }
 
+    public function getDocProcesso($attributes)
+    {
+        try {
+            $tramitacao = $this->documentoRepository
+                ->with(['tipo_documento', 'tramitacoes'])
+                ->query()
+                ->departamento()
+                ->where('numero', $attributes->numero)
+                ->where('ano', $attributes->ano)
+                ->orWhere(function ($query) use ($attributes){
+                    if($attributes->has('int_ext')){
+                        $query->where('int_ext', $attributes->int_ext);
+                    }
+                })
+                ->get();
+
+
+            if (count($tramitacao) < 1) {
+                return false;
+            } else {
+                return $tramitacao;
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('errors', $e->getMessage());
+        }
+    }
+
+    public function getCreateProcesso($id)
+    {
+        try {
+            $documento = $this->documentoRepository
+                ->query()
+                ->departamento()
+                ->find($id);
+
+            if (empty($documento)) {
+                return false;
+            } else {
+                return $documento;
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('errors', 'Nenhum registro localizado no banco de dados');
+        }
+    }
+
+    public function postCreateProcesso($id, $attributes)
+    {
+        try {
+            $documento = $this->documentoRepository->with('tramitacoes')->find($id);
+            $documento->processo = true;
+            $documento->num_processo = $attributes->num_processo;
+            if ($documento->save()) {
+                $model = $this->tramitacaoRepository->create([
+                    'data_tram' => date('d/m/Y'),
+                    'id_documento' => $documento->id,
+                    $documento->int_ext == 'I' ? 'id_departamento_origem' : 'id_secretaria_origem' => $documento->int_ext == 'I' ? $documento->tramitacoes->first()->id_departamento_origem : $documento->tramitacoes->first()->id_secretaria_origem,
+                    'id_usuario' => auth()->user()->id,
+                    'tipo_tram' => 'U',
+                    'despacho' => $attributes->despacho,
+                    'status' => 'A'
+                ]);
+                if ($model) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (ValidatorException $e) {
+            return redirect()->back()->with('errors', $e->getMessageBag());
+        }
+    }
+
     public function getDespacho($attributes)
     {
         try {

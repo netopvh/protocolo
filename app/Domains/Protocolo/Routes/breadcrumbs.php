@@ -108,3 +108,17 @@ Breadcrumbs::register('admin.tramitacao.movimentar', function ($breadcrumbs) {
     $breadcrumbs->parent('admin.tramitacao');
     $breadcrumbs->push('Movimentar', '');
 });
+
+
+/**
+ * Processo
+ */
+Breadcrumbs::register('admin.processo', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin.home');
+    $breadcrumbs->push('Processo', route('admin.processo.index'));
+});
+
+Breadcrumbs::register('admin.processo.create', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin.processo');
+    $breadcrumbs->push('Criar', route('admin.processo.index'));
+});

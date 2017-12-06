@@ -61,4 +61,11 @@ $this->group(['prefix' => 'dashboard'],function (){
         $this->post('arquivar/{id}/store','TramitacaoController@arquivarStore')->name('admin.tramitacao.doc.arquivar.store');
         $this->get('{id}/consulta','TramitacaoController@getDocPublic');
     });
+
+    $this->group(['prefix' => 'processo'], function (){
+        $this->get('/consulta','ProcessoController@data');
+        $this->get('/','ProcessoController@index')->name('admin.processo.index');
+        $this->get('/{id}/create','ProcessoController@edit')->name('admin.processo.create');
+        $this->patch('{id}/store','ProcessoController@update')->name('admin.processo.store');
+    });
 });

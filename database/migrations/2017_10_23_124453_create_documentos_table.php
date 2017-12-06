@@ -31,6 +31,8 @@ class CreateDocumentosTable extends Migration
             $table->char('status',1)->default('P');
             $table->boolean('arquivado')->default(false);
             $table->string('local_arquiv')->nullable();
+            $table->boolean('processo')->default(false);
+            $table->string('num_processo')->nullable();
             $table->timestamps();
 		});
 	}

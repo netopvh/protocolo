@@ -38,6 +38,10 @@
                         <i class="icon-search4"></i>
                         Localizar Documento
                     </a>
+                    <a href="{{ route('admin.processo.index') }}" class="btn btn-primary btn-raised legitRipple">
+                        <i class="icon-stack2"></i>
+                        Transformar Documento em Processo
+                    </a>
                 </div>
                 <div class="panel panel-flat">
                     <div class="panel-body">
