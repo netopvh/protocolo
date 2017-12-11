@@ -56,12 +56,12 @@
                                     <div class="form-group">
                                         <label class="text-bold display-block">Procedência:</label>
                                         <label class="radio-inline">
-                                            <input type="radio" name="int_ext" value="I" class="styled" required>
+                                            <input type="radio" name="int_ext" value="I" required>
                                             Interno
                                         </label>
 
                                         <label class="radio-inline">
-                                            <input type="radio" name="int_ext" value="E" class="styled" required>
+                                            <input type="radio" name="int_ext" value="E" required>
                                             Externo
                                         </label>
                                     </div>
@@ -70,12 +70,12 @@
                                     <div class="form-group">
                                         <label class="text-bold display-block">Tipo:</label>
                                         <label class="radio-inline">
-                                            <input type="radio" name="tipo_tram" value="C" class="styled" required>
+                                            <input type="radio" name="tipo_tram" value="C" required>
                                             Entrada
                                         </label>
 
                                         <label class="radio-inline">
-                                            <input type="radio" name="tipo_tram" value="O" class="styled" required>
+                                            <input type="radio" name="tipo_tram" value="O" required>
                                             Saída
                                         </label>
                                     </div>

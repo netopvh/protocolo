@@ -1307,11 +1307,10 @@ $(function () {
         let tipo_doc = $('select[name="id_tipo_doc"]');
 
         tipo_doc.on('change',function () {
-            if($(this).val() == 11){
+            if($(this).val() == 11 && $('input[name="tipo_tram"]:checked').val() == 'O'){
                 seclist.collapse('show');
                 $('#orgsec').collapse('hide');
-
-            }else if($(this).val() == 13){
+            }else if($(this).val() == 13 && $('input[name="tipo_tram"]:checked').val() == 'O'){
                 seclist.collapse('show');
                 $('#orgsec').collapse('hide');
             }else{
