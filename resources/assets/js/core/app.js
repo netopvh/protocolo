@@ -1090,9 +1090,11 @@ $(function () {
 
         tbPendente.on('click', '.receber', function (e) {
             e.preventDefault();
+            $('.receber').prop('disabled', true);
             let docId = $(this).data('id');
             $('#recebimento').modal({backdrop: 'static', keyboard: false})
                 .on('click', '#confirm-recebe', function () {
+                    $('#confirm-recebe').prop('disabled', true);
                     $.ajax({
                         url: '/dashboard/tramitacao/action/receber',
                         type: "POST",
@@ -1105,6 +1107,8 @@ $(function () {
                             oTableP.draw();
                             $('#recebimento').modal('hide');
                             reloadCounters();
+                            $('.receber').prop('disabled', false);
+                            $('#confirm-recebe').prop('disabled', false);
                         }
                     });
                 });
@@ -1279,14 +1283,16 @@ $(function () {
                 $('#orgsec').collapse('show');
                 $("#setdep").insertAfter("#orgsec");
                 $("select[name=id_departamento]").prop('required', true);
-                $("select[name=id_secretaria]").prop('required', false);
+                $("select[name=id_secretaria]").prop('required', true);
+                $("select[name=secretarias]").prop('required', false);
             }
             else if (this.value === 'O') {
                 $('#setdep').collapse('show');
                 $('#orgsec').collapse('show');
                 $("#orgsec").insertAfter("#setdep");
-                $("select[name=id_departamento]").prop('required', false);
+                $("select[name=id_departamento]").prop('required', true);
                 $("select[name=id_secretaria]").prop('required', false);
+                $("select[name=secretarias]").prop('required', true);
             }
         });
         //Onload Values
@@ -1294,7 +1300,7 @@ $(function () {
             $('#setdep').collapse('show');
             $('#orgsec').collapse('show');
             $("select[name=id_departamento]").prop('required', true);
-            $("select[name=id_secretaria]").prop('required', false);
+            $("select[name=id_secretaria]").prop('required', true);
         }
         else if ($('input:radio[name=int_ext]:checked').val() === 'S') {
             $('#setdep').collapse('show');
@@ -1305,6 +1311,17 @@ $(function () {
 
         let seclist = $('#seclist');
         let tipo_doc = $('select[name="id_tipo_doc"]');
+        let tipo_tram = $('input[name="tipo_tram"]');
+
+        tipo_tram.on('click', function(){
+            if($('input[name="tipo_tram"]:checked').val() == 'O' && tipo_tram.val() == 11 || tipo_tram.val() == 13){
+                seclist.collapse('show');
+                $('#orgsec').collapse('hide');
+            }else{
+                seclist.collapse('hide');
+                $('#orgsec').collapse('show');
+            }
+        });
 
         tipo_doc.on('change',function () {
             if($(this).val() == 11 && $('input[name="tipo_tram"]:checked').val() == 'O'){
