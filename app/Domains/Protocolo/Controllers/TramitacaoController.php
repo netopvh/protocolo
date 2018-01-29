@@ -58,7 +58,7 @@ class TramitacaoController extends Controller
                 if ($documento->int_ext == 'I') {
                     return $documento->tramitacoes->last()->departamento_origem->descricao;
                 } else {
-                    return $documento->tramitacoes->last()->secretaria_origem->descricao;
+                    return $documento->secretaria->descricao;
                 }
             })
             ->addColumn('action', function ($documento) {
