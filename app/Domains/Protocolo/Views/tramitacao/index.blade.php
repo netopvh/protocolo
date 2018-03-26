@@ -287,23 +287,6 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="recebimento">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Recebimento de documentos</h4>
-                </div>
-                <div class="modal-body">
-                    Tem certeza que deseja receber este documento?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-primary" id="confirm-recebe">Confirmar</button>
-                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="modal" id="devolucao">
         <div class="modal-dialog">
             <div class="modal-content">

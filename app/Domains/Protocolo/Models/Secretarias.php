@@ -46,18 +46,17 @@ class Secretarias extends Model implements AuditableContract
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function servidores()
-    {
-        return $this->hasMany(Servidor::class,'sec_atual_id','id');
-    }
-
+     * @param $value
+     */
     public function setDescricaoAttribute($value)
     {
         $this->attributes['descricao'] = mb_strtoupper($value, "UTF-8");
     }
 
+    /**
+     * @param $value
+     * @return mixed|string
+     */
     public function getDescricaoAttribute($value)
     {
         $var = explode(' - ',$value);
