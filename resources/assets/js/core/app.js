@@ -952,7 +952,7 @@ $(function () {
     //DASHBOARD TABLE
     let dashboardTbl = $('#tbl_dashboard');
     if (dashboardTbl.length) {
-        let oTableDash = dashboardTbl.DataTable({
+        dashboardTbl.DataTable({
             dom: "<'row'<'col-xs-12'<'col-xs-12'>>r>" +
             "<'row'<'col-xs-12't>>" +
             "<'row'<'col-xs-12'<'col-xs-6'i><'col-xs-6'p>>>",
@@ -979,37 +979,6 @@ $(function () {
                 }
             }
         });
-
-        let tbDashboard = $('table[data-form="tbDashboard"]');
-
-        let title = $('.modal-title');
-        let body = $('.modal-body');
-        tbDashboard.on('click', '.receber', function (e) {
-            e.preventDefault();
-            title.html('');
-            title.html('Recebimento de documentos');
-            $('#title-modal').show();
-            $('.despacho').hide();
-            let data = {
-                _token: $('meta[name="csrf-token"]').attr('content'),
-                id: $(this).data('id'),
-                action: 'R'
-            };
-            $('#confirm').modal({backdrop: 'static', keyboard: false})
-                .on('click', '#confirm-btn', function () {
-                    $.ajax({
-                        url: '/dashboard/tramitacao/action',
-                        type: "POST",
-                        data: data,
-                        dataType: "json",
-                        success: function () {
-                            oTableDash.draw();
-                            $('#confirm').modal('hide');
-                            reloadCounters();
-                        }
-                    });
-                });
-        });
     }
 
     //DOCUMENTOS NO SETOR
@@ -1031,7 +1000,7 @@ $(function () {
                     d.id_tipo_doc = $('#id_tipo_doc').val();
                 },
                 complete: function () {
-                    reloadCounters();
+                    reloadCounters(new Date().getFullYear());
                 }
             },
             columns: [
@@ -1068,7 +1037,7 @@ $(function () {
                     d.ano = $('#anoPendente').val();
                 },
                 complete: function () {
-                    reloadCounters();
+                    reloadCounters(new Date().getFullYear());
                 }
             },
             columns: [
@@ -1077,7 +1046,7 @@ $(function () {
                 {data: 'tipo', name: 'tipo_documentos.descricao'},
                 {data: 'origem'},
                 {data: 'data_doc', name: 'documentos.data_doc', width: '180px'},
-                {data: 'action', orderable: false, searchable: false, width: '130px'}
+                {data: 'action', orderable: false, searchable: false, width: '140px'}
             ]
         });
 
@@ -1090,33 +1059,27 @@ $(function () {
 
         tbPendente.on('click', '.receber', function (e) {
             e.preventDefault();
-            $('.receber').prop('disabled', true);
-            let docId = $(this).data('id');
-            $('#recebimento').modal({backdrop: 'static', keyboard: false})
-                .on('click', '#confirm-recebe', function () {
-                    $('#confirm-recebe').prop('disabled', true);
-                    $.ajax({
-                        url: '/dashboard/tramitacao/action/receber',
-                        type: "POST",
-                        data: {
-                            _token: $('meta[name="csrf-token"]').attr('content'),
-                            id: docId
-                        },
-                        dataType: "json",
-                        success: function () {
-                            oTableP.draw();
-                            $('#recebimento').modal('hide');
-                            reloadCounters();
-                            $('.receber').prop('disabled', false);
-                            $('#confirm-recebe').prop('disabled', false);
-                        }
-                    });
+            let vm = $(this);
+            if (confirm('Deseja realmente receber este documento?')) {
+                $.ajax({
+                    url: '/dashboard/tramitacao/action/receber',
+                    type: "POST",
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        id: vm.data('id')
+                    },
+                    dataType: "json",
+                    success: function () {
+                        oTableP.draw();
+                        reloadCounters();
+                    }
                 });
+            }
         });
 
         tbPendente.on('click', '.devolver', function (e) {
             e.preventDefault();
-            let docId = $(this).data('id');
+            let vm = $(this);
             $('#devolucao').modal({backdrop: 'static', keyboard: false})
                 .on('click', '#confirm-devolucao', function () {
                     let instance = CKEDITOR.instances['editor'].getData();
@@ -1158,7 +1121,7 @@ $(function () {
                     d.ano = $('#anoArquivado').val();
                 },
                 complete: function () {
-                    reloadCounters();
+                    reloadCounters(new Date().getFullYear());
                 }
             },
             columns: [
@@ -1195,7 +1158,7 @@ $(function () {
                     d.ano = $('#anoEnviado').val();
                 },
                 complete: function () {
-                    reloadCounters();
+                    reloadCounters(new Date().getFullYear());
                 }
             },
             columns: [

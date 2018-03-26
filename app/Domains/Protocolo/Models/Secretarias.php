@@ -60,6 +60,12 @@ class Secretarias extends Model implements AuditableContract
 
     public function getDescricaoAttribute($value)
     {
-        return mb_strtoupper($value, "UTF-8");
+        $var = explode(' - ',$value);
+        if(count($var) >= 2){
+            return mb_strtoupper($var[1], "UTF-8");
+        }else{
+            return mb_strtoupper($value, "UTF-8");
+        }
+
     }
 }

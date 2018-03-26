@@ -71,6 +71,7 @@ class TramitacaoService
             ->departamento()
             ->where('arquivado', false)
             ->where('status', '=', 'R')
+            ->where('ano','=',date('Y'))
             ->get()
             ->count();
 
@@ -79,18 +80,21 @@ class TramitacaoService
             ->departamento()
             ->where('arquivado', false)
             ->where('status', 'P')
+            ->where('ano','=',date('Y'))
             ->get()
             ->count();
 
         $arquivado = $this->documentoRepository->query()
             ->departamento()
             ->where('arquivado', true)
+            ->where('ano','=',date('Y'))
             ->get()
             ->count();
 
         $enviados = $this->documentoRepository->query()
             ->departamento()
             ->where('status', 'S')
+            ->where('ano','=',date('Y'))
             ->get()
             ->count();
 
