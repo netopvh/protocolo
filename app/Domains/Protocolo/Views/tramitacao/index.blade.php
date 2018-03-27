@@ -116,8 +116,8 @@
                                             <tr>
                                                 <th>Número/Ano</th>
                                                 <th>Assunto</th>
-                                                <th>Tipo Documento</th>
-                                                <th>Protocolado por</th>
+                                                <th>Tipo</th>
+                                                <th>Origem</th>
                                                 <th>Data Doc</th>
                                                 <th class="text-center">Ações</th>
                                             </tr>
@@ -159,8 +159,8 @@
                                             <tr>
                                                 <th>Número/Ano</th>
                                                 <th>Assunto</th>
-                                                <th>Tipo Documento</th>
-                                                <th>Protocolado por</th>
+                                                <th>Tipo</th>
+                                                <th>Origem</th>
                                                 <th>Data Doc</th>
                                                 <th class="text-center">Ações</th>
                                             </tr>
@@ -213,8 +213,8 @@
                                                     <tr>
                                                         <th>Número/Ano</th>
                                                         <th>Assunto</th>
-                                                        <th>Tipo Documento</th>
-                                                        <th>Protocolado por</th>
+                                                        <th>Tipo</th>
+                                                        <th>Origem</th>
                                                         <th>Data Doc</th>
                                                         <th class="text-center">Ações</th>
                                                     </tr>
@@ -269,8 +269,8 @@
                                                     <tr>
                                                         <th>Número/Ano</th>
                                                         <th>Assunto</th>
-                                                        <th>Tipo Documento</th>
-                                                        <th>Enviado para</th>
+                                                        <th>Tipo</th>
+                                                        <th>Destino</th>
                                                         <th>Data Doc</th>
                                                         <th class="text-center">Ações</th>
                                                     </tr>
